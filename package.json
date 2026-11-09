@@ -6,6 +6,9 @@
   "scripts": {
     "watch": "node development/watcher.js"
   },
+  "publishConfig": {
+    "access": "public"
+  },
   "author": "Biati Digital",
   "types": "./index.d.ts",
   "keywords": [
