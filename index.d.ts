@@ -314,6 +314,8 @@ declare namespace Glightbox {
     }
 
     type Payload<T extends EventTypes> = {
+        open: undefined;
+        close: undefined;
         slide_before_change: {
             prev: BaseData;
             current: BaseData;
@@ -326,7 +328,7 @@ declare namespace Glightbox {
         slide_after_load: BaseData;
         slide_inserted: BaseData;
         slide_removed: number;
-    }[T]
+    }[T];
 }
 
 declare class GlightboxInit {

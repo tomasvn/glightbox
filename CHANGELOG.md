@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+### 3.3.2
+
+- Fixed: elements array type
+- Fixed: `open` / `close` type correction, resolve local TS error
+- Feat: release patched version under `@tomasvn/glightbox`
+
 ## 3.3.1
 
 - Fixed: handle optional slide trigger node for max height calculation

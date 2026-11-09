@@ -24,9 +24,9 @@ You can check the live demo [right here](https://biati-digital.github.io/glightb
 ## Usage
 
 ```bash
-$ npm install glightbox
+$ npm install @tomasvn/glightbox
 # OR
-$ yarn add glightbox
+$ yarn add @tomasvn/glightbox
 # OR
 $ bower install glightbox
 ```
