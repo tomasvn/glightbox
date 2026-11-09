@@ -1,4 +1,4 @@
-// Type definitions for Glightbox 3.2.1
+// Type definitions for Glightbox 3.2.2
 // Project: https://github.com/biati-digital/glightbox/blob/master/README.md
 // Definitions by: Ngoc Tu Nguyen <https://github.com/tomasvn>
 // Definitions: https://github.com/DefinitelyTyped/DefinitelyTyped
@@ -95,7 +95,7 @@ declare namespace Glightbox {
          * 
          * @default null
          */
-        elements?: [] | null;
+        elements?: ({ href: string; type: 'image'; title?: string; description?: string; alt?: string } | { href: string; type: 'video'; source: string; width?: number } | { content: string | HTMLElement })[] | null;
         /**
          * Name of the skin, it will add a class to the lightbox
          * so you can style it with css.
