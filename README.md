@@ -52,8 +52,8 @@ Or manually download and link `glightbox.min.js` in your HTML:
 
 <!-- USING A CDN -->
 
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/glightbox/dist/css/glightbox.min.css" />
-<script src="https://cdn.jsdelivr.net/gh/mcstudios/glightbox/dist/js/glightbox.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tomasvn/glightbox@3.3.6/dist/css/glightbox.min.css" />
+<script src="https://cdn.jsdelivr.net/npm/@tomasvn/glightbox@3.3.6/dist/js/glightbox.min.js"></script>
 
 <script type="text/javascript">
   const lightbox = GLightbox({ ...options });
@@ -62,7 +62,7 @@ Or manually download and link `glightbox.min.js` in your HTML:
 <!-- USING ES MODULES -->
 
 <script type="module">
-  import 'https://cdn.jsdelivr.net/gh/mcstudios/glightbox/dist/js/glightbox.min.js';
+  import 'https://cdn.jsdelivr.net/npm/@tomasvn/glightbox@3.3.6/dist/js/glightbox.min.js';
 
   const lightbox = GLightbox({ ...options });
 </script>
@@ -696,22 +696,6 @@ It will work in any browser that supports CSS Flexbox
 ## Contributing
 
 Feel free to report any issues! If you wish to contribute by fixing a bug or implementing a new feature, please first read the [CONTRIBUTING](./CONTRIBUTING.md) guide.
-
-## Donate
-
-If you find this code useful, please consider a donation to keep this project growing, any amount is appreciated.
-
-[![paypal](https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](https://paypal.me/bdigital9816/5usd)
-
-## Support
-
-We only provide support for bugs and feature requests, so please only post issues about this two topics, if you need help implementing GLightbox or you are just starting with HTML/CSS/Javascript please use stackoverlow, you'll be able to find more help there. This will help us to keep the issues related to the library and solve issues faster.
-
-## Changelog
-
-#### Latest version vundefined
-
-See the [CHANGELOG.md](CHANGELOG.md) file for details
 
 ## License
 
