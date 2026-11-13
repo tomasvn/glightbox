@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+### 3.3.5
+
+- Fix: remove redundant `devDependecies` and not used
+  - `temporary`
+  - `npm`
+
 ### 3.3.4
 
 - Feat: customizable aria-labels for navigation buttons. Closes [#566](https://github.com/biati-digital/glightbox/issues/566)
