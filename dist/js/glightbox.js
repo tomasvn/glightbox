@@ -18,15 +18,15 @@
       writable: !1
     }), e;
   }
-  function _toPrimitive(t, r) {
+  function _toPrimitive(t, e) {
     if ("object" != typeof t || !t) return t;
-    var e = t[Symbol.toPrimitive];
-    if (void 0 !== e) {
-      var i = e.call(t, r || "default");
+    var r;
+    if ("undefined" != typeof Symbol && void 0 !== (r = t[Symbol.toPrimitive])) {
+      var i = r.call(t, e || "default");
       if ("object" != typeof i) return i;
       throw new TypeError("@@toPrimitive must return a primitive value.");
     }
-    return ("string" === r ? String : Number)(t);
+    return ("string" === e ? String : Number)(t);
   }
   function _toPropertyKey(t) {
     var i = _toPrimitive(t, "string");
@@ -1791,6 +1791,9 @@
   }();
 
   function resetSlideMove(slide) {
+    if (!slide) {
+      return;
+    }
     var transitionEnd = whichTransitionEvent();
     var windowWidth = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
     var media = hasClass(slide, 'gslide-media') ? slide : slide.querySelector('.gslide-media');
@@ -2029,7 +2032,7 @@
     instance.events['touch'] = touchInstance;
   }
 
-  var _version = '3.3.1';
+  var _version = '3.3.4';
   var isMobile$1 = isMobile();
   var isTouch$1 = isTouch();
   var html = document.getElementsByTagName('html')[0];
@@ -2039,6 +2042,9 @@
     skin: 'clean',
     theme: 'clean',
     closeButton: true,
+    closeButtonText: 'Close',
+    prevButtonText: 'Previous',
+    nextButtonText: 'Next',
     startAt: null,
     autoplayVideos: true,
     autofocusVideos: true,
@@ -2125,7 +2131,7 @@
     }
   };
   defaults.slideHTML = "<div class=\"gslide\">\n    <div class=\"gslide-inner-content\">\n        <div class=\"ginner-container\">\n            <div class=\"gslide-media\">\n            </div>\n            <div class=\"gslide-description\">\n                <div class=\"gdesc-inner\">\n                    <h4 class=\"gslide-title\"></h4>\n                    <div class=\"gslide-desc\"></div>\n                </div>\n            </div>\n        </div>\n    </div>\n</div>";
-  defaults.lightboxHTML = "<div id=\"glightbox-body\" class=\"glightbox-container\" tabindex=\"-1\" role=\"dialog\" aria-hidden=\"false\">\n    <div class=\"gloader visible\"></div>\n    <div class=\"goverlay\"></div>\n    <div class=\"gcontainer\">\n    <div id=\"glightbox-slider\" class=\"gslider\"></div>\n    <button class=\"gclose gbtn\" aria-label=\"Close\" data-taborder=\"3\">{closeSVG}</button>\n    <button class=\"gprev gbtn\" aria-label=\"Previous\" data-taborder=\"2\">{prevSVG}</button>\n    <button class=\"gnext gbtn\" aria-label=\"Next\" data-taborder=\"1\">{nextSVG}</button>\n</div>\n</div>";
+  defaults.lightboxHTML = "<div id=\"glightbox-body\" class=\"glightbox-container\" tabindex=\"-1\" role=\"dialog\" aria-hidden=\"false\">\n    <div class=\"gloader visible\"></div>\n    <div class=\"goverlay\"></div>\n    <div class=\"gcontainer\">\n    <div id=\"glightbox-slider\" class=\"gslider\"></div>\n    <button class=\"gclose gbtn\" aria-label=\"{closeButtonText}\" data-taborder=\"3\">{closeSVG}</button>\n    <button class=\"gprev gbtn\" aria-label=\"{prevButtonText}\" data-taborder=\"2\">{prevSVG}</button>\n    <button class=\"gnext gbtn\" aria-label=\"{nextButtonText}\" data-taborder=\"1\">{nextSVG}</button>\n</div>\n</div>";
   var GlightboxInit = function () {
     function GlightboxInit() {
       var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
@@ -2746,7 +2752,10 @@
     }, {
       key: "build",
       value: function build() {
-        var _this7 = this;
+        var _this$settings$closeB,
+          _this$settings$prevBu,
+          _this$settings$nextBu,
+          _this7 = this;
         if (this.built) {
           return false;
         }
@@ -2761,10 +2770,16 @@
         var nextSVG = has(this.settings.svg, 'next') ? this.settings.svg.next : '';
         var prevSVG = has(this.settings.svg, 'prev') ? this.settings.svg.prev : '';
         var closeSVG = has(this.settings.svg, 'close') ? this.settings.svg.close : '';
+        var closeButtonText = (_this$settings$closeB = this.settings.closeButtonText) !== null && _this$settings$closeB !== void 0 ? _this$settings$closeB : 'Close';
+        var prevButtonText = (_this$settings$prevBu = this.settings.prevButtonText) !== null && _this$settings$prevBu !== void 0 ? _this$settings$prevBu : 'Previous';
+        var nextButtonText = (_this$settings$nextBu = this.settings.nextButtonText) !== null && _this$settings$nextBu !== void 0 ? _this$settings$nextBu : 'Next';
         var lightboxHTML = this.settings.lightboxHTML;
         lightboxHTML = lightboxHTML.replace(/{nextSVG}/g, nextSVG);
         lightboxHTML = lightboxHTML.replace(/{prevSVG}/g, prevSVG);
         lightboxHTML = lightboxHTML.replace(/{closeSVG}/g, closeSVG);
+        lightboxHTML = lightboxHTML.replace(/{closeButtonText}/g, closeButtonText);
+        lightboxHTML = lightboxHTML.replace(/{prevButtonText}/g, prevButtonText);
+        lightboxHTML = lightboxHTML.replace(/{nextButtonText}/g, nextButtonText);
         lightboxHTML = createHTML(lightboxHTML);
         document.body.appendChild(lightboxHTML);
         var modal = document.getElementById('glightbox-body');

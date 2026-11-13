@@ -1,9 +1,10 @@
 {
   "name": "@tomasvn/glightbox",
-  "version": "3.3.3",
+  "version": "3.3.4",
   "description": "Pure Javascript lightbox",
   "main": "dist/js/glightbox.min.js",
   "scripts": {
+    "test": "node --test",
     "watch": "node development/watcher.js"
   },
   "publishConfig": {
