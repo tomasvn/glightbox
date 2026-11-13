@@ -1,6 +1,6 @@
 {
   "name": "@tomasvn/glightbox",
-  "version": "3.3.5",
+  "version": "3.3.6",
   "description": "Pure Javascript lightbox",
   "main": "dist/js/glightbox.min.js",
   "scripts": {

@@ -2,7 +2,7 @@
 
 GLightbox is a pure javascript lightbox. It can display images, iframes, inline content and videos with optional autoplay for YouTube, Vimeo and even self hosted videos.
 
-> NOTE: This is forked version of the main package, released with patched fixes
+> NOTE: This is forked version of the main package, released with patched fixes Check: [CHANGELOG](CHANGELOG.md) to see what has been patched
 
 ## Features
 

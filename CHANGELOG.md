@@ -2,6 +2,10 @@
 
 All notable changes to this project will be documented in this file.
 
+### 3.3.6
+
+- Docs(README.md): npm packages readme file
+
 ### 3.3.5
 
 - Fix: remove redundant `devDependecies` and not used
