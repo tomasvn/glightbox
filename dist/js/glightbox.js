@@ -2038,7 +2038,7 @@
     instance.events['touch'] = touchInstance;
   }
 
-  var _version = '3.3.4';
+  var _version = '3.3.8';
   var isMobile$1 = isMobile();
   var isTouch$1 = isTouch();
   var html = document.getElementsByTagName('html')[0];

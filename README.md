@@ -52,8 +52,8 @@ Or manually download and link `glightbox.min.js` in your HTML:
 
 <!-- USING A CDN -->
 
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tomasvn/glightbox@3.3.6/dist/css/glightbox.min.css" />
-<script src="https://cdn.jsdelivr.net/npm/@tomasvn/glightbox@3.3.6/dist/js/glightbox.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tomasvn/glightbox@3.3.8/dist/css/glightbox.min.css" />
+<script src="https://cdn.jsdelivr.net/npm/@tomasvn/glightbox@3.3.8/dist/js/glightbox.min.js"></script>
 
 <script type="text/javascript">
   const lightbox = GLightbox({ ...options });
@@ -62,7 +62,7 @@ Or manually download and link `glightbox.min.js` in your HTML:
 <!-- USING ES MODULES -->
 
 <script type="module">
-  import 'https://cdn.jsdelivr.net/npm/@tomasvn/glightbox@3.3.6/dist/js/glightbox.min.js';
+  import 'https://cdn.jsdelivr.net/npm/@tomasvn/glightbox@3.3.8/dist/js/glightbox.min.js';
 
   const lightbox = GLightbox({ ...options });
 </script>

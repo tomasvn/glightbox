@@ -2,6 +2,10 @@
 
 All notable changes to this project will be documented in this file.
 
+### 3.3.8
+
+- Bump version
+
 ### 3.3.7
 
 - Fix(package.json): update repository url
