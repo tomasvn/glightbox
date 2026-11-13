@@ -2,6 +2,10 @@
 
 All notable changes to this project will be documented in this file.
 
+### 3.3.7
+
+- Fix(package.json): update repository url
+
 ### 3.3.6
 
 - Docs(README.md): npm packages readme file
