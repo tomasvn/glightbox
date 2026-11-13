@@ -214,11 +214,12 @@ myGallery.setElements([...]);
 | closeEffect | string | `zoom` | Name of the effect on lightbox close. (zoom, fade, none) |
 | slideEffect | string | `slide` | Name of the effect on slide change. (slide, fade, zoom, none) |
 | moreText | string | `See more` | More text for descriptions on mobile devices. |
+| lessText | string | `See less` | Text for collapsing expanded descriptions. |
 | moreLength | number | `60` | Number of characters to display on the description before adding the moreText link (only for mobiles), if 0 it will display the entire description. |
-| closeButtonText | string  | `Close` | Text for the close button. | 
+| closeButtonText | string | `Close` | Text for the close button. |
 | closeButton | boolean | `true` | Show or hide the close button. |
-| nextButtonText | string  | `Next` | Text for the next slide button. |
-| prevButtonText | string  | `Previous` | Text for the previous slide button. |
+| nextButtonText | string | `Next` | Text for the next slide button. |
+| prevButtonText | string | `Previous` | Text for the previous slide button. |
 | touchNavigation | boolean | `true` | Enable or disable the touch navigation (swipe). |
 | touchFollowAxis | boolean | `true` | Image follow axis when dragging on mobile. |
 | keyboardNavigation | boolean | `true` | Enable or disable the keyboard navigation. |

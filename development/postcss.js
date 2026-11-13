@@ -3,7 +3,7 @@ const cssnext = require('postcss-preset-env');
 const cssnested = require('postcss-nested');
 const cssmqpacker = require('css-mqpacker');
 const cssprettify = require('postcss-prettify');
-const cssclean = require('clean-css');
+const CssClean = require('clean-css');
 const path = require('path');
 const fs = require('fs');
 
@@ -40,7 +40,7 @@ function postcssCompiler(config) {
                     fs.writeFile(to, result.css, 'utf8', (err) => reject(err));
 
                     if (minify) {
-                        const minified = new cssclean({}).minify(result.css);
+                        const minified = new CssClean({}).minify(result.css);
                         fs.writeFile(min, minified.styles, 'utf8', (err) => reject(err));
 
                         if (result.map) {

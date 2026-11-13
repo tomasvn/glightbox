@@ -50,11 +50,7 @@ export default class DragSlides {
 
         let clicked = e.target.nodeName.toLowerCase();
         let exludeClicks = ['input', 'select', 'textarea', 'button', 'a'];
-        if (
-            e.target.classList.contains('nodrag') ||
-            closest(e.target, '.nodrag') ||
-            exludeClicks.indexOf(clicked) !== -1
-        ) {
+        if (e.target.classList.contains('nodrag') || closest(e.target, '.nodrag') || exludeClicks.indexOf(clicked) !== -1) {
             this.active = false;
             return;
         }
@@ -131,11 +127,7 @@ export default class DragSlides {
             let currentYInt = Math.abs(this.currentY);
 
             // Horizontal drag
-            if (
-                currentXInt > 0 &&
-                currentXInt >= Math.abs(this.currentY) &&
-                (!this.lastDirection || this.lastDirection == 'x')
-            ) {
+            if (currentXInt > 0 && currentXInt >= Math.abs(this.currentY) && (!this.lastDirection || this.lastDirection == 'x')) {
                 this.yOffset = 0;
                 this.lastDirection = 'x';
                 this.setTranslate(this.dragContainer, this.currentX, 0);
@@ -158,12 +150,7 @@ export default class DragSlides {
             }
 
             // Vertical drag
-            if (
-                this.toleranceY > 0 &&
-                currentYInt > 0 &&
-                currentYInt >= currentXInt &&
-                (!this.lastDirection || this.lastDirection == 'y')
-            ) {
+            if (this.toleranceY > 0 && currentYInt > 0 && currentYInt >= currentXInt && (!this.lastDirection || this.lastDirection == 'y')) {
                 this.xOffset = 0;
                 this.lastDirection = 'y';
                 this.setTranslate(this.dragContainer, 0, this.currentY);
@@ -188,10 +175,7 @@ export default class DragSlides {
         if (currentXInt >= this.toleranceX) {
             let dragDir = this.currentX > 0 ? 'right' : 'left';
 
-            if (
-                (dragDir == 'left' && this.slide !== this.slide.parentNode.lastChild) ||
-                (dragDir == 'right' && this.slide !== this.slide.parentNode.firstChild)
-            ) {
+            if ((dragDir == 'left' && this.slide !== this.slide.parentNode.lastChild) || (dragDir == 'right' && this.slide !== this.slide.parentNode.firstChild)) {
                 doChange = dragDir;
             }
         }

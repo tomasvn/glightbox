@@ -4,8 +4,12 @@
   "description": "Pure Javascript lightbox",
   "main": "dist/js/glightbox.min.js",
   "scripts": {
+    "build": "node development/build.js",
     "test": "node --test",
-    "watch": "node development/watcher.js"
+    "watch": "node development/watcher.js",
+    "lint": "eslint \"src/js/**/*.js\"",
+    "format": "prettier --write \"src/js/**/*.js\"",
+    "prepare": "husky"
   },
   "publishConfig": {
     "access": "public"
@@ -37,8 +41,8 @@
     "clean-css": "^4.2.3",
     "css-mqpacker": "^7.0.0",
     "eslint": "^7.16.0",
-    "fs-extra": "^8.1.0",
     "fs-jetpack": "^2.4.0",
+    "husky": "^9.1.7",
     "install": "^0.13.0",
     "node-notifier": "^5.4.0",
     "npm": "^6.14.10",
@@ -46,6 +50,7 @@
     "postcss-nested": "^4.1.1",
     "postcss-preset-env": "^6.5.0",
     "postcss-prettify": "^0.3.4",
+    "prettier": "^3.10.1",
     "rollup": "^1.32.1",
     "rollup-plugin-babel": "^4.4.0",
     "rollup-plugin-commonjs": "^9.2.0",
@@ -53,6 +58,5 @@
     "temporary": "^1.1.0",
     "terser": "^4.8.0",
     "uninstall": "0.0.0"
-  },
-  "dependencies": {}
+  }
 }

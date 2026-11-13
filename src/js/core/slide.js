@@ -184,6 +184,7 @@ export default class Slide {
             onElement: moreLink,
             withCallback: (event, target) => {
                 event.preventDefault();
+                event.stopPropagation();
                 const body = document.body;
 
                 let desc = closest(target, '.gslide-desc');
@@ -191,13 +192,18 @@ export default class Slide {
                     return false;
                 }
 
-                desc.innerHTML = data.description;
+                desc.innerHTML = `${data.description} <a href="#" class="desc-less">${this.instance.settings.lessText}</a>`;
                 addClass(body, 'gdesc-open');
 
                 let shortEvent = addEvent('click', {
                     onElement: [body, closest(desc, '.gslide-description')],
                     withCallback: (event, target) => {
-                        if (event.target.nodeName.toLowerCase() !== 'a') {
+                        const isLessLink = hasClass(event.target, 'desc-less');
+                        if (event.target.nodeName.toLowerCase() !== 'a' || isLessLink) {
+                            event.stopPropagation();
+                            if (isLessLink) {
+                                event.preventDefault();
+                            }
                             removeClass(body, 'gdesc-open');
                             addClass(body, 'gdesc-closed');
                             desc.innerHTML = data.smallDescription;

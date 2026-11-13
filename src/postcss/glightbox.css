@@ -370,7 +370,7 @@
     }
 }
 
-.gdesc-open {
+.glightbox-mobile.gdesc-open {
     .gslide-media {
         transition: opacity 0.5s ease;
         opacity: 0.4;
@@ -379,7 +379,7 @@
         padding-bottom: 30px;
     }
 }
-.gdesc-closed {
+.glightbox-mobile.gdesc-closed {
     .gslide-media {
         transition: opacity 0.5s ease;
         opacity: 1;
@@ -524,6 +524,7 @@ iframe.wait-autoplay {
     .gslide-title {
         font-size: 1em;
         font-weight: normal;
+        font-family: Arial, sans-serif;
         color: #000;
         margin-bottom: 19px;
         line-height: 1.4em;
@@ -531,6 +532,7 @@ iframe.wait-autoplay {
 
     .gslide-desc {
         font-size: 0.86em;
+        font-family: Arial, sans-serif;
         margin-bottom: 0;
         line-height: 1.4em;
     }

@@ -77,6 +77,7 @@ const defaults = {
     closeEffect: 'zoom', // fade, zoom, none
     slideEffect: 'slide', // fade, slide, zoom, none
     moreText: 'See more',
+    lessText: 'See less',
     moreLength: 60,
     cssEfects: {
         fade: { in: 'fadeIn', out: 'fadeOut' },

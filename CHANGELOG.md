@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file.
 
+### 3.3.4
+
+- Feat: customizable aria-labels for navigation buttons. Closes [#566](https://github.com/biati-digital/glightbox/issues/566)
+- Fix: add null guard `resetSlideMove` method. Closes [#587](https://github.com/biati-digital/glightbox/issues/587)
+- Fix: `see more link` in description is closing before revealing text. Closes [#435](https://github.com/biati-digital/glightbox/issues/435)
+- Feat: add new setting value for `see more` for description link via setting `lessText` defaults to `See less`
+- Fix: local build command, test, husky, linter, formatter
+
+### 3.3.3
+
+- Bumped version
+
 ### 3.3.2
 
 - Fixed: elements array type

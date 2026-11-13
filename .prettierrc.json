@@ -5,7 +5,6 @@
   "proseWrap": "never",
   "semi": true,
   "singleQuote": true,
-  "jsxBracketSameLine": true,
   "arrowParens": "always",
   "htmlWhitespaceSensitivity": "ignore",
   "overrides": [
