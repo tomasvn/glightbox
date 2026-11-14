@@ -61,7 +61,7 @@ export default function slideVideo(slide, data, index, callback) {
             customPlaceholder = createHTML(html);
         }
 
-        // prettier-ignore
+        // oxfmt-ignore
         const placeholder = customPlaceholder ? customPlaceholder : createHTML(`<div id="${videoID}" data-plyr-provider="${provider}" data-plyr-embed-id="${url}"></div>`);
 
         addClass(videoWrapper, `${provider}-video gvideo`);

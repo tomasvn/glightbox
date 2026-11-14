@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## 3.3.9
+
+### Patch Changes
+
+- Modernize tooling - oxfmt, oxlint, changeset
+
 ### 3.3.8
 
 - Bump version

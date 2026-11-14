@@ -63,7 +63,7 @@ const defaults = {
                 noCookie: true,
                 rel: 0,
                 showinfo: 0,
-                iv_load_policy: 3 // eslint-disable-line camelcase
+                iv_load_policy: 3
             },
             vimeo: {
                 byline: false,

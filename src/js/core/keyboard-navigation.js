@@ -52,7 +52,7 @@ export default function keyboardNavigation(instance) {
             event = event || window.event;
             const key = event.keyCode;
             if (key == 9) {
-                //prettier-ignore
+                // oxfmt-ignore
                 const focusedButton = document.querySelector('.gbtn.focused');
 
                 if (!focusedButton) {

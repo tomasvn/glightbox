@@ -19,7 +19,7 @@ export default function slideImage(slide, data, index, callback) {
     let titleID = 'gSlideTitle_' + index;
     let textID = 'gSlideDesc_' + index;
 
-    // prettier-ignore
+    // oxfmt-ignore
     img.addEventListener('load', () => {
         if (isFunction(callback)) {
             callback();
