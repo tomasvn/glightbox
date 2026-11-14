@@ -2,6 +2,25 @@
 
 All notable changes to this project will be documented in this file.
 
+## 3.4.0
+
+### Minor Changes
+
+- Added customizable css variables, cleaned up the readme file
+- Remove unused dependecy `install`
+- Types: improve overall typings against the source code
+  - **Deprecated**: `cssEfects` settings - still available
+  - **Corrected** setting `cssEffects`
+  - Add missing `SlideConfig` type - `'external' | 'audio' | 'ajax'`
+  - Width / Height - accepting `number`
+  - Non required `GlightboxOptions` in constructor
+  - Mark `Glightbox` function to have non required options
+  - `setElements` use correct typing instead of `any[]`
+  - `getActiveSlide` return `undefined`
+  - `on` / `once` improve overall typing
+  - missing typing for `muted` property in base config
+  - `open` - missing `null` types
+
 ## 3.3.9
 
 ### Patch Changes

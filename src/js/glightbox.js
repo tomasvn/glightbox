@@ -10,7 +10,7 @@ import Slide from './core/slide.js';
 import touchNavigation from './core/touch-navigation.js';
 import * as _ from './utils/helpers.js';
 
-const version = '3.3.8';
+const version = '3.4.0';
 const isMobile = _.isMobile();
 const isTouch = _.isTouch();
 const html = document.getElementsByTagName('html')[0];
@@ -134,6 +134,8 @@ class GlightboxInit {
     constructor(options = {}) {
         this.customOptions = options;
         this.settings = _.extend(defaults, options);
+        this.settings.cssEfects = _.extend(this.settings.cssEfects, options.cssEffects);
+        this.settings.cssEffects = this.settings.cssEfects;
         this.effectsClasses = this.getAnimationClasses();
         this.videoPlayers = {};
         this.apiEvents = [];
@@ -502,7 +504,7 @@ class GlightboxInit {
             index: this.prevActiveSlideIndex,
             slide: this.prevActiveSlide, //this will be removed in the future
             slideNode: this.prevActiveSlide,
-            slideIndex: this.prevActiveSlide,
+            slideIndex: this.prevActiveSlideIndex,
             slideConfig: _.isNil(this.prevActiveSlideIndex) ? null : this.elements[this.prevActiveSlideIndex].slideConfig,
             trigger: _.isNil(this.prevActiveSlideIndex) ? null : this.elements[this.prevActiveSlideIndex].node,
             player: this.getSlidePlayerInstance(this.prevActiveSlideIndex)
@@ -924,9 +926,9 @@ class GlightboxInit {
      */
     getAnimationClasses() {
         let effects = [];
-        for (let key in this.settings.cssEfects) {
-            if (this.settings.cssEfects.hasOwnProperty(key)) {
-                let effect = this.settings.cssEfects[key];
+        for (let key in this.settings.cssEffects) {
+            if (this.settings.cssEffects.hasOwnProperty(key)) {
+                let effect = this.settings.cssEffects[key];
                 effects.push(`g${effect.in}`);
                 effects.push(`g${effect.out}`);
             }

@@ -1,11 +1,12 @@
 {
   "name": "@tomasvn/glightbox",
-  "version": "3.3.9",
+  "version": "3.4.0",
   "description": "Pure Javascript lightbox",
   "main": "dist/js/glightbox.min.js",
   "scripts": {
     "build": "node development/build.js",
-    "test": "node --test",
+    "test": "node --test && npm run test:types",
+    "test:types": "tsc --noEmit --strict --target es2020 --module commonjs --moduleResolution node tests/types/contract.ts",
     "watch": "node development/watcher.js",
     "changeset": "changeset",
     "changeset:version": "changeset version",
@@ -49,7 +50,6 @@
     "css-mqpacker": "^7.0.0",
     "fs-jetpack": "^2.4.0",
     "husky": "^9.1.7",
-    "install": "^0.13.0",
     "lint-staged": "^16.2.7",
     "node-notifier": "^5.4.0",
     "oxfmt": "^0.78.0",
@@ -63,6 +63,7 @@
     "rollup-plugin-commonjs": "^9.2.0",
     "rollup-plugin-node-resolve": "^4.0.0",
     "terser": "^4.8.0",
+    "typescript": "^5.9.3",
     "uninstall": "0.0.0"
   }
 }

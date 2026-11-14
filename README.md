@@ -32,8 +32,6 @@ You can check the live demo [right here](https://biati-digital.github.io/glightb
 $ npm install @tomasvn/glightbox
 # OR
 $ yarn add @tomasvn/glightbox
-# OR
-$ bower install glightbox
 ```
 
 ```javascript
@@ -52,8 +50,8 @@ Or manually download and link `glightbox.min.js` in your HTML:
 
 <!-- USING A CDN -->
 
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tomasvn/glightbox@3.3.8/dist/css/glightbox.min.css" />
-<script src="https://cdn.jsdelivr.net/npm/@tomasvn/glightbox@3.3.8/dist/js/glightbox.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tomasvn/glightbox@3.4.0/dist/css/glightbox.min.css" />
+<script src="https://cdn.jsdelivr.net/npm/@tomasvn/glightbox@3.4.0/dist/js/glightbox.min.js"></script>
 
 <script type="text/javascript">
   const lightbox = GLightbox({ ...options });
@@ -68,80 +66,55 @@ Or manually download and link `glightbox.min.js` in your HTML:
 </script>
 ```
 
-## Examples
+For more usage examples, including galleries and custom slides, see [Examples](./EXAMPLES.md).
 
-```html
-<!-- Simple image -->
-<a href="large.jpg" class="glightbox">
-  <img src="small.jpg" alt="image" />
-</a>
+## CSS Variables
 
-<!-- Video -->
-<a href="https://vimeo.com/115041822" class="glightbox2">
-  <img src="small.jpg" alt="image" />
-</a>
+Use these variables to customize GLightbox:
 
-<!-- Gallery -->
-<a href="large.jpg" class="glightbox3" data-gallery="gallery1">
-  <img src="small.jpg" alt="image" />
-</a>
-<a href="video.mp4" class="glightbox3" data-gallery="gallery1">
-  <img src="small.jpg" alt="image" />
-</a>
+| Variable                                 | Default               | Description                                                                        |
+| ---------------------------------------- | --------------------- | ---------------------------------------------------------------------------------- |
+| `--glightbox-transition-duration`        | `0.4s`                | Slide transition duration                                                          |
+| `--glightbox-transition-timing-function` | `ease`                | Slide transition timing function                                                   |
+| `--glightbox-description-title-color`    | `#fff`                | Mobile description title color                                                     |
+| `--glightbox-description-color`          | `#a1a1a1`             | Mobile description text color                                                      |
+| `--glightbox-description-link-color`     | `#fff`                | Mobile description link color                                                      |
+| `--glightbox-description-more-color`     | `#fff`                | Mobile description "see more" link color                                           |
+| `--glightbox-overlay-bg`                 | `#000`                | Overlay background                                                                 |
+| `--glightbox-overlay-bg-mobile`          | `#000`                | Overlay background on mobile devices                                               |
+| `--glightbox-overlay-bg-sm`              | `rgba(0, 0, 0, 0.92)` | Overlay background when the viewport is wider than 768px                           |
+| `--glightbox-overlay-bg-xs`              | `#000`                | Overlay background when the viewport height is at most 420px                       |
+| `--glightbox-button-focus-outline-color` | `#0f3d81`             | Focused button outline color                                                       |
+| `--glightbox-icon-color`                 | `#fff`                | Control icon fill in the `clean` skin                                              |
+| `--glightbox-icon-bg`                    | `rgba(0, 0, 0, 0.75)` | Control background in the `clean` skin                                             |
+| `--glightbox-icon-bg-sm`                 | `rgba(0, 0, 0, 0.32)` | Control background in the `clean` skin when the viewport is wider than 768px       |
+| `--glightbox-icon-bg-hover`              | `rgba(0, 0, 0, 0.7)`  | Control hover background in the `clean` skin when the viewport is wider than 768px |
 
-<!-- Simple Description -->
-<a href="large.jpg" class="glightbox4" data-glightbox="title: My title; description: this is the slide description">
-  <img src="small.jpg" alt="image" />
-</a>
+The mobile overlay rule takes precedence over the viewport-specific overlay rules on mobile devices. For example, set variables globally with:
 
-<!-- Advanced Description -->
-<a href="large.jpg" class="glightbox5" data-glightbox="title: My title; description: .custom-desc1">
-  <img src="small.jpg" alt="image" />
-</a>
-
-<div class="glightbox-desc custom-desc1">
-  <p>The content of this div will be used as the slide description</p>
-  <p>You can add links and any HTML you want</p>
-</div>
-
-<!-- URL with no extension -->
-<a href="https://picsum.photos/1200/800" data-glightbox="type: image">
-  <img src="small.jpg" alt="image" />
-</a>
-<!-- OR using multiple data attributes -->
-<a href="https://picsum.photos/1200/800" data-type="image">
-  <img src="small.jpg" alt="image" />
-</a>
-
-<!-- Using responsive images: specify sizes and srcset through data attributes in the
-     same way you would with the img tag.
-     See: https://developer.mozilla.org/en-US/docs/Learn/HTML/Multimedia_and_embedding/Responsive_images -->
-<a
-  href="default.jpg"
-  class="glightbox6"
-  data-title="Responsive example"
-  data-description="Your browser will choose the optimal image for the resolution"
-  data-sizes="(max-width: 600px) 480px, 800px"
-  data-srcset="img480.jpg 480w, img800.jpg 800w"
->
-  <img src="small.jpg" alt="image" />
-</a>
+```css
+:root {
+  --glightbox-overlay-bg-sm: rgba(0, 0, 0, 0.8);
+  --glightbox-icon-color: #ffcc00;
+}
 ```
 
 ## Slide Options
 
-You can specify some options to each individual slide, the available options are:
+You can set these options for each slide:
 
-- title
-- alt
-- description
-- descPosition
-- type
-- effect
-- width
-- height
-- zoomable
-- draggable
+| Option         | Description                                                  |
+| -------------- | ------------------------------------------------------------ |
+| `title`        | Slide title.                                                 |
+| `alt`          | Alternative text for an image.                               |
+| `description`  | Slide description.                                           |
+| `descPosition` | Description position: `bottom`, `top`, `left`, or `right`.   |
+| `type`         | Content type. Inferred from the URL or content when omitted. |
+| `effect`       | Transition effect for the slide.                             |
+| `width`        | Slide width; defaults to the global width setting.           |
+| `height`       | Slide height; defaults to the global height setting.         |
+| `zoomable`     | Enable or disable image zoom.                                |
+| `draggable`    | Enable or disable dragging.                                  |
 
 ```html
 <!-- One line config -->
@@ -164,49 +137,17 @@ You can specify some options to each individual slide, the available options are
 
 ## Lightbox Options
 
-Example use of the options.
+Create an instance with the options you need:
 
 ```javascript
 const lightbox = GLightbox({
-    touchNavigation: true,
-    loop: true,
-    autoplayVideos: true
+  touchNavigation: true,
+  loop: true,
+  autoplayVideos: true
 });
-
-// Instead of using a selector, define the gallery elements
-const myGallery = GLightbox({
-    elements: [
-        {
-            'href': 'https://picsum.photos/1200/800',
-            'type': 'image',
-            'title': 'My Title',
-            'description': 'Example',
-        },
-        {
-            'href': 'https://picsum.photos/1200/800',
-            'type': 'image',
-            'alt': 'image text alternatives'
-        },
-        {
-            'href': 'https://www.youtube.com/watch?v=Ga6RYejo6Hk',
-            'type': 'video',
-            'source': 'youtube', //vimeo, youtube or local
-            'width': 900,
-        },
-        {
-            'content': '<p>This will append some html inside the slide</p>' // read more in the API section
-        },
-        {
-            'content': document.getElementById('inline-example') // this will append a node inside the slide
-        },
-    ],
-    autoplayVideos: true,
-});
-myGallery.open();
-
-// If later you need to modify the elements you can use setElements
-myGallery.setElements([...]);
 ```
+
+To define gallery items in JavaScript, see [Examples](./EXAMPLES.md#javascript-gallery).
 
 | Option | Type | Default | Description |
 | --- | --- | --- | --- |
@@ -240,438 +181,73 @@ myGallery.setElements([...]);
 | dragAutoSnap | boolean | `false` | If true the slide will automatically change to prev/next or close if dragToleranceX or dragToleranceY is reached, otherwise it will wait till the mouse is released. |
 | preload | boolean | `true` | Enable or disable preloading. |
 | svg | object | `{}` | Set your own svg icons. |
-| cssEfects | object | 'See animations' | Define or adjust lightbox animations. See the Animations section in the README. |
-| lightboxHTML | string | 'See themes' | You can completely change the html of GLightbox. See the Themeable section in the README. |
-| slideHTML | string | 'See themes' | You can completely change the html of the individual slide. See the Themeable section in the README. |
+| cssEffects | object | 'See animations' | Define or adjust lightbox animations. See [custom animation examples](./EXAMPLES.md#custom-animations). The legacy `cssEfects` spelling is also supported. |
+| lightboxHTML | string | 'See themes' | You can completely change the html of GLightbox. See [custom markup examples](./EXAMPLES.md#custom-markup). |
+| slideHTML | string | 'See themes' | You can completely change the html of the individual slide. See [custom markup examples](./EXAMPLES.md#custom-markup). |
 | autoplayVideos | boolean | `true` | Autoplay videos on open. |
-| autofocusVideos | boolean | `false` | If true video will be focused on play to allow keyboard sortcuts for the player, this will deactivate prev and next arrows to change slide so use it only if you know what you are doing. |
+| autofocusVideos | boolean | `true` | If true video will be focused on play to allow keyboard sortcuts for the player, this will deactivate prev and next arrows to change slide so use it only if you know what you are doing. |
 | plyr | object | `{}` | [View video player options.](#video-player) |
 
 ## Events
 
-You can listen for events using your GLightbox instance (see example under the table). You can use the on() API method or once().
+Subscribe with `on()` or `once()`:
 
 ```javascript
 const lightbox = GLightbox();
-lightbox.on('open', () => {
-  // Do something
-});
-
-lightbox.once('slide_changed', () => {
-  // Do something just one time
-});
+lightbox.on('open', () => console.log('Lightbox opened'));
+lightbox.once('slide_changed', ({ current }) => console.log(current.slideIndex));
 ```
 
-| Event Type          | Description                                                                                                                  |
-| ------------------- | ---------------------------------------------------------------------------------------------------------------------------- |
-| open                | Provide a function when the lightbox is opened.                                                                              |
-| close               | Provide a function when the lightbox is closed.                                                                              |
-| slide_before_change | Trigger a function before the slide is changed.                                                                              |
-| slide_changed       | Trigger a function after the slide is changed.                                                                               |
-| slide_before_load   | Trigger a function before a slide is loaded for the first time, the function will only be called once                        |
-| slide_after_load    | Trigger a function after a slide is loaded and it's content is set for the first time, the function will only be called once |
-| slide_inserted      | Trigger a function after a slide is inserted using insertSlide.                                                              |
-| slide_removed       | Trigger a function after a slide is removed`                                                                                 |
+| Event                                   | Description                  |
+| --------------------------------------- | ---------------------------- |
+| `open`, `close`                         | Lightbox opened or closed    |
+| `slide_before_change`, `slide_changed`  | Slide change lifecycle       |
+| `slide_before_load`, `slide_after_load` | Slide load lifecycle         |
+| `slide_inserted`, `slide_removed`       | A slide was added or removed |
 
-```javascript
-const lightbox = GLightbox();
-lightbox.on('slide_before_change', ({ prev, current }) => {
-  console.log('Prev slide', prev);
-  console.log('Current slide', current);
-
-  // Prev and current are objects that contain the following data
-  const { slideIndex, slideNode, slideConfig, player, trigger } = current;
-
-  // slideIndex - the slide index
-  // slideNode - the node you can modify
-  // slideConfig - will contain the configuration of the slide like title, description, etc.
-  // player - the slide player if it exists otherwise will return false
-  // trigger - this will contain the element that triggers this slide, this can be a link, a button, etc in your HTML, it can be null if the elements in the gallery were set dinamically
-});
-
-lightbox.on('slide_changed', ({ prev, current }) => {
-  console.log('Prev slide', prev);
-  console.log('Current slide', current);
-
-  // Prev and current are objects that contain the following data
-  const { slideIndex, slideNode, slideConfig, player, trigger } = current;
-
-  // slideIndex - the slide index
-  // slideNode - the node you can modify
-  // slideConfig - will contain the configuration of the slide like title, description, etc.
-  // player - the slide player if it exists otherwise will return false
-  // trigger - this will contain the element that triggers this slide, this can be a link, a button, etc in your HTML, it can be null if the elements in the gallery were set dinamically
-
-  if (player) {
-    if (!player.ready) {
-      // If player is not ready
-      player.on('ready', (event) => {
-        // Do something when video is ready
-      });
-    }
-
-    player.on('play', (event) => {
-      console.log('Started play');
-    });
-
-    player.on('volumechange', (event) => {
-      console.log('Volume change');
-    });
-
-    player.on('ended', (event) => {
-      console.log('Video ended');
-    });
-  }
-});
-
-// Useful to modify the slide
-// before it's content is added
-lightbox.on('slide_before_load', (data) => {
-  // data is an object that contain the following
-  const { slideIndex, slideNode, slideConfig, player, trigger } = data;
-
-  // slideIndex - the slide index
-  // slideNode - the node you can modify
-  // slideConfig - will contain the configuration of the slide like title, description, etc.
-  // player - the slide player if it exists otherwise will return false
-  // trigger - this will contain the element that triggers this slide, this can be a link, a button, etc in your HTML, it can be null if the elements in the gallery were set dinamically
-});
-
-// Useful to execute scripts that depends
-// on the slide to be ready with all it's content
-// and already has a height
-// data will contain all the info about the slide
-lightbox.on('slide_after_load', (data) => {
-  // data is an object that contain the following
-  const { slideIndex, slideNode, slideConfig, player, trigger } = data;
-
-  // slideIndex - the slide index
-  // slideNode - the node you can modify
-  // slideConfig - will contain the configuration of the slide like title, description, etc.
-  // player - the slide player if it exists otherwise will return false
-  // trigger - this will contain the element that triggers this slide, this can be a link, a button, etc in your HTML, it can be null if the elements in the gallery were set dinamically
-});
-
-// Trigger a function when a slide is inserted
-lightbox.on('slide_inserted', (data) => {
-  // data is an object that contain the following
-  const { slideIndex, slideNode, slideConfig, player, trigger } = data;
-
-  // slideIndex - the slide index
-  // slideNode - the node you can modify
-  // slideConfig - will contain the configuration of the slide like title, description, etc.
-  // player - the slide player if it exists otherwise will return false
-  // trigger - null
-});
-
-// Trigger a function when a slide is removed
-lightbox.on('slide_removed', (index) => {
-  // index is the position of the element in the gallery
-});
-```
+For event payloads and player event examples, see [Examples](./EXAMPLES.md#events-and-api).
 
 ## Video player
 
-GLightbox includes "[Plyr](https://plyr.io/)" the best player out there, you can pass any Plyr option to the player, view all available options here [Plyr options](https://github.com/sampotts/plyr). GLightbox will only inject the player library if required and only when the lightbox is opened.
+GLightbox loads [Plyr](https://plyr.io/) when a video slide is opened. Configure the player through the `plyr` option; see [video examples](./EXAMPLES.md#video-player) and the [Plyr options](https://github.com/sampotts/plyr).
 
-**Internet Explorer 11. If you need support for this browser you need to set the js url to use the polyfilled version. This is not the default because IE11 is ancient and we need to let it die.**
+For Internet Explorer 11, use the polyfilled player JavaScript URL in your `plyr` configuration.
 
-### Autoplay for mobile/tablet
-
-Please note, autoplay is blocked in some browsers, there’s nothing we can do to change that unfortunately, the browser will decide if your video can be autoplayed. Please do not post issues about this, instead inform yourself about this topic:
-
-- [https://webkit.org/blog/6784/new-video-policies-for-ios/](https://webkit.org/blog/6784/new-video-policies-for-ios/)
-- [https://developers.google.com/web/updates/2017/09/autoplay-policy-changes](https://developers.google.com/web/updates/2017/09/autoplay-policy-changes)
-- [https://hacks.mozilla.org/2019/02/firefox-66-to-block-automatically-playing-audible-video-and-audio/](https://hacks.mozilla.org/2019/02/firefox-66-to-block-automatically-playing-audible-video-and-audio/)
-
-they decide if a video can be autoplayed based in a few rules
-
-```
-plyr: {
-    js: 'https://cdn.plyr.io/3.6.2/plyr.polyfilled.js',
-    ....
-```
-
-```javascript
-const lightbox = GLightbox({
-  plyr: {
-    css: 'https://cdn.plyr.io/3.5.6/plyr.css', // Default not required to include
-    js: 'https://cdn.plyr.io/3.5.6/plyr.js', // Default not required to include
-    config: {
-      ratio: '16:9', // or '4:3'
-      muted: false,
-      hideControls: true,
-      youtube: {
-        noCookie: true,
-        rel: 0,
-        showinfo: 0,
-        iv_load_policy: 3
-      },
-      vimeo: {
-        byline: false,
-        portrait: false,
-        title: false,
-        speed: true,
-        transparent: false
-      }
-    }
-  }
-});
-```
+Autoplay may be blocked by browsers, especially on mobile. See the [WebKit](https://webkit.org/blog/6784/new-video-policies-for-ios/), [Chrome](https://developers.google.com/web/updates/2017/09/autoplay-policy-changes), and [Firefox](https://hacks.mozilla.org/2019/02/firefox-66-to-block-automatically-playing-audible-video-and-audio/) autoplay policies.
 
 ## API
 
-There are methods, setters and getters on a GLightbox object. The easiest way to access the GLightbox object is to set the return value from your call to a variable. For example:
+Use the returned instance to control the lightbox:
 
-```javascript
-const lightbox = GLightbox({ ...options });
-```
+| Method                                | Parameters         | Description                                  |
+| ------------------------------------- | ------------------ | -------------------------------------------- |
+| `open`                                | `node`             | Open the lightbox, optionally at a node.     |
+| `openAt`                              | `number`           | Open at a slide index.                       |
+| `close`                               | -                  | Close the lightbox.                          |
+| `reload`                              | -                  | Reload after inserting content.              |
+| `destroy`                             | -                  | Remove the lightbox and its attached events. |
+| `prevSlide`, `nextSlide`              | -                  | Move to the previous or next slide.          |
+| `goToSlide`                           | `number`           | Navigate to a slide index.                   |
+| `insertSlide`                         | `object, index`    | Insert a slide, optionally at an index.      |
+| `removeSlide`                         | `index`            | Remove a slide.                              |
+| `getActiveSlide`                      | -                  | Get the active slide node.                   |
+| `getActiveSlideIndex`                 | -                  | Get the active slide index.                  |
+| `slidePlayerPlay`, `slidePlayerPause` | `number`           | Play or pause a slide's video.               |
+| `getSlidePlayerInstance`              | `node, index`      | Get a slide's player instance.               |
+| `getAllPlayers`                       | -                  | Get all player instances.                    |
+| `setElements`                         | `array`            | Replace the gallery items.                   |
+| `on`                                  | `string, function` | Add an event listener.                       |
+| `once`                                | `string, function` | Add a one-time event listener.               |
 
-## Methods
-
-Example method use:
-
-```javascript
-lightbox.nextSlide(); // Go to next slide
-lightbox.close(); // Close the lightbox
-```
-
-| Option                 | Parameters         | Description                                                                |
-| ---------------------- | ------------------ | -------------------------------------------------------------------------- |
-| open                   | `node`             | Open the lightbox, you can optionally pass a node.                         |
-| openAt                 | `number`           | Open at specific index.                                                    |
-| close                  | `-`                | Close the lightbox.                                                        |
-| reload                 | `-`                | Reload the lightbox, after inserting content with ajax.                    |
-| destroy                | `-`                | Destroy and remove all attached events.                                    |
-| prevSlide              | `-`                | Go to the previous slide.                                                  |
-| nextSlide              | `-`                | Go to the next slide.                                                      |
-| goToSlide              | `number`           | Index of the slide.                                                        |
-| insertSlide            | `object, index`    | Insert a slide at the specified index.                                     |
-| removeSlide            | `index`            | Remove slide at the specified index.                                       |
-| getActiveSlide         | `-`                | Get active slide. It will return the active node.                          |
-| getActiveSlideIndex    | `-`                | Get active slide. It will return the active slide index.                   |
-| slidePlayerPlay        | `number`           | Play video in the specified slide.                                         |
-| slidePlayerPause       | `number`           | Pause video in the specified slide.                                        |
-| getSlidePlayerInstance | `node, index`      | Get the player instance of the specified slide.                            |
-| getAllPlayers          | `-`                | Get all players instance.                                                  |
-| setElements            | `[]`               | Update the lightbox gallery elements.                                      |
-| on                     | `string, function` | Set an event listener. See Events section                                  |
-| once                   | `string, function` | Set an event listener that will be triggered only once. See Events section |
-
-```javascript
-// Example set custom gallery items
-// This overwrites all the items in the gallery
-lightbox.setElements([
-  {
-    'href': 'https://picsum.photos/1200/800',
-    'type': 'image' // Type is only required if GLightbox fails to know what kind of content should display
-  },
-  {
-    'href': 'https://www.youtube.com/watch?v=Ga6RYejo6Hk',
-    'type': 'video', // Type is only required if GLightbox fails to know what kind of content should display
-    'width': '900px',
-  },
-  {
-    'content': '<p>some html to append in the slide</p>',
-    'width': '900px',
-  }
-]);
-
-
-// Insert a single slide at the end of all the items,
-lightbox.insertSlide({
-    href: 'video url...',
-    width: '90vw'
-});
-
-// Insert a single slide at index 2 or pass 0 to add it at the start
-lightbox.insertSlide({
-    href: 'video url...',
-    width: '90vw'
-}, 2);
-
-// You can insert a slide with a defined html
-lightbox.insertSlide({
-    content: '<p>some html to append in the slide</p>',
-    width: '90vw'
-}, 2);
-
-// Or if you prefer you can pass a node
-// and it will be inserted in the slide
-lightbox.insertSlide({
-    content: document.getElementById('inline-example'),
-    width: '90vw'
-}, 2);
-
-// Remove the slide at index 2
-lightbox.removeSlide(2);
-
-// Open the lightbox
-lightbox.open();
-
-// You can also open the lightbox at a specific index
-lightbox.openAt(2);
-
-// So imagine that you are making an ajax request that returns some html
-// You can create an empty instance and append the content once is returned
-
-const ajaxExample = GLightbox({ selector: null }); // or you can set the selector empty selector: ''
-
-doAjaxCall({...}).then(response => {
-    ajaxExample.insertSlide({
-        width: '500px',
-        content: response.html
-    });
-    ajaxExample.open();
-})
-
-// Or you could use the set elements method to empty all the slides if any
-
-doAjaxCall({...}).then(response => {
-    ajaxExample.setElements([
-      {
-        content: response.html
-      }
-    ]);
-    ajaxExample.open();
-})
-
-```
+See [Examples](./EXAMPLES.md#events-and-api) for gallery updates and event payload examples.
 
 ## Animations
 
-Animations are created with CSS, each effect has an in and out value and they are used to attach the correct classes to the node.
-
-For example if you are using
-
-```javascript
-const glightbox = GLightbox({
-  openEffect: 'zoom',
-  closeEffect: 'fade',
-  cssEfects: {
-    // This are some of the animations included, no need to overwrite
-    fade: { in: 'fadeIn', out: 'fadeOut' },
-    zoom: { in: 'zoomIn', out: 'zoomOut' }
-  }
-});
-```
-
-The open effect will use cssEfects.zoom.in and will add the class gzoomIn, if you take a look at the CSS you'll see:
-
-```javascript
-.gzoomIn {
-    animation: gzoomIn .5s ease;
-}
-
-@keyframes gzoomIn {
-    from {
-        opacity: 0;
-        transform: scale3d(.3, .3, .3);
-    }
-    to {
-        opacity: 1;
-    }
-}
-```
-
-### Adding a custom animation
-
-You can create any animation you want, you can find some inspiration in the Animate.css library, for example you can add the bounce animation like this:
-
-```javascript
-const glightbox = GLightbox({
-  openEffect: 'bounce', // Define that we want the bounce animation on open
-  cssEfects: {
-    // register our new animation
-    bounce: { in: 'bounceIn', out: 'bounceOut' }
-  }
-});
-```
-
-```css
-/*A g will be appended to the animation name so bounceIn will become gbounceIn */
-.gbounceIn {
-  animation: bounceIn 1.3s ease;
-}
-
-@keyframes bounceIn {
-  from,
-  20%,
-  40%,
-  60%,
-  80%,
-  to {
-    animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
-  }
-
-  0% {
-    opacity: 0;
-    transform: scale3d(0.3, 0.3, 0.3);
-  }
-
-  20% {
-    transform: scale3d(1.1, 1.1, 1.1);
-  }
-
-  40% {
-    transform: scale3d(0.9, 0.9, 0.9);
-  }
-
-  60% {
-    opacity: 1;
-    transform: scale3d(1.03, 1.03, 1.03);
-  }
-
-  80% {
-    transform: scale3d(0.97, 0.97, 0.97);
-  }
-
-  to {
-    opacity: 1;
-    transform: scale3d(1, 1, 1);
-  }
-}
-```
+The built-in effects can be configured with `openEffect`, `closeEffect`, and `slideEffect`. Add or override effects with `cssEffects`; see [custom animation examples](./EXAMPLES.md#custom-animations). The legacy `cssEfects` spelling remains supported; if both are provided, `cssEffects` takes precedence.
 
 ## Themeable
 
-You can completely customize the structure of GLightbox and use CSS to change any part you want.
-
-```javascript
-const customLightboxHTML = `<div id="glightbox-body" class="glightbox-container">
-    <div class="gloader visible"></div>
-    <div class="goverlay"></div>
-    <div class="gcontainer">
-    <div id="glightbox-slider" class="gslider"></div>
-    <button class="gnext gbtn" tabindex="0" aria-label="Next" data-customattribute="example">{nextSVG}</button>
-    <button class="gprev gbtn" tabindex="1" aria-label="Previous">{prevSVG}</button>
-    <button class="gclose gbtn" tabindex="2" aria-label="Close">{closeSVG}</button>
-</div>
-</div>`;
-
-let customSlideHTML = `<div class="gslide">
-    <div class="gslide-inner-content">
-        <div class="ginner-container">
-            <div class="gslide-media">
-            </div>
-            <div class="gslide-description">
-                <div class="gdesc-inner">
-                    <h4 class="gslide-title"></h4>
-                    <div class="gslide-desc"></div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>`;
-
-const glightbox = GLightbox({
-  lightboxHTML: customLightboxHTML,
-  slideHTML: customSlideHTML,
-  skin: 'supercool'
-});
-```
-
-You can also define a skin name and the lightbox will append the class name "glightbox-supercool" so you can customize it with CSS, this will leave a barebones structure so you can change the buttons appearance, etc.
+Customize the markup with `lightboxHTML` and `slideHTML`, or style a skin with CSS. See [custom markup examples](./EXAMPLES.md#custom-markup).
 
 ## Development
 
