@@ -60,7 +60,7 @@ Or manually download and link `glightbox.min.js` in your HTML:
 <!-- USING ES MODULES -->
 
 <script type="module">
-  import 'https://cdn.jsdelivr.net/npm/@tomasvn/glightbox@3.3.8/dist/js/glightbox.min.js';
+  import 'https://cdn.jsdelivr.net/npm/@tomasvn/glightbox@3.4.0/dist/js/glightbox.min.js';
 
   const lightbox = GLightbox({ ...options });
 </script>
