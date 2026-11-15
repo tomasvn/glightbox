@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## 3.6.1
+
+### Patch Changes
+
+- Extend image resolution for base64 format - Closes [#518](https://github.com/biati-digital/glightbox/issues/518)
+
 ## 3.6.0
 
 ### Minor Changes

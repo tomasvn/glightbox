@@ -1082,18 +1082,18 @@
       var slideParamas = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
       _classCallCheck(this, SlideConfigParser);
       this.defaults = {
-        href: '',
-        sizes: '',
-        srcset: '',
-        title: '',
-        type: '',
-        videoProvider: '',
-        description: '',
-        alt: '',
-        descPosition: 'bottom',
-        effect: '',
-        width: '',
-        height: '',
+        href: "",
+        sizes: "",
+        srcset: "",
+        title: "",
+        type: "",
+        videoProvider: "",
+        description: "",
+        alt: "",
+        descPosition: "bottom",
+        effect: "",
+        width: "",
+        height: "",
         content: false,
         zoomable: true,
         draggable: true
@@ -1107,31 +1107,31 @@
       value: function sourceType(url) {
         var origin = url;
         url = url.toLowerCase();
-        if (url.match(/\.(jpeg|jpg|jpe|gif|png|apn|webp|avif|svg)/) !== null) {
-          return 'image';
+        if (url.match(/\.(?:jpeg|jpg|jpe|gif|png|apn|webp|avif|svg)|^data:image\/[^;,]+(?:;[^,]*)?;base64,/) !== null) {
+          return "image";
         }
         if (url.match(/(youtube\.com|youtube-nocookie\.com)\/watch\?v=([a-zA-Z0-9\-_]+)/) || url.match(/youtu\.be\/([a-zA-Z0-9\-_]+)/) || url.match(/(youtube\.com|youtube-nocookie\.com)\/embed\/([a-zA-Z0-9\-_]+)/) || url.match(/(youtube\.com|youtube-nocookie\.com)\/shorts\/([a-zA-Z0-9\-_]+)/)) {
-          return 'video';
+          return "video";
         }
         if (url.match(/vimeo\.com\/([0-9]*)/)) {
-          return 'video';
+          return "video";
         }
         if (url.match(/\.(mp4|ogg|webm|mov)/) !== null) {
-          return 'video';
+          return "video";
         }
         if (url.match(/\.(mp3|wav|wma|aac|ogg)/) !== null) {
-          return 'audio';
+          return "audio";
         }
-        if (url.indexOf('#') > -1) {
-          var hash = origin.split('#').pop();
-          if (hash.trim() !== '') {
-            return 'inline';
+        if (url.indexOf("#") > -1) {
+          var hash = origin.split("#").pop();
+          if (hash.trim() !== "") {
+            return "inline";
           }
         }
-        if (url.indexOf('goajax=true') > -1) {
-          return 'ajax';
+        if (url.indexOf("goajax=true") > -1) {
+          return "ajax";
         }
-        return 'external';
+        return "external";
       }
     }, {
       key: "parseConfig",
@@ -1141,10 +1141,10 @@
           descPosition: settings.descPosition
         }, this.defaults);
         if (isObject(element) && !isNode(element)) {
-          if (!has(element, 'type')) {
-            if (has(element, 'content') && element.content) {
-              element.type = 'inline';
-            } else if (has(element, 'href')) {
+          if (!has(element, "type")) {
+            if (has(element, "content") && element.content) {
+              element.type = "inline";
+            } else if (has(element, "href")) {
               element.type = this.sourceType(element.href);
             }
           }
@@ -1152,19 +1152,19 @@
           this.setSize(objectData, settings);
           return objectData;
         }
-        var url = '';
-        var config = element.getAttribute('data-glightbox');
+        var url = "";
+        var config = element.getAttribute("data-glightbox");
         var nodeType = element.nodeName.toLowerCase();
-        if (nodeType === 'a') {
+        if (nodeType === "a") {
           url = element.href;
         }
-        if (nodeType === 'img') {
+        if (nodeType === "img") {
           url = element.src;
           data.alt = element.alt;
         }
         data.href = url;
         each(data, function (val, key) {
-          if (has(settings, key) && key !== 'width') {
+          if (has(settings, key) && key !== "width") {
             data[key] = settings[key];
           }
           var nodeData = element.dataset[key];
@@ -1173,7 +1173,7 @@
           }
         });
         if (data.content) {
-          data.type = 'inline';
+          data.type = "inline";
         }
         if (!data.type && url) {
           data.type = this.sourceType(url);
@@ -1181,36 +1181,36 @@
         if (!isNil(config)) {
           var cleanKeys = [];
           each(data, function (v, k) {
-            cleanKeys.push(';\\s?' + k);
+            cleanKeys.push(";\\s?" + k);
           });
-          cleanKeys = cleanKeys.join('\\s?:|');
-          if (config.trim() !== '') {
+          cleanKeys = cleanKeys.join("\\s?:|");
+          if (config.trim() !== "") {
             each(data, function (val, key) {
               var str = config;
-              var match = 's?' + key + 's?:s?(.*?)(' + cleanKeys + 's?:|$)';
+              var match = "s?" + key + "s?:s?(.*?)(" + cleanKeys + "s?:|$)";
               var regex = new RegExp(match);
               var matches = str.match(regex);
               if (matches && matches.length && matches[1]) {
-                var value = matches[1].trim().replace(/;\s*$/, '');
+                var value = matches[1].trim().replace(/;\s*$/, "");
                 data[key] = _this.sanitizeValue(value);
               }
             });
           }
         } else {
-          if (!data.title && nodeType == 'a') {
+          if (!data.title && nodeType == "a") {
             var title = element.title;
-            if (!isNil(title) && title !== '') {
+            if (!isNil(title) && title !== "") {
               data.title = title;
             }
           }
-          if (!data.title && nodeType == 'img') {
+          if (!data.title && nodeType == "img") {
             var alt = element.alt;
-            if (!isNil(alt) && alt !== '') {
+            if (!isNil(alt) && alt !== "") {
               data.title = alt;
             }
           }
         }
-        if (data.description && data.description.substring(0, 1) === '.') {
+        if (data.description && data.description.substring(0, 1) === ".") {
           var description;
           try {
             description = document.querySelector(data.description).innerHTML;
@@ -1224,7 +1224,7 @@
           }
         }
         if (!data.description) {
-          var nodeDesc = element.querySelector('.glightbox-desc');
+          var nodeDesc = element.querySelector(".glightbox-desc");
           if (nodeDesc) {
             data.description = nodeDesc.innerHTML;
           }
@@ -1237,11 +1237,11 @@
       key: "setSize",
       value: function setSize(data, settings) {
         var element = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : null;
-        var defaultWith = data.type == 'video' ? this.checkSize(settings.videosWidth) : this.checkSize(settings.width);
+        var defaultWith = data.type == "video" ? this.checkSize(settings.videosWidth) : this.checkSize(settings.width);
         var defaultHeight = this.checkSize(settings.height);
-        data.width = has(data, 'width') && data.width !== '' ? this.checkSize(data.width) : defaultWith;
-        data.height = has(data, 'height') && data.height !== '' ? this.checkSize(data.height) : defaultHeight;
-        if (element && data.type == 'image') {
+        data.width = has(data, "width") && data.width !== "" ? this.checkSize(data.width) : defaultWith;
+        data.height = has(data, "height") && data.height !== "" ? this.checkSize(data.height) : defaultHeight;
+        if (element && data.type == "image") {
           data._hasCustomWidth = element.dataset.width ? true : false;
           data._hasCustomHeight = element.dataset.height ? true : false;
         }
@@ -1255,10 +1255,10 @@
     }, {
       key: "sanitizeValue",
       value: function sanitizeValue(val) {
-        if (val !== 'true' && val !== 'false') {
+        if (val !== "true" && val !== "false") {
           return val;
         }
-        return val === 'true';
+        return val === "true";
       }
     }]);
   }();
@@ -2059,26 +2059,26 @@
     instance.events['touch'] = touchInstance;
   }
 
-  var _version = "3.6.0";
+  var _version = '3.6.1';
   var isMobile$1 = isMobile();
   var isTouch$1 = isTouch();
-  var html = document.getElementsByTagName("html")[0];
+  var html = document.getElementsByTagName('html')[0];
   var defaults = {
-    selector: ".glightbox",
+    selector: '.glightbox',
     elements: null,
-    skin: "clean",
-    theme: "clean",
+    skin: 'clean',
+    theme: 'clean',
     closeButton: true,
-    closeButtonText: "Close",
-    prevButtonText: "Previous",
-    nextButtonText: "Next",
+    closeButtonText: 'Close',
+    prevButtonText: 'Previous',
+    nextButtonText: 'Next',
     startAt: null,
     autoplayVideos: true,
     autofocusVideos: true,
-    descPosition: "bottom",
-    width: "900px",
-    height: "506px",
-    videosWidth: "960px",
+    descPosition: 'bottom',
+    width: '900px',
+    height: '506px',
+    videosWidth: '960px',
     beforeSlideChange: null,
     afterSlideChange: null,
     beforeSlideLoad: null,
@@ -2102,10 +2102,10 @@
     closeOnOutsideClick: true,
     plugins: false,
     plyr: {
-      css: "https://cdn.plyr.io/3.6.12/plyr.css",
-      js: "https://cdn.plyr.io/3.6.12/plyr.js",
+      css: 'https://cdn.plyr.io/3.6.12/plyr.css',
+      js: 'https://cdn.plyr.io/3.6.12/plyr.js',
       config: {
-        ratio: "16:9",
+        ratio: '16:9',
         fullscreen: {
           enabled: true,
           iosNative: true
@@ -2124,32 +2124,32 @@
         }
       }
     },
-    openEffect: "zoom",
-    closeEffect: "zoom",
-    slideEffect: "slide",
-    moreText: "See more",
-    lessText: "See less",
+    openEffect: 'zoom',
+    closeEffect: 'zoom',
+    slideEffect: 'slide',
+    moreText: 'See more',
+    lessText: 'See less',
     moreLength: 60,
     cssEfects: {
       fade: {
-        "in": "fadeIn",
-        out: "fadeOut"
+        "in": 'fadeIn',
+        out: 'fadeOut'
       },
       zoom: {
-        "in": "zoomIn",
-        out: "zoomOut"
+        "in": 'zoomIn',
+        out: 'zoomOut'
       },
       slide: {
-        "in": "slideInRight",
-        out: "slideOutLeft"
+        "in": 'slideInRight',
+        out: 'slideOutLeft'
       },
       slideBack: {
-        "in": "slideInLeft",
-        out: "slideOutRight"
+        "in": 'slideInLeft',
+        out: 'slideOutRight'
       },
       none: {
-        "in": "none",
-        out: "none"
+        "in": 'none',
+        out: 'none'
       }
     },
     svg: {
@@ -2179,7 +2179,7 @@
         var _this = this;
         var selector = this.getSelector();
         if (selector) {
-          this.baseEvents = addEvent("click", {
+          this.baseEvents = addEvent('click', {
             onElement: selector,
             withCallback: function withCallback(e, target) {
               e.preventDefault();
@@ -2202,7 +2202,7 @@
         this.prevActiveSlide = null;
         var index = isNumber(startAt) ? startAt : this.settings.startAt;
         if (isNode(element)) {
-          var gallery = element.getAttribute("data-gallery");
+          var gallery = element.getAttribute('data-gallery');
           if (gallery) {
             this.fullElementsList = this.elements;
             this.elements = this.getGalleryElements(this.elements, gallery);
@@ -2218,29 +2218,29 @@
           index = 0;
         }
         this.build();
-        animateElement(this.overlay, this.settings.openEffect === "none" ? "none" : this.settings.cssEfects.fade["in"]);
+        animateElement(this.overlay, this.settings.openEffect === 'none' ? 'none' : this.settings.cssEfects.fade["in"]);
         var body = document.body;
         var scrollBar = window.innerWidth - document.documentElement.clientWidth;
         if (scrollBar > 0) {
           document.body.style.marginRight = "".concat(scrollBar, "px");
-          addClass(body, "gscrollbar-fixer");
+          addClass(body, 'gscrollbar-fixer');
         }
-        addClass(body, "glightbox-open");
-        addClass(html, "glightbox-open");
+        addClass(body, 'glightbox-open');
+        addClass(html, 'glightbox-open');
         if (isMobile$1) {
-          addClass(document.body, "glightbox-mobile");
-          this.settings.slideEffect = "slide";
+          addClass(document.body, 'glightbox-mobile');
+          this.settings.slideEffect = 'slide';
         }
         this.showSlide(index, true);
         if (this.elements.length === 1) {
-          addClass(this.prevButton, "glightbox-button-hidden");
-          addClass(this.nextButton, "glightbox-button-hidden");
+          addClass(this.prevButton, 'glightbox-button-hidden');
+          addClass(this.nextButton, 'glightbox-button-hidden');
         } else {
-          removeClass(this.prevButton, "glightbox-button-hidden");
-          removeClass(this.nextButton, "glightbox-button-hidden");
+          removeClass(this.prevButton, 'glightbox-button-hidden');
+          removeClass(this.nextButton, 'glightbox-button-hidden');
         }
         this.lightboxOpen = true;
-        this.trigger("open");
+        this.trigger('open');
         if (isFunction(this.settings.onOpen)) {
           this.settings.onOpen();
         }
@@ -2265,13 +2265,13 @@
         var first = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
         show(this.loader);
         this.index = parseInt(index);
-        var current = this.slidesContainer.querySelector(".current");
+        var current = this.slidesContainer.querySelector('.current');
         if (current) {
-          removeClass(current, "current");
+          removeClass(current, 'current');
         }
         this.slideAnimateOut();
-        var slideNode = this.slidesContainer.querySelectorAll(".gslide")[index];
-        if (hasClass(slideNode, "loaded")) {
+        var slideNode = this.slidesContainer.querySelectorAll('.gslide')[index];
+        if (hasClass(slideNode, 'loaded')) {
           this.slideAnimateIn(slideNode, first);
           hide(this.loader);
         } else {
@@ -2286,16 +2286,16 @@
             trigger: slide.node,
             player: null
           };
-          this.trigger("slide_before_load", slideData);
+          this.trigger('slide_before_load', slideData);
           slide.instance.setContent(slideNode, function () {
             hide(_this2.loader);
             _this2.resize();
             _this2.slideAnimateIn(slideNode, first);
-            _this2.trigger("slide_after_load", slideData);
+            _this2.trigger('slide_after_load', slideData);
           });
         }
-        this.slideDescription = slideNode.querySelector(".gslide-description");
-        this.slideDescriptionContained = this.slideDescription && hasClass(this.slideDescription.parentNode, "gslide-media");
+        this.slideDescription = slideNode.querySelector('.gslide-description');
+        this.slideDescriptionContained = this.slideDescription && hasClass(this.slideDescription.parentNode, 'gslide-media');
         if (this.settings.preload) {
           this.preloadSlide(index + 1);
           this.preloadSlide(index - 1);
@@ -2313,8 +2313,8 @@
         if (isNil(this.elements[index])) {
           return false;
         }
-        var slideNode = this.slidesContainer.querySelectorAll(".gslide")[index];
-        if (hasClass(slideNode, "loaded")) {
+        var slideNode = this.slidesContainer.querySelectorAll('.gslide')[index];
+        if (hasClass(slideNode, 'loaded')) {
           return false;
         }
         var slide = this.elements[index];
@@ -2328,16 +2328,16 @@
           trigger: slide.node,
           player: null
         };
-        this.trigger("slide_before_load", slideData);
-        if (type === "video" || type === "external") {
+        this.trigger('slide_before_load', slideData);
+        if (type === 'video' || type === 'external') {
           setTimeout(function () {
             slide.instance.setContent(slideNode, function () {
-              _this3.trigger("slide_after_load", slideData);
+              _this3.trigger('slide_after_load', slideData);
             });
           }, 200);
         } else {
           slide.instance.setContent(slideNode, function () {
-            _this3.trigger("slide_after_load", slideData);
+            _this3.trigger('slide_after_load', slideData);
           });
         }
       }
@@ -2391,7 +2391,7 @@
           if (index > totalSlides) {
             this.slidesContainer.appendChild(newSlide);
           } else {
-            var existingSlide = this.slidesContainer.querySelectorAll(".gslide")[index];
+            var existingSlide = this.slidesContainer.querySelectorAll('.gslide')[index];
             this.slidesContainer.insertBefore(newSlide, existingSlide);
           }
           if (this.settings.preload && this.index == 0 && index == 0 || this.index - 1 == index || this.index + 1 == index) {
@@ -2401,11 +2401,11 @@
             this.index = 1;
           }
           this.updateNavigationClasses();
-          addedSlideNode = this.slidesContainer.querySelectorAll(".gslide")[index];
+          addedSlideNode = this.slidesContainer.querySelectorAll('.gslide')[index];
           addedSlidePlayer = this.getSlidePlayerInstance(index);
           slideInfo.slideNode = addedSlideNode;
         }
-        this.trigger("slide_inserted", {
+        this.trigger('slide_inserted', {
           index: index,
           slide: addedSlideNode,
           slideNode: addedSlideNode,
@@ -2429,7 +2429,7 @@
         if (index < 0 || index > this.elements.length - 1) {
           return false;
         }
-        var slide = this.slidesContainer && this.slidesContainer.querySelectorAll(".gslide")[index];
+        var slide = this.slidesContainer && this.slidesContainer.querySelectorAll('.gslide')[index];
         if (slide) {
           if (this.getActiveSlideIndex() == index) {
             if (index == this.elements.length - 1) {
@@ -2441,7 +2441,7 @@
           slide.parentNode.removeChild(slide);
         }
         this.elements.splice(index, 1);
-        this.trigger("slide_removed", index);
+        this.trigger('slide_removed', index);
         if (isFunction(this.settings.slideRemoved)) {
           this.settings.slideRemoved(index);
         }
@@ -2450,8 +2450,8 @@
       key: "slideAnimateIn",
       value: function slideAnimateIn(slide, first) {
         var _this4 = this;
-        var slideMedia = slide.querySelector(".gslide-media");
-        var slideDesc = slide.querySelector(".gslide-description");
+        var slideMedia = slide.querySelector('.gslide-media');
+        var slideDesc = slide.querySelector('.gslide-description');
         var prevData = {
           index: this.prevActiveSlideIndex,
           slide: this.prevActiveSlide,
@@ -2472,7 +2472,7 @@
         };
         if (slideMedia.offsetWidth > 0 && slideDesc) {
           hide(slideDesc);
-          slideDesc.style.display = "";
+          slideDesc.style.display = '';
         }
         removeClass(slide, this.effectsClasses);
         if (first) {
@@ -2480,7 +2480,7 @@
             if (_this4.settings.autoplayVideos) {
               _this4.slidePlayerPlay(slide);
             }
-            _this4.trigger("slide_changed", {
+            _this4.trigger('slide_changed', {
               prev: prevData,
               current: nextData
             });
@@ -2490,9 +2490,9 @@
           });
         } else {
           var effectName = this.settings.slideEffect;
-          var animIn = effectName !== "none" ? this.settings.cssEfects[effectName]["in"] : effectName;
+          var animIn = effectName !== 'none' ? this.settings.cssEfects[effectName]["in"] : effectName;
           if (this.prevActiveSlideIndex > this.index) {
-            if (this.settings.slideEffect == "slide") {
+            if (this.settings.slideEffect == 'slide') {
               animIn = this.settings.cssEfects.slideBack["in"];
             }
           }
@@ -2500,7 +2500,7 @@
             if (_this4.settings.autoplayVideos) {
               _this4.slidePlayerPlay(slide);
             }
-            _this4.trigger("slide_changed", {
+            _this4.trigger('slide_changed', {
               prev: prevData,
               current: nextData
             });
@@ -2512,7 +2512,7 @@
         setTimeout(function () {
           _this4.resize(slide);
         }, 100);
-        addClass(slide, "current");
+        addClass(slide, 'current');
       }
     }, {
       key: "slideAnimateOut",
@@ -2522,11 +2522,11 @@
         }
         var prevSlide = this.prevActiveSlide;
         removeClass(prevSlide, this.effectsClasses);
-        addClass(prevSlide, "prev");
+        addClass(prevSlide, 'prev');
         var animation = this.settings.slideEffect;
-        var animOut = animation !== "none" ? this.settings.cssEfects[animation].out : animation;
+        var animOut = animation !== 'none' ? this.settings.cssEfects[animation].out : animation;
         this.slidePlayerPause(prevSlide);
-        this.trigger("slide_before_change", {
+        this.trigger('slide_before_change', {
           prev: {
             index: this.prevActiveSlideIndex,
             slide: this.prevActiveSlide,
@@ -2557,21 +2557,21 @@
             player: this.getSlidePlayerInstance(this.index)
           }]);
         }
-        if (this.prevActiveSlideIndex > this.index && this.settings.slideEffect == "slide") {
+        if (this.prevActiveSlideIndex > this.index && this.settings.slideEffect == 'slide') {
           animOut = this.settings.cssEfects.slideBack.out;
         }
         animateElement(prevSlide, animOut, function () {
-          var container = prevSlide.querySelector(".ginner-container");
-          var media = prevSlide.querySelector(".gslide-media");
-          var desc = prevSlide.querySelector(".gslide-description");
-          container.style.transform = "";
-          media.style.transform = "";
-          removeClass(media, "greset");
-          media.style.opacity = "";
+          var container = prevSlide.querySelector('.ginner-container');
+          var media = prevSlide.querySelector('.gslide-media');
+          var desc = prevSlide.querySelector('.gslide-description');
+          container.style.transform = '';
+          media.style.transform = '';
+          removeClass(media, 'greset');
+          media.style.opacity = '';
           if (desc) {
-            desc.style.opacity = "";
+            desc.style.opacity = '';
           }
-          removeClass(prevSlide, "prev");
+          removeClass(prevSlide, 'prev');
         });
       }
     }, {
@@ -2582,7 +2582,7 @@
     }, {
       key: "getSlidePlayerInstance",
       value: function getSlidePlayerInstance(index) {
-        var id = "gvideo" + index;
+        var id = 'gvideo' + index;
         var videoPlayers = this.getAllPlayers();
         if (has(videoPlayers, id) && videoPlayers[id]) {
           return videoPlayers[id];
@@ -2593,12 +2593,12 @@
       key: "stopSlideVideo",
       value: function stopSlideVideo(slide) {
         if (isNode(slide)) {
-          var node = slide.querySelector(".gvideo-wrapper");
+          var node = slide.querySelector('.gvideo-wrapper');
           if (node) {
-            slide = node.getAttribute("data-index");
+            slide = node.getAttribute('data-index');
           }
         }
-        console.warn("stopSlideVideo is deprecated, use slidePlayerPause");
+        console.warn('stopSlideVideo is deprecated, use slidePlayerPause');
         var player = this.getSlidePlayerInstance(slide);
         if (player && player.playing) {
           player.pause();
@@ -2608,9 +2608,9 @@
       key: "slidePlayerPause",
       value: function slidePlayerPause(slide) {
         if (isNode(slide)) {
-          var node = slide.querySelector(".gvideo-wrapper");
+          var node = slide.querySelector('.gvideo-wrapper');
           if (node) {
-            slide = node.getAttribute("data-index");
+            slide = node.getAttribute('data-index');
           }
         }
         var player = this.getSlidePlayerInstance(slide);
@@ -2622,12 +2622,12 @@
       key: "playSlideVideo",
       value: function playSlideVideo(slide) {
         if (isNode(slide)) {
-          var node = slide.querySelector(".gvideo-wrapper");
+          var node = slide.querySelector('.gvideo-wrapper');
           if (node) {
-            slide = node.getAttribute("data-index");
+            slide = node.getAttribute('data-index');
           }
         }
-        console.warn("playSlideVideo is deprecated, use slidePlayerPlay");
+        console.warn('playSlideVideo is deprecated, use slidePlayerPlay');
         var player = this.getSlidePlayerInstance(slide);
         if (player && !player.playing) {
           player.play();
@@ -2641,9 +2641,9 @@
           return;
         }
         if (isNode(slide)) {
-          var node = slide.querySelector(".gvideo-wrapper");
+          var node = slide.querySelector('.gvideo-wrapper');
           if (node) {
-            slide = node.getAttribute("data-index");
+            slide = node.getAttribute('data-index');
           }
         }
         var player = this.getSlidePlayerInstance(slide);
@@ -2673,7 +2673,7 @@
         }
         this.elements = newElements;
         if (this.lightboxOpen) {
-          this.slidesContainer.innerHTML = "";
+          this.slidesContainer.innerHTML = '';
           if (this.elements.length) {
             each(this.elements, function () {
               var slide = createHTML(_this5.settings.slideHTML);
@@ -2688,7 +2688,7 @@
       value: function getElementIndex(node) {
         var index = false;
         each(this.elements, function (el, i) {
-          if (has(el, "node") && el.node == node) {
+          if (has(el, 'node') && el.node == node) {
             index = i;
             return true;
           }
@@ -2729,7 +2729,7 @@
           slideInfo.index = i;
           slideInfo.instance = slide;
           slideInfo.slideConfig = elData;
-          slideInfo.gallery = el.getAttribute("data-gallery");
+          slideInfo.gallery = el.getAttribute('data-gallery');
           list.push(slideInfo);
         });
         return list;
@@ -2747,7 +2747,7 @@
         if (this.settings.elements) {
           return false;
         }
-        if (this.settings.selector && this.settings.selector.substring(0, 5) == "data-") {
+        if (this.settings.selector && this.settings.selector.substring(0, 5) == 'data-') {
           return "*[".concat(this.settings.selector, "]");
         }
         return this.settings.selector;
@@ -2755,7 +2755,7 @@
     }, {
       key: "getActiveSlide",
       value: function getActiveSlide() {
-        return this.slidesContainer.querySelectorAll(".gslide")[this.index];
+        return this.slidesContainer.querySelectorAll('.gslide')[this.index];
       }
     }, {
       key: "getActiveSlideIndex",
@@ -2773,7 +2773,7 @@
             effects.push("g".concat(effect.out));
           }
         }
-        return effects.join(" ");
+        return effects.join(' ');
       }
     }, {
       key: "build",
@@ -2788,17 +2788,17 @@
         var children = document.body.childNodes;
         var bodyChildElms = [];
         each(children, function (el) {
-          if (el.parentNode == document.body && el.nodeName.charAt(0) !== "#" && el.hasAttribute && !el.hasAttribute("aria-hidden")) {
+          if (el.parentNode == document.body && el.nodeName.charAt(0) !== '#' && el.hasAttribute && !el.hasAttribute('aria-hidden')) {
             bodyChildElms.push(el);
-            el.setAttribute("aria-hidden", "true");
+            el.setAttribute('aria-hidden', 'true');
           }
         });
-        var nextSVG = has(this.settings.svg, "next") ? this.settings.svg.next : "";
-        var prevSVG = has(this.settings.svg, "prev") ? this.settings.svg.prev : "";
-        var closeSVG = has(this.settings.svg, "close") ? this.settings.svg.close : "";
-        var closeButtonText = (_this$settings$closeB = this.settings.closeButtonText) !== null && _this$settings$closeB !== void 0 ? _this$settings$closeB : "Close";
-        var prevButtonText = (_this$settings$prevBu = this.settings.prevButtonText) !== null && _this$settings$prevBu !== void 0 ? _this$settings$prevBu : "Previous";
-        var nextButtonText = (_this$settings$nextBu = this.settings.nextButtonText) !== null && _this$settings$nextBu !== void 0 ? _this$settings$nextBu : "Next";
+        var nextSVG = has(this.settings.svg, 'next') ? this.settings.svg.next : '';
+        var prevSVG = has(this.settings.svg, 'prev') ? this.settings.svg.prev : '';
+        var closeSVG = has(this.settings.svg, 'close') ? this.settings.svg.close : '';
+        var closeButtonText = (_this$settings$closeB = this.settings.closeButtonText) !== null && _this$settings$closeB !== void 0 ? _this$settings$closeB : 'Close';
+        var prevButtonText = (_this$settings$prevBu = this.settings.prevButtonText) !== null && _this$settings$prevBu !== void 0 ? _this$settings$prevBu : 'Previous';
+        var nextButtonText = (_this$settings$nextBu = this.settings.nextButtonText) !== null && _this$settings$nextBu !== void 0 ? _this$settings$nextBu : 'Next';
         var lightboxHTML = this.settings.lightboxHTML;
         lightboxHTML = lightboxHTML.replace(/{nextSVG}/g, nextSVG);
         lightboxHTML = lightboxHTML.replace(/{prevSVG}/g, prevSVG);
@@ -2808,19 +2808,19 @@
         lightboxHTML = lightboxHTML.replace(/{nextButtonText}/g, nextButtonText);
         lightboxHTML = createHTML(lightboxHTML);
         document.body.appendChild(lightboxHTML);
-        var modal = document.getElementById("glightbox-body");
+        var modal = document.getElementById('glightbox-body');
         this.modal = modal;
-        var closeButton = modal.querySelector(".gclose");
-        this.prevButton = modal.querySelector(".gprev");
-        this.nextButton = modal.querySelector(".gnext");
-        this.overlay = modal.querySelector(".goverlay");
-        this.loader = modal.querySelector(".gloader");
-        this.slidesContainer = document.getElementById("glightbox-slider");
+        var closeButton = modal.querySelector('.gclose');
+        this.prevButton = modal.querySelector('.gprev');
+        this.nextButton = modal.querySelector('.gnext');
+        this.overlay = modal.querySelector('.goverlay');
+        this.loader = modal.querySelector('.gloader');
+        this.slidesContainer = document.getElementById('glightbox-slider');
         this.bodyHiddenChildElms = bodyChildElms;
         this.events = {};
-        addClass(this.modal, "glightbox-" + this.settings.skin);
+        addClass(this.modal, 'glightbox-' + this.settings.skin);
         if (this.settings.closeButton && closeButton) {
-          this.events["close"] = addEvent("click", {
+          this.events['close'] = addEvent('click', {
             onElement: closeButton,
             withCallback: function withCallback(e, target) {
               e.preventDefault();
@@ -2832,7 +2832,7 @@
           closeButton.parentNode.removeChild(closeButton);
         }
         if (this.nextButton) {
-          this.events["next"] = addEvent("click", {
+          this.events['next'] = addEvent('click', {
             onElement: this.nextButton,
             withCallback: function withCallback(e, target) {
               e.preventDefault();
@@ -2841,7 +2841,7 @@
           });
         }
         if (this.prevButton) {
-          this.events["prev"] = addEvent("click", {
+          this.events['prev'] = addEvent('click', {
             onElement: this.prevButton,
             withCallback: function withCallback(e, target) {
               e.preventDefault();
@@ -2850,11 +2850,11 @@
           });
         }
         if (this.settings.closeOnOutsideClick) {
-          this.events["outClose"] = addEvent("click", {
+          this.events['outClose'] = addEvent('click', {
             onElement: modal,
             withCallback: function withCallback(e, target) {
-              if (!_this7.preventOutsideClick && !hasClass(document.body, "glightbox-mobile") && !closest(e.target, ".ginner-container")) {
-                if (!closest(e.target, ".gbtn") && !hasClass(e.target, "gnext") && !hasClass(e.target, "gprev")) {
+              if (!_this7.preventOutsideClick && !hasClass(document.body, 'glightbox-mobile') && !closest(e.target, '.ginner-container')) {
+                if (!closest(e.target, '.gbtn') && !hasClass(e.target, 'gnext') && !hasClass(e.target, 'gprev')) {
                   _this7.close();
                 }
               }
@@ -2863,12 +2863,12 @@
         }
         each(this.elements, function (slide, i) {
           _this7.slidesContainer.appendChild(slide.instance.create());
-          slide.slideNode = _this7.slidesContainer.querySelectorAll(".gslide")[i];
+          slide.slideNode = _this7.slidesContainer.querySelectorAll('.gslide')[i];
         });
         if (isTouch$1) {
-          addClass(document.body, "glightbox-touch");
+          addClass(document.body, 'glightbox-touch');
         }
-        this.events["resize"] = addEvent("resize", {
+        this.events['resize'] = addEvent('resize', {
           onElement: window,
           withCallback: function withCallback() {
             _this7.resize();
@@ -2881,34 +2881,34 @@
       value: function resize() {
         var slide = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
         slide = !slide ? this.activeSlide : slide;
-        if (!slide || hasClass(slide, "zoomed")) {
+        if (!slide || hasClass(slide, 'zoomed')) {
           return;
         }
         var winSize = windowSize();
-        var video = slide.querySelector(".gvideo-wrapper");
-        var image = slide.querySelector(".gslide-image");
+        var video = slide.querySelector('.gvideo-wrapper');
+        var image = slide.querySelector('.gslide-image');
         var description = this.slideDescription;
         var winWidth = winSize.width;
         var winHeight = winSize.height;
         if (winWidth <= 768) {
-          addClass(document.body, "glightbox-mobile");
+          addClass(document.body, 'glightbox-mobile');
         } else {
-          removeClass(document.body, "glightbox-mobile");
+          removeClass(document.body, 'glightbox-mobile');
         }
         if (!video && !image) {
           return;
         }
         var descriptionResize = false;
-        if (description && (hasClass(description, "description-bottom") || hasClass(description, "description-top")) && !hasClass(description, "gabsolute")) {
+        if (description && (hasClass(description, 'description-bottom') || hasClass(description, 'description-top')) && !hasClass(description, 'gabsolute')) {
           descriptionResize = true;
         }
         if (image) {
           if (descriptionResize) {
             var _this$elements$this$i;
             var descHeight = description.offsetHeight;
-            var imgNode = image.querySelector("img");
+            var imgNode = image.querySelector('img');
             var slideTriggerNode = (_this$elements$this$i = this.elements[this.index]) === null || _this$elements$this$i === void 0 ? void 0 : _this$elements$this$i.node;
-            var maxHeightValue = "100vh";
+            var maxHeightValue = '100vh';
             if (slideTriggerNode) {
               var _slideTriggerNode$dat;
               maxHeightValue = (_slideTriggerNode$dat = slideTriggerNode.dataset.height) !== null && _slideTriggerNode$dat !== void 0 ? _slideTriggerNode$dat : maxHeightValue;
@@ -2918,24 +2918,24 @@
           }
         }
         if (video) {
-          var ratio = has(this.settings.plyr.config, "ratio") ? this.settings.plyr.config.ratio : "";
+          var ratio = has(this.settings.plyr.config, 'ratio') ? this.settings.plyr.config.ratio : '';
           if (!ratio) {
             var containerWidth = video.clientWidth;
             var containerHeight = video.clientHeight;
             var divisor = containerWidth / containerHeight;
             ratio = "".concat(containerWidth / divisor, ":").concat(containerHeight / divisor);
           }
-          var videoRatio = ratio.split(":");
+          var videoRatio = ratio.split(':');
           var videoWidth = this.settings.videosWidth;
           var maxWidth = this.settings.videosWidth;
-          if (isNumber(videoWidth) || videoWidth.indexOf("px") !== -1) {
+          if (isNumber(videoWidth) || videoWidth.indexOf('px') !== -1) {
             maxWidth = parseInt(videoWidth);
           } else {
-            if (videoWidth.indexOf("vw") !== -1) {
+            if (videoWidth.indexOf('vw') !== -1) {
               maxWidth = winWidth * parseInt(videoWidth) / 100;
-            } else if (videoWidth.indexOf("vh") !== -1) {
+            } else if (videoWidth.indexOf('vh') !== -1) {
               maxWidth = winHeight * parseInt(videoWidth) / 100;
-            } else if (videoWidth.indexOf("%") !== -1) {
+            } else if (videoWidth.indexOf('%') !== -1) {
               maxWidth = winWidth * parseInt(videoWidth) / 100;
             } else {
               maxWidth = parseInt(video.clientWidth);
@@ -2975,22 +2975,22 @@
       key: "updateNavigationClasses",
       value: function updateNavigationClasses() {
         var loop = this.loop();
-        removeClass(this.nextButton, "disabled");
-        removeClass(this.prevButton, "disabled");
+        removeClass(this.nextButton, 'disabled');
+        removeClass(this.prevButton, 'disabled');
         if (this.index == 0 && this.elements.length - 1 == 0) {
-          addClass(this.prevButton, "disabled");
-          addClass(this.nextButton, "disabled");
+          addClass(this.prevButton, 'disabled');
+          addClass(this.nextButton, 'disabled');
         } else if (this.index === 0 && !loop) {
-          addClass(this.prevButton, "disabled");
+          addClass(this.prevButton, 'disabled');
         } else if (this.index === this.elements.length - 1 && !loop) {
-          addClass(this.nextButton, "disabled");
+          addClass(this.nextButton, 'disabled');
         }
       }
     }, {
       key: "loop",
       value: function loop() {
-        var loop = has(this.settings, "loopAtEnd") ? this.settings.loopAtEnd : null;
-        loop = has(this.settings, "loop") ? this.settings.loop : loop;
+        var loop = has(this.settings, 'loopAtEnd') ? this.settings.loopAtEnd : null;
+        loop = has(this.settings, 'loop') ? this.settings.loop : loop;
         return loop;
       }
     }, {
@@ -3018,11 +3018,11 @@
         }
         if (this.bodyHiddenChildElms.length) {
           each(this.bodyHiddenChildElms, function (el) {
-            el.removeAttribute("aria-hidden");
+            el.removeAttribute('aria-hidden');
           });
         }
-        addClass(this.modal, "glightbox-closing");
-        animateElement(this.overlay, this.settings.openEffect == "none" ? "none" : this.settings.cssEfects.fade.out);
+        addClass(this.modal, 'glightbox-closing');
+        animateElement(this.overlay, this.settings.openEffect == 'none' ? 'none' : this.settings.cssEfects.fade.out);
         animateElement(this.activeSlide, this.settings.cssEfects[this.settings.closeEffect].out, function () {
           _this8.activeSlide = null;
           _this8.prevActiveSlideIndex = null;
@@ -3037,11 +3037,11 @@
             _this8.events = null;
           }
           var body = document.body;
-          removeClass(html, "glightbox-open");
-          removeClass(body, "glightbox-open touching gdesc-open glightbox-touch glightbox-mobile gscrollbar-fixer");
-          document.body.style.marginRight = "";
+          removeClass(html, 'glightbox-open');
+          removeClass(body, 'glightbox-open touching gdesc-open glightbox-touch glightbox-mobile gscrollbar-fixer');
+          document.body.style.marginRight = '';
           _this8.modal.parentNode.removeChild(_this8.modal);
-          _this8.trigger("close");
+          _this8.trigger('close');
           if (isFunction(_this8.settings.onClose)) {
             _this8.settings.onClose();
           }
@@ -3063,7 +3063,7 @@
       value: function on(evt, callback) {
         var once = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
         if (!evt || !isFunction(callback)) {
-          throw new TypeError("Event name and callback must be defined");
+          throw new TypeError('Event name and callback must be defined');
         }
         this.apiEvents.push({
           evt: evt,

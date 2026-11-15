@@ -35,7 +35,11 @@ export default class SlideConfigParser {
         let origin = url;
         url = url.toLowerCase();
 
-        if (url.match(/\.(jpeg|jpg|jpe|gif|png|apn|webp|avif|svg)/) !== null) {
+        if (
+            url.match(
+                /\.(?:jpeg|jpg|jpe|gif|png|apn|webp|avif|svg)|^data:image\/[^;,]+(?:;[^,]*)?;base64,/ // Match common image extensions and base64-encoded image data URLs
+            ) !== null
+        ) {
             return 'image';
         }
         if (

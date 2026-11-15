@@ -1,4 +1,4 @@
-// Type definitions for Glightbox 3.5.0
+// Type definitions for Glightbox 3.6.1
 // Project: https://github.com/biati-digital/glightbox/blob/master/README.md
 // Definitions by: Ngoc Tu Nguyen <https://github.com/tomasvn>
 // Definitions: https://github.com/DefinitelyTyped/DefinitelyTyped
