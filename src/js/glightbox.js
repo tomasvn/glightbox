@@ -10,7 +10,7 @@ import Slide from './core/slide.js';
 import touchNavigation from './core/touch-navigation.js';
 import * as _ from './utils/helpers.js';
 
-const version = '3.4.1';
+const version = '3.5.0';
 const isMobile = _.isMobile();
 const isTouch = _.isTouch();
 const html = document.getElementsByTagName('html')[0];
@@ -195,12 +195,8 @@ class GlightboxInit {
 
         const scrollBar = window.innerWidth - document.documentElement.clientWidth;
         if (scrollBar > 0) {
-            var styleSheet = document.createElement('style');
-            styleSheet.type = 'text/css';
-            styleSheet.className = 'gcss-styles';
-            styleSheet.innerText = `.gscrollbar-fixer {margin-right: ${scrollBar}px}`;
-            document.head.appendChild(styleSheet);
-            _.addClass(body, 'gscrollbar-fixer');
+            document.body.style.marginRight = `${scrollBar}px`;
+            _.addClass(body, 'gscrollbar-fixer'); // backwards compatibility
         }
 
         _.addClass(body, 'glightbox-open');
@@ -237,7 +233,7 @@ class GlightboxInit {
 
     /**
      * Open at specific index
-     * @param {int} index
+     * @param {number} index
      */
     openAt(index = 0) {
         this.open(null, index);
@@ -245,6 +241,8 @@ class GlightboxInit {
 
     /**
      * Set Slide
+     * @param {number} index
+     * @param {boolean} first whether this is the first slide being shown
      */
     showSlide(index = 0, first = false) {
         _.show(this.loader);
@@ -306,7 +304,7 @@ class GlightboxInit {
 
     /**
      * Preload slides
-     * @param  {Int}  index slide index
+     * @param  {number}  index slide index
      * @return {null}
      */
     preloadSlide(index) {
@@ -369,9 +367,9 @@ class GlightboxInit {
     }
 
     /**
-     * Go to sldei
+     * Go to slide
      * calls set slide
-     * @param {Int} - index
+     * @param {number} - index
      */
     goToSlide(index = false) {
         this.prevActiveSlide = this.activeSlide;
@@ -656,8 +654,8 @@ class GlightboxInit {
     /**
      * Get player at index
      *
-     * @param index
-     * @return bool|object
+     * @param {number} index
+     * @return {object|boolean} player instance or false if not found
      */
     getSlidePlayerInstance(index) {
         const id = 'gvideo' + index;
@@ -674,7 +672,8 @@ class GlightboxInit {
      * Stop video at specified
      * node or index
      *
-     * @param slide node or index
+     * @param {Node|number} slide node or index
+     * @deprecated Use slidePlayerPause instead
      * @return void
      */
     stopSlideVideo(slide) {
@@ -684,7 +683,7 @@ class GlightboxInit {
                 slide = node.getAttribute('data-index');
             }
         }
-        console.log('stopSlideVideo is deprecated, use slidePlayerPause');
+        console.warn('stopSlideVideo is deprecated, use slidePlayerPause');
         const player = this.getSlidePlayerInstance(slide);
         if (player && player.playing) {
             player.pause();
@@ -694,7 +693,7 @@ class GlightboxInit {
     /**
      * Stop player at specified index
      *
-     * @param slide node or index
+     * @param {Node|number} slide node or index
      * @return void
      */
     slidePlayerPause(slide) {
@@ -714,7 +713,7 @@ class GlightboxInit {
      * Play video at specified
      * node or index
      *
-     * @param slide node or index
+     * @param {Node|number} slide node or index
      * @return void
      */
     playSlideVideo(slide) {
@@ -724,7 +723,7 @@ class GlightboxInit {
                 slide = node.getAttribute('data-index');
             }
         }
-        console.log('playSlideVideo is deprecated, use slidePlayerPlay');
+        console.warn('playSlideVideo is deprecated, use slidePlayerPlay');
         const player = this.getSlidePlayerInstance(slide);
         if (player && !player.playing) {
             player.play();
@@ -735,7 +734,7 @@ class GlightboxInit {
      * Play media player at specified
      * node or index
      *
-     * @param slide node or index
+     * @param {Node|number} slide node or index
      * @return void
      */
     slidePlayerPlay(slide) {
@@ -813,7 +812,7 @@ class GlightboxInit {
      * when using insertSlide or removeSlide so we
      * need to find it in the elements list
      *
-     * @param {node} node
+     * @param {Node} node
      * @return bool|int
      */
     getElementIndex(node) {
@@ -885,7 +884,7 @@ class GlightboxInit {
      * Return only the elements
      * from a specific gallery
      *
-     * @return array
+     * @return {array}
      */
     getGalleryElements(list, gallery) {
         return list.filter((el) => {
@@ -895,6 +894,7 @@ class GlightboxInit {
 
     /**
      * Get selector
+     * @return {string|boolean} selector string or false if not defined
      */
     getSelector() {
         if (this.settings.elements) {
@@ -908,6 +908,7 @@ class GlightboxInit {
 
     /**
      * Get the active slide
+     * @return {Node} active slide element
      */
     getActiveSlide() {
         return this.slidesContainer.querySelectorAll('.gslide')[this.index];
@@ -915,6 +916,7 @@ class GlightboxInit {
 
     /**
      * Get the active index
+     * @return {number} active slide index
      */
     getActiveSlideIndex() {
         return this.index;
@@ -923,6 +925,7 @@ class GlightboxInit {
     /**
      * Get the defined
      * effects as string
+     * @return {string} animation classes
      */
     getAnimationClasses() {
         let effects = [];
@@ -1090,10 +1093,7 @@ class GlightboxInit {
         }
 
         if (image) {
-            if (winWidth <= 768) {
-                let imgNode = image.querySelector('img');
-                //imgNode.setAttribute('style', '');
-            } else if (descriptionResize) {
+            if (descriptionResize) {
                 let descHeight = description.offsetHeight;
                 let imgNode = image.querySelector('img');
 
@@ -1102,11 +1102,11 @@ class GlightboxInit {
                 const slideTriggerNode = this.elements[this.index]?.node;
                 let maxHeightValue = '100vh';
                 if (slideTriggerNode) {
-                    maxHeightValue = slideTriggerNode.getAttribute('data-height') ?? maxHeightValue;
+                    maxHeightValue = slideTriggerNode.dataset.height ?? maxHeightValue;
                 }
 
-                imgNode.setAttribute('style', `max-height: calc(${maxHeightValue} - ${descHeight}px)`);
-                description.setAttribute('style', `max-width: ${imgNode.offsetWidth}px;`);
+                imgNode.style = `max-height: calc(${maxHeightValue} - ${descHeight}px)`;
+                description.style = `max-width: ${imgNode.offsetWidth}px;`;
             }
         }
 
@@ -1154,15 +1154,15 @@ class GlightboxInit {
                 let vheight = video.offsetHeight;
                 let ratio = winHeight / vheight;
                 let vsize = { width: vwidth * ratio, height: vheight * ratio };
-                video.parentNode.setAttribute('style', `max-width: ${vsize.width}px`);
+                video.parentNode.style = `max-width: ${vsize.width}px`;
 
                 if (descriptionResize) {
-                    description.setAttribute('style', `max-width: ${vsize.width}px;`);
+                    description.style = `max-width: ${vsize.width}px;`;
                 }
             } else {
                 video.parentNode.style.maxWidth = `${videoWidth}`;
                 if (descriptionResize) {
-                    description.setAttribute('style', `max-width: ${videoWidth};`);
+                    description.style = `max-width: ${videoWidth}`;
                 }
             }
         }
@@ -1197,6 +1197,7 @@ class GlightboxInit {
 
     /**
      * Handle loop config
+     * @returns {boolean} Whether looping is enabled
      */
     loop() {
         let loop = _.has(this.settings, 'loopAtEnd') ? this.settings.loopAtEnd : null;
@@ -1259,6 +1260,7 @@ class GlightboxInit {
             const body = document.body;
             _.removeClass(html, 'glightbox-open');
             _.removeClass(body, 'glightbox-open touching gdesc-open glightbox-touch glightbox-mobile gscrollbar-fixer');
+            document.body.style.marginRight = '';
             this.modal.parentNode.removeChild(this.modal);
 
             this.trigger('close');
@@ -1268,10 +1270,6 @@ class GlightboxInit {
                 this.settings.onClose();
             }
 
-            const styles = document.querySelector('.gcss-styles');
-            if (styles) {
-                styles.parentNode.removeChild(styles);
-            }
             this.lightboxOpen = false;
             this.closing = null;
         });
@@ -1292,6 +1290,9 @@ class GlightboxInit {
 
     /**
      * Set event
+     * @param {string} evt - The event name
+     * @param {Function} callback - The callback function
+     * @param {boolean} [once=false] - Whether the event should be triggered only once
      */
     on(evt, callback, once = false) {
         if (!evt || !_.isFunction(callback)) {
@@ -1301,7 +1302,9 @@ class GlightboxInit {
     }
 
     /**
-     * Set event
+     * Set event that will be triggered only once
+     * @param {string} evt - The event name
+     * @param {Function} callback - The callback function
      */
     once(evt, callback) {
         this.on(evt, callback, true);
@@ -1311,7 +1314,8 @@ class GlightboxInit {
      * Triggers an specific event
      * with data
      *
-     * @param string eventName
+     * @param {string} eventName - The name of the event to trigger
+     * @param {*} [data=null] - The data to pass to the event callback
      */
     trigger(eventName, data = null) {
         const onceTriggered = [];
@@ -1332,6 +1336,7 @@ class GlightboxInit {
     /**
      * Removes all events
      * set using the API
+     * @returns {void}
      */
     clearAllEvents() {
         this.apiEvents.splice(0, this.apiEvents.length);
@@ -1339,6 +1344,7 @@ class GlightboxInit {
 
     /**
      * Get Version
+     * @returns {string} The version of the lightbox
      */
     version() {
         return version;

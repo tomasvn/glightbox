@@ -1,4 +1,4 @@
-// Type definitions for Glightbox 3.4.1
+// Type definitions for Glightbox 3.5.0
 // Project: https://github.com/biati-digital/glightbox/blob/master/README.md
 // Definitions by: Ngoc Tu Nguyen <https://github.com/tomasvn>
 // Definitions: https://github.com/DefinitelyTyped/DefinitelyTyped
@@ -73,15 +73,20 @@ declare namespace Glightbox {
         vimeo?: VimeoOptions;
     }
 
+    interface PlyrModule {
+        Plyr: new (selector: string, config?: Config) => object;
+        config?: Config;
+    }
+
     interface PlyrOptions {
         /**
-         * Get Plyr.js css files from cdn
+         * Plyr CSS URL or a function that loads CSS using a custom strategy.
          */
-        css?: string;
+        css?: string | (() => void);
         /**
-         * Get Plyr.js js files from cdn
+         * Plyr JS URL or an async loader returning the Plyr constructor.
          */
-        js?: string;
+        js?: string | (() => Promise<PlyrModule>);
         config?: Config;
     }
 

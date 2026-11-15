@@ -2,15 +2,33 @@ import assert from 'node:assert/strict';
 import { before, describe, it } from 'node:test';
 
 let GLightbox;
+const htmlElement = {
+    classList: createClassList()
+};
 
 before(async () => {
     globalThis.window = { navigator: { userAgent: 'test' } };
     globalThis.document = {
-        getElementsByTagName: () => [{}],
+        getElementsByTagName: () => [htmlElement],
         querySelectorAll: () => Object.create({ length: 0 })
     };
     ({ default: GLightbox } = await import('../src/js/glightbox.js'));
 });
+
+function createClassList() {
+    const classes = new Set();
+    return {
+        add(name) {
+            classes.add(name);
+        },
+        contains(name) {
+            return classes.has(name);
+        },
+        remove(name) {
+            classes.delete(name);
+        }
+    };
+}
 
 describe('public API contract', () => {
     it('accepts default options and signals an empty gallery', () => {
@@ -72,5 +90,73 @@ describe('public API contract', () => {
         assert.equal(payload.prev.slideNode, previousSlide);
         assert.equal(payload.current.slideIndex, 1);
         assert.equal(payload.prev.player, false);
+    });
+
+    it('applies scrollbar compensation through the body style', () => {
+        const oldBody = globalThis.document.body;
+        const oldDocumentElement = globalThis.document.documentElement;
+        const oldInnerWidth = globalThis.window.innerWidth;
+        const body = {
+            classList: createClassList(),
+            style: {}
+        };
+        globalThis.document.body = body;
+        globalThis.document.documentElement = { clientWidth: 980 };
+        globalThis.window.innerWidth = 1000;
+
+        try {
+            const lightbox = GLightbox({
+                selector: null,
+                openEffect: 'none',
+                keyboardNavigation: false,
+                touchNavigation: false
+            });
+            lightbox.elements = [{}];
+            lightbox.build = () => {};
+            lightbox.showSlide = () => {};
+            lightbox.trigger = () => {};
+            lightbox.overlay = {};
+            lightbox.prevButton = { classList: createClassList() };
+            lightbox.nextButton = { classList: createClassList() };
+
+            lightbox.open();
+
+            assert.equal(body.style.marginRight, '20px');
+            assert.equal(body.classList.contains('gscrollbar-fixer'), true);
+
+            const modal = {
+                classList: createClassList(),
+                parentNode: {
+                    removeChild(node) {
+                        assert.equal(node, modal);
+                    }
+                }
+            };
+            lightbox.activeSlide = {};
+            lightbox.bodyHiddenChildElms = [];
+            lightbox.modal = modal;
+            lightbox.settings.cssEfects = { zoom: { out: 'none' } };
+            lightbox.slidePlayerPause = () => {};
+            lightbox.close();
+
+            assert.equal(body.style.marginRight, '');
+            assert.equal(body.classList.contains('gscrollbar-fixer'), false);
+        } finally {
+            if (oldBody === undefined) {
+                delete globalThis.document.body;
+            } else {
+                globalThis.document.body = oldBody;
+            }
+            if (oldDocumentElement === undefined) {
+                delete globalThis.document.documentElement;
+            } else {
+                globalThis.document.documentElement = oldDocumentElement;
+            }
+            if (oldInnerWidth === undefined) {
+                delete globalThis.window.innerWidth;
+            } else {
+                globalThis.window.innerWidth = oldInnerWidth;
+            }
+        }
     });
 });

@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file.
 
+## 3.6.0
+
+### Minor Changes
+
+- Fix CSP - Closes [#590](https://github.com/biati-digital/glightbox/pull/590)
+- Add tests for CSP fixes Improve jsdocs in main `glightbox.js` package
+- Extend types in `index.d.ts` with `Plyr` module
+- Formatted package via `oxfmt`
+
 ## 3.4.0
 
 ### Minor Changes

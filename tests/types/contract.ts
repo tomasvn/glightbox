@@ -14,7 +14,16 @@ GLightbox({
     svg: { close: '<svg></svg>' },
     cssEffects: { bounce: { in: 'bounceIn', out: 'bounceOut' } },
     cssEfects: { fade: { in: 'fadeIn', out: 'fadeOut' } },
-    plyr: { config: { muted: true, fullscreen: { enabled: true }, hideControls: true } }
+    plyr: {
+        config: { muted: true, fullscreen: { enabled: true }, hideControls: true },
+        css: () => {},
+        js: async () => ({
+            Plyr: class {
+                constructor(_selector: string, _config?: object) {}
+            },
+            config: { ratio: '16:9' }
+        })
+    }
 });
 
 lightbox.on('slide_changed', ({ prev, current }) => {
