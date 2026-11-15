@@ -561,17 +561,17 @@
       this.initialY = null;
       this.xOffset = 0;
       this.yOffset = 0;
-      this.img.addEventListener("mousedown", function (e) {
+      this.img.addEventListener('mousedown', function (e) {
         return _this.dragStart(e);
       }, false);
-      this.img.addEventListener("mouseup", function (e) {
+      this.img.addEventListener('mouseup', function (e) {
         return _this.dragEnd(e);
       }, false);
-      this.img.addEventListener("mousemove", function (e) {
+      this.img.addEventListener('mousemove', function (e) {
         return _this.drag(e);
       }, false);
-      this.img.addEventListener("click", function (e) {
-        if (_this.slide.classList.contains("dragging-nav")) {
+      this.img.addEventListener('click', function (e) {
+        if (_this.slide.classList.contains('dragging-nav')) {
           _this.zoomOut();
           return false;
         }
@@ -592,22 +592,22 @@
           return;
         }
         var img = this.img;
-        img.setAttribute("data-style", img.getAttribute("style"));
-        img.style.maxWidth = img.naturalWidth + "px";
-        img.style.maxHeight = img.naturalHeight + "px";
+        img.setAttribute('data-style', img.getAttribute('style'));
+        img.style.maxWidth = img.naturalWidth + 'px';
+        img.style.maxHeight = img.naturalHeight + 'px';
         if (img.naturalWidth > winWidth) {
           var centerX = winWidth / 2 - img.naturalWidth / 2;
           this.setTranslate(this.img.parentNode, centerX, 0);
         }
-        this.slide.classList.add("zoomed");
+        this.slide.classList.add('zoomed');
         this.zoomedIn = true;
       }
     }, {
       key: "zoomOut",
       value: function zoomOut() {
-        this.img.parentNode.style = "";
-        this.img.style = this.img.getAttribute("data-style") ? this.img.getAttribute("data-style") : "";
-        this.slide.classList.remove("zoomed");
+        this.img.parentNode.style = '';
+        this.img.style = this.img.getAttribute('data-style') ? this.img.getAttribute('data-style') : '';
+        this.slide.classList.remove('zoomed');
         this.zoomedIn = false;
         this.currentX = null;
         this.currentY = null;
@@ -615,7 +615,7 @@
         this.initialY = null;
         this.xOffset = 0;
         this.yOffset = 0;
-        if (this.onclose && typeof this.onclose == "function") {
+        if (this.onclose && typeof this.onclose == 'function') {
           this.onclose();
         }
       }
@@ -627,7 +627,7 @@
           this.active = false;
           return;
         }
-        if (e.type === "touchstart") {
+        if (e.type === 'touchstart') {
           this.initialX = e.touches[0].clientX - this.xOffset;
           this.initialY = e.touches[0].clientY - this.yOffset;
         } else {
@@ -636,7 +636,7 @@
         }
         if (e.target === this.img) {
           this.active = true;
-          this.img.classList.add("dragging");
+          this.img.classList.add('dragging');
         }
       }
     }, {
@@ -650,7 +650,7 @@
         setTimeout(function () {
           _this2.dragging = false;
           _this2.img.isDragging = false;
-          _this2.img.classList.remove("dragging");
+          _this2.img.classList.remove('dragging');
         }, 100);
       }
     }, {
@@ -658,7 +658,7 @@
       value: function drag(e) {
         if (this.active) {
           e.preventDefault();
-          if (e.type === "touchmove") {
+          if (e.type === 'touchmove') {
             this.currentX = e.touches[0].clientX - this.initialX;
             this.currentY = e.touches[0].clientY - this.initialY;
           } else {
@@ -685,7 +685,7 @@
     }, {
       key: "setTranslate",
       value: function setTranslate(node, xPos, yPos) {
-        node.style.transform = "translate3d(" + xPos + "px, " + yPos + "px, 0)";
+        node.style.transform = 'translate3d(' + xPos + 'px, ' + yPos + 'px, 0)';
       }
     }, {
       key: "widowWidth",
@@ -929,17 +929,17 @@
 
   function slideVideo(slide, data, index, callback) {
     var _this = this;
-    var slideContainer = slide.querySelector(".ginner-container");
-    var videoID = "gvideo" + index;
-    var slideMedia = slide.querySelector(".gslide-media");
+    var slideContainer = slide.querySelector('.ginner-container');
+    var videoID = 'gvideo' + index;
+    var slideMedia = slide.querySelector('.gslide-media');
     var videoPlayers = this.getAllPlayers();
-    addClass(slideContainer, "gvideo-container");
+    addClass(slideContainer, 'gvideo-container');
     slideMedia.insertBefore(createHTML('<div class="gvideo-wrapper"></div>'), slideMedia.firstChild);
-    var videoWrapper = slide.querySelector(".gvideo-wrapper");
-    if (typeof this.settings.plyr.css === "function") {
+    var videoWrapper = slide.querySelector('.gvideo-wrapper');
+    if (typeof this.settings.plyr.css === 'function') {
       this.settings.plyr.css();
     } else {
-      injectAssets(this.settings.plyr.css, "Plyr");
+      injectAssets(this.settings.plyr.css, 'Plyr');
     }
     var url = data.href;
     var provider = data === null || data === void 0 ? void 0 : data.videoProvider;
@@ -947,70 +947,70 @@
     slideMedia.style.maxWidth = data.width;
     var initPlyr = function initPlyr(Plyr, config) {
       if (!provider && url.match(/vimeo\.com\/([0-9]*)/)) {
-        provider = "vimeo";
+        provider = 'vimeo';
       }
       if (!provider && (url.match(/(youtube\.com|youtube-nocookie\.com)\/watch\?v=([a-zA-Z0-9\-_]+)/) || url.match(/youtu\.be\/([a-zA-Z0-9\-_]+)/) || url.match(/(youtube\.com|youtube-nocookie\.com)\/embed\/([a-zA-Z0-9\-_]+)/) || url.match(/(youtube\.com|youtube-nocookie\.com)\/shorts\/([a-zA-Z0-9\-_]+)/))) {
-        provider = "youtube";
+        provider = 'youtube';
       }
-      if (provider === "local" || !provider) {
-        provider = "local";
-        var video = document.createElement("video");
+      if (provider === 'local' || !provider) {
+        provider = 'local';
+        var video = document.createElement('video');
         video.id = videoID;
-        video.className = "gvideo-local";
-        video.preload = "metadata";
+        video.className = 'gvideo-local';
+        video.preload = 'metadata';
         video.playsInline = true;
         video.controls = true;
-        video.style.background = "#000";
+        video.style.background = '#000';
         video.style.maxWidth = data.width;
-        video.setAttribute("x-webkit-airplay", "allow");
-        var source = document.createElement("source");
+        video.setAttribute('x-webkit-airplay', 'allow');
+        var source = document.createElement('source');
         source.src = url;
         video.appendChild(source);
         customPlaceholder = video;
       }
       if (!customPlaceholder) {
-        customPlaceholder = document.createElement("div");
+        customPlaceholder = document.createElement('div');
         customPlaceholder.id = videoID;
         customPlaceholder.dataset.plyrProvider = provider;
         customPlaceholder.dataset.plyrEmbedId = url;
       }
       addClass(videoWrapper, "".concat(provider, "-video gvideo"));
       videoWrapper.appendChild(customPlaceholder);
-      videoWrapper.setAttribute("data-id", videoID);
-      videoWrapper.setAttribute("data-index", index);
-      var playerConfig = config || (has(_this.settings.plyr, "config") ? _this.settings.plyr.config : {});
-      var player = new Plyr("#" + videoID, playerConfig);
-      player.on("ready", function (event) {
+      videoWrapper.setAttribute('data-id', videoID);
+      videoWrapper.setAttribute('data-index', index);
+      var playerConfig = config || (has(_this.settings.plyr, 'config') ? _this.settings.plyr.config : {});
+      var player = new Plyr('#' + videoID, playerConfig);
+      player.on('ready', function (event) {
         videoPlayers[videoID] = event.detail.plyr;
         if (isFunction(callback)) {
           callback();
         }
       });
       waitUntil(function () {
-        return slide.querySelector("iframe") && slide.querySelector("iframe").dataset.ready == "true";
+        return slide.querySelector('iframe') && slide.querySelector('iframe').dataset.ready == 'true';
       }, function () {
         _this.resize(slide);
       });
-      player.on("enterfullscreen", handleMediaFullScreen);
-      player.on("exitfullscreen", handleMediaFullScreen);
+      player.on('enterfullscreen', handleMediaFullScreen);
+      player.on('exitfullscreen', handleMediaFullScreen);
     };
-    if (typeof this.settings.plyr.js === "function") {
+    if (typeof this.settings.plyr.js === 'function') {
       this.settings.plyr.js().then(function (v) {
         return initPlyr(v.Plyr, v.config);
       });
     } else {
-      injectAssets(this.settings.plyr.js, "Plyr", function () {
+      injectAssets(this.settings.plyr.js, 'Plyr', function () {
         return initPlyr(window.Plyr);
       });
     }
   }
   function handleMediaFullScreen(event) {
-    var media = closest(event.target, ".gslide-media");
-    if (event.type === "enterfullscreen") {
-      addClass(media, "fullscreen");
+    var media = closest(event.target, '.gslide-media');
+    if (event.type === 'enterfullscreen') {
+      addClass(media, 'fullscreen');
     }
-    if (event.type === "exitfullscreen") {
-      removeClass(media, "fullscreen");
+    if (event.type === 'exitfullscreen') {
+      removeClass(media, 'fullscreen');
     }
   }
 
@@ -1823,28 +1823,28 @@
     }
     var transitionEnd = whichTransitionEvent();
     var windowWidth = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
-    var media = hasClass(slide, "gslide-media") ? slide : slide.querySelector(".gslide-media");
-    var container = closest(media, ".ginner-container");
-    var desc = slide.querySelector(".gslide-description");
+    var media = hasClass(slide, 'gslide-media') ? slide : slide.querySelector('.gslide-media');
+    var container = closest(media, '.ginner-container');
+    var desc = slide.querySelector('.gslide-description');
     if (windowWidth > 769) {
       media = container;
     }
-    addClass(media, "greset");
-    cssTransform(media, "translate3d(0, 0, 0)");
+    addClass(media, 'greset');
+    cssTransform(media, 'translate3d(0, 0, 0)');
     addEvent(transitionEnd, {
       onElement: media,
       once: true,
       withCallback: function withCallback(event, target) {
-        removeClass(media, "greset");
+        removeClass(media, 'greset');
       }
     });
-    media.style.opacity = "";
+    media.style.opacity = '';
     if (desc) {
-      desc.style.opacity = "";
+      desc.style.opacity = '';
     }
   }
   function touchNavigation(instance) {
-    if (instance.events.hasOwnProperty("touch")) {
+    if (instance.events.hasOwnProperty('touch')) {
       return false;
     }
     var winSize = windowSize();
@@ -1875,15 +1875,15 @@
     var xDown = 0;
     var yDown = 0;
     var isInlined;
-    var sliderWrapper = document.getElementById("glightbox-slider");
-    var overlay = document.querySelector(".goverlay");
+    var sliderWrapper = document.getElementById('glightbox-slider');
+    var overlay = document.querySelector('.goverlay');
     var touchInstance = new TouchEvents(sliderWrapper, {
       touchStart: function touchStart(e) {
         process = true;
-        if (hasClass(e.targetTouches[0].target, "ginner-container") || closest(e.targetTouches[0].target, ".gslide-desc") || e.targetTouches[0].target.nodeName.toLowerCase() == "a") {
+        if (hasClass(e.targetTouches[0].target, 'ginner-container') || closest(e.targetTouches[0].target, '.gslide-desc') || e.targetTouches[0].target.nodeName.toLowerCase() == 'a') {
           process = false;
         }
-        if (closest(e.targetTouches[0].target, ".gslide-inline") && !hasClass(e.targetTouches[0].target.parentNode, "gslide-inline")) {
+        if (closest(e.targetTouches[0].target, '.gslide-inline') && !hasClass(e.targetTouches[0].target.parentNode, 'gslide-inline')) {
           process = false;
         }
         if (process) {
@@ -1893,17 +1893,17 @@
           xDown = e.targetTouches[0].clientX;
           yDown = e.targetTouches[0].clientY;
           currentSlide = instance.activeSlide;
-          media = currentSlide.querySelector(".gslide-media");
-          isInlined = currentSlide.querySelector(".gslide-inline");
+          media = currentSlide.querySelector('.gslide-media');
+          isInlined = currentSlide.querySelector('.gslide-inline');
           mediaImage = null;
-          if (hasClass(media, "gslide-image")) {
-            mediaImage = media.querySelector("img");
+          if (hasClass(media, 'gslide-image')) {
+            mediaImage = media.querySelector('img');
           }
           var windowWidth = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
           if (windowWidth > 769) {
-            media = currentSlide.querySelector(".ginner-container");
+            media = currentSlide.querySelector('.ginner-container');
           }
-          removeClass(overlay, "greset");
+          removeClass(overlay, 'greset');
           if (e.pageX > 20 && e.pageX < window.innerWidth - 20) {
             return;
           }
@@ -1977,7 +1977,7 @@
           return;
         }
         if (v < 29 && h < 25) {
-          addClass(overlay, "greset");
+          addClass(overlay, 'greset');
           overlay.style.opacity = 1;
           return resetSlideMove(media);
         }
@@ -2006,7 +2006,7 @@
           lastZoomedPosX = null;
           zoomedPosX = null;
           zoomedPosY = null;
-          mediaImage.style = "";
+          mediaImage.style = '';
           return;
         }
         if (scale > maxScale) {
@@ -2042,13 +2042,13 @@
           doingZoom = false;
           return;
         }
-        if (evt.direction == "Left") {
+        if (evt.direction == 'Left') {
           if (instance.index == instance.elements.length - 1) {
             return resetSlideMove(media);
           }
           instance.nextSlide();
         }
-        if (evt.direction == "Right") {
+        if (evt.direction == 'Right') {
           if (instance.index == 0) {
             return resetSlideMove(media);
           }
@@ -2056,10 +2056,10 @@
         }
       }
     });
-    instance.events["touch"] = touchInstance;
+    instance.events['touch'] = touchInstance;
   }
 
-  var _version = "3.5.0";
+  var _version = "3.6.0";
   var isMobile$1 = isMobile();
   var isTouch$1 = isTouch();
   var html = document.getElementsByTagName("html")[0];
