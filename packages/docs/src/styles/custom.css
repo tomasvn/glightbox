@@ -3,3 +3,40 @@
     font-family: 'Lobster', cursive;
     font-weight: 400;
 }
+
+.live-demo section {
+    margin-block: 2rem;
+}
+
+.live-demo h3 {
+    margin-bottom: 1rem;
+}
+
+.live-demo .gallery {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 1rem;
+}
+
+.live-demo .gallery a {
+    display: block;
+    overflow: hidden;
+    border-radius: 0.5rem;
+}
+
+.live-demo .gallery img {
+    display: block;
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+    transition: transform 180ms ease;
+}
+
+.live-demo .gallery a:hover img,
+.live-demo .gallery a:focus-visible img {
+    transform: scale(1.04);
+}
+
+.live-demo .inline-content {
+    display: none;
+}

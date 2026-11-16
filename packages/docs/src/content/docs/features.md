@@ -20,7 +20,7 @@ See [image and gallery examples](/glightbox/examples/).
 - Display inline HTML and external pages in iframes.
 - Configure autoplay, player options, and custom asset loaders.
 
-See [video player configuration](/glightbox/video-player/) or try the [live demo](/glightbox/demo.html).
+See [video player configuration](/glightbox/video-player/) or try the [live demo](/glightbox/examples/).
 
 ## Navigation
 

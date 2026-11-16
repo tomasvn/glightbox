@@ -1,0 +1,88 @@
+---
+import { Image } from 'astro:assets';
+
+const base = import.meta.env.BASE_URL.endsWith('/') ? import.meta.env.BASE_URL : `${import.meta.env.BASE_URL}/`;
+const thumbnail = (name: string) => `${base}assets/img/small/${name}`;
+const image = (name: string) => `${base}assets/img/large/${name}`;
+const galleryImages = ['gm1.jpg', 'gm2.jpg', 'gm3.jpg', 'gm4.jpg', 'gm5.jpg', 'gm6.jpg'];
+---
+
+<div class="live-demo">
+    <section>
+        <h3>Simple image gallery</h3>
+        <div class="gallery">
+            {galleryImages.map((name, index) => (
+                <a class="glightbox-simple" href={image(name)}>
+                    <Image src={thumbnail(name)} alt={`Gallery photo ${index + 1}`} width={367} height={507} loading="lazy" />
+                </a>
+            ))}
+        </div>
+    </section>
+
+    <section>
+        <h3>Images with descriptions</h3>
+        <div class="gallery">
+            <a class="glightbox-description" href={image('gm7.jpg')} data-glightbox="title: Description; description: Captions can include links and HTML.">
+                <Image src={thumbnail('gm7.jpg')} alt="Photo with a caption below" width={367} height={507} loading="lazy" />
+            </a>
+            <a
+                class="glightbox-description"
+                href={image('gm8.jpg')}
+                data-glightbox="title: Description on the right; description: Captions can appear on different sides of an image.; descPosition: right"
+            >
+                <Image src={thumbnail('gm8.jpg')} alt="Photo with a caption on the right" width={367} height={507} loading="lazy" />
+            </a>
+            <a
+                class="glightbox-description"
+                href={image('gm9.jpg')}
+                data-glightbox="title: Description on the left; description: Set the caption position for each slide.; descPosition: left"
+            >
+                <Image src={thumbnail('gm9.jpg')} alt="Photo with a caption on the left" width={367} height={507} loading="lazy" />
+            </a>
+        </div>
+    </section>
+
+    <section>
+        <h3>Videos</h3>
+        <div class="gallery">
+            <a class="glightbox-video" href="https://vimeo.com/115041822">
+                <Image src={thumbnail('gm10.jpg')} alt="Open a Vimeo video" width={367} height={507} loading="lazy" />
+            </a>
+            <a class="glightbox-video" href="https://www.youtube-nocookie.com/embed/Ga6RYejo6Hk">
+                <Image src={thumbnail('gm11.jpg')} alt="Open a YouTube video" width={367} height={507} loading="lazy" />
+            </a>
+            <a class="glightbox-video" href={`${base}assets/pexels-video-1550080.mp4`}>
+                <Image src={thumbnail('gm12.jpg')} alt="Open a self-hosted video" width={367} height={507} loading="lazy" />
+            </a>
+        </div>
+    </section>
+
+    <section>
+        <h3>Inline content and iframes</h3>
+        <div class="gallery">
+            <a class="glightbox-embed" href="#inline-demo" data-glightbox="width: 700; height: auto">
+                <Image src={thumbnail('gm14.jpg')} alt="Open inline content" width={367} height={507} loading="lazy" />
+            </a>
+            <a
+                class="glightbox-embed"
+                href="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d12085.977306439116!2d-73.96648875371474!3d40.77314541916876!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c258bf08488f6b%3A0x618706a9142daa0d!2sUpper+East+Side%2C+Nueva+York%2C+EE.+UU.!5e0!3m2!1ses-419!2smx!4v1511830027642"
+            >
+                <Image src={thumbnail('gm15.jpg')} alt="Open a map in an iframe" width={367} height={507} loading="lazy" />
+            </a>
+        </div>
+    </section>
+
+    <div id="inline-demo" class="inline-content">
+        <h4>Example of inline content</h4>
+        <p>Display content from an element on the page inside the lightbox.</p>
+        <a class="gtrigger-close" href="#">Close</a>
+    </div>
+</div>
+
+<script is:inline src="/glightbox/dist/js/glightbox.js"></script>
+<script is:inline>
+    GLightbox({ selector: '.glightbox-simple' });
+    GLightbox({ selector: '.glightbox-description' });
+    GLightbox({ selector: '.glightbox-video' });
+    GLightbox({ selector: '.glightbox-embed' });
+</script>

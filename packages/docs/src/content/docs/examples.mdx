@@ -1,7 +1,15 @@
 ---
 title: Examples
-description: Common image, video, and JavaScript gallery patterns.
+description: Interactive galleries and common image, video, and JavaScript examples.
 ---
+
+import LiveDemo from '../../components/LiveDemo.astro';
+
+## Live examples
+
+These interactive galleries reuse the examples from the original live demo. Select any thumbnail to open it in GLightbox.
+
+<LiveDemo />
 
 ## Image with a description
 
@@ -9,7 +17,7 @@ Use `data-glightbox` to set slide options directly on the link:
 
 ```html
 <a href="large-image.jpg" class="glightbox" data-glightbox="title: Mountain view; description: A view from the trail; descPosition: bottom">
-  <img src="thumbnail.jpg" alt="Mountain view" />
+    <img src="thumbnail.jpg" alt="Mountain view" />
 </a>
 ```
 
@@ -21,7 +29,7 @@ Use `data-sizes` and `data-srcset` to let the browser select an appropriate imag
 
 ```html
 <a href="large.jpg" class="glightbox" data-sizes="(max-width: 600px) 480px, 800px" data-srcset="image-480.jpg 480w, image-800.jpg 800w">
-  <img src="thumbnail.jpg" alt="Responsive gallery image" />
+    <img src="thumbnail.jpg" alt="Responsive gallery image" />
 </a>
 ```
 
@@ -31,7 +39,7 @@ YouTube, Vimeo, and local video URLs can be used as slide links:
 
 ```html
 <a href="https://www.youtube.com/watch?v=Ga6RYejo6Hk" class="glightbox">
-  <img src="video-thumbnail.jpg" alt="Watch the video" />
+    <img src="video-thumbnail.jpg" alt="Watch the video" />
 </a>
 ```
 
@@ -43,7 +51,15 @@ Pass slide objects through `elements` to create a gallery without markup:
 
 ```js
 const lightbox = GLightbox({
-  elements: [{ href: 'image.jpg', type: 'image', title: 'A photo' }, { href: 'https://vimeo.com/115041822', type: 'video', videoProvider: 'vimeo' }, { content: '<p>Inline slide content</p>' }]
+    elements: [
+        { href: 'image.jpg', type: 'image', title: 'A photo' },
+        {
+            href: 'https://vimeo.com/115041822',
+            type: 'video',
+            videoProvider: 'vimeo'
+        },
+        { content: '<p>Inline slide content</p>' }
+    ]
 });
 
 lightbox.open();
@@ -57,8 +73,8 @@ Reference an element on the page with a hash:
 <a href="#details" class="glightbox">Show details</a>
 
 <div id="details" class="glightbox-desc">
-  <p>This element is displayed in the lightbox.</p>
+    <p>This element is displayed in the lightbox.</p>
 </div>
 ```
 
-The [interactive demo](/glightbox/demo.html) includes additional gallery examples.
+For more examples, see the [GLightbox API](/glightbox/api/) and [video player options](/glightbox/video-player/).

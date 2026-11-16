@@ -6,8 +6,10 @@
     "node": ">=22.23.4"
   },
   "scripts": {
-    "dev": "node scripts/prepare-docs.mjs && astro dev",
-    "build": "node scripts/prepare-docs.mjs && astro build",
+    "prebuild": "node scripts/prepare-docs.mjs",
+    "predev": "node scripts/prepare-docs.mjs",
+    "dev": "astro dev",
+    "build": "astro build",
     "preview": "astro preview"
   },
   "dependencies": {
