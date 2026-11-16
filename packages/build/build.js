@@ -4,7 +4,7 @@ const jscompiler = require('./jscompiler');
 const postcssCompiler = require('./postcss');
 const terser = require('terser');
 
-const root = path.join(__dirname, '..');
+const root = path.resolve(__dirname, '../glightbox');
 const sourceJs = path.join(root, 'src/js/glightbox.js');
 const sourceCss = path.join(root, 'src/postcss');
 const distJs = path.join(root, 'dist/js');
@@ -13,7 +13,7 @@ const distCss = path.join(root, 'dist/css');
 async function build() {
     await jscompiler({
         file: sourceJs,
-        dest: 'dist/js',
+        dest: distJs,
         format: 'umd',
         sourcemap: false,
         moduleID: 'GLightbox'
@@ -29,8 +29,8 @@ async function build() {
     const stylesheets = fs.readdirSync(sourceCss).filter((file) => file.endsWith('.css'));
     for (const stylesheet of stylesheets) {
         await postcssCompiler({
-            file: path.join('src/postcss', stylesheet),
-            dest: 'dist/css',
+            file: path.join(sourceCss, stylesheet),
+            dest: distCss,
             minify: true
         });
     }

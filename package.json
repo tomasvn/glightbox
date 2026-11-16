@@ -1,69 +1,45 @@
 {
-  "name": "@tomasvn/glightbox",
-  "version": "3.7.0",
-  "description": "Pure Javascript lightbox",
-  "main": "dist/js/glightbox.min.js",
+  "name": "glightbox-monorepo",
+  "private": true,
+  "workspaces": [
+    "packages/glightbox",
+    "packages/docs",
+    "packages/build"
+  ],
+  "engines": {
+    "node": ">=22.23.4",
+    "npm": ">=10.9.0"
+  },
   "scripts": {
-    "build": "node development/build.js",
-    "test": "node --test && npm run test:types",
-    "test:types": "tsc --noEmit --strict --target es2020 --module commonjs --moduleResolution node tests/types/contract.ts",
-    "watch": "node development/watcher.js",
+    "build": "npm run build:lib && npm run build:docs",
+    "build:lib": "npm run build --workspace @tomasvn/glightbox",
+    "build:docs": "npm run build --workspace @tomasvn/glightbox-docs",
+    "dev:docs": "npm run dev --workspace @tomasvn/glightbox-docs",
+    "preview:docs": "npm run preview --workspace @tomasvn/glightbox-docs",
+    "test": "npm test --workspace @tomasvn/glightbox",
+    "test:types": "npm run test:types --workspace @tomasvn/glightbox",
+    "watch": "npm run watch --workspace @tomasvn/glightbox",
     "changeset": "changeset",
     "changeset:version": "changeset version",
-    "lint": "oxlint src/js",
-    "format": "oxfmt \"src/js/**/*.js\"",
+    "lint": "npm run lint --workspace @tomasvn/glightbox",
+    "format": "npm run format --workspace @tomasvn/glightbox",
     "prepare": "husky"
   },
   "lint-staged": {
     "*.{js,cjs,mjs,jsx,ts,cts,mts,tsx,json,jsonc,md,mdx,html,css,scss,yml,yaml}": "oxfmt --no-error-on-unmatched-pattern"
   },
-  "publishConfig": {
-    "access": "public"
-  },
-  "author": "Biati Digital & Ngoc Tu Nguyen",
-  "types": "./index.d.ts",
-  "keywords": [
-    "lightbox",
-    "javascript",
-    "gallery",
-    "popup"
-  ],
   "license": "MIT",
-  "homepage": "https://biati-digital.github.io/glightbox/",
+  "homepage": "https://tomasvn.github.io/glightbox/",
   "repository": {
     "url": "https://github.com/tomasvn/glightbox",
     "type": "git"
   },
-  "bugs": "https://github.com/biati-digital/glightbox/issues",
   "devDependencies": {
-    "@babel/cli": "^7.10.3",
-    "@babel/core": "^7.10.3",
-    "@babel/node": "^7.10.3",
-    "@babel/preset-env": "^7.10.3",
-    "@babel/register": "^7.10.3",
     "@changesets/changelog-github": "^1.0.1",
     "@changesets/cli": "^3.0.3",
-    "archiver": "^3.1.1",
-    "babel-plugin-transform-runtime": "^6.23.0",
-    "chokidar": "^3.4.0",
-    "clean-css": "^4.2.3",
-    "css-mqpacker": "^7.0.0",
-    "fs-jetpack": "^2.4.0",
     "husky": "^9.1.7",
     "lint-staged": "^16.2.7",
-    "node-notifier": "^5.4.0",
     "oxfmt": "^0.78.0",
-    "oxlint": "^1.93.0",
-    "postcss": "^7.0.32",
-    "postcss-nested": "^4.1.1",
-    "postcss-preset-env": "^6.5.0",
-    "postcss-prettify": "^0.3.4",
-    "rollup": "^1.32.1",
-    "rollup-plugin-babel": "^4.4.0",
-    "rollup-plugin-commonjs": "^9.2.0",
-    "rollup-plugin-node-resolve": "^4.0.0",
-    "terser": "^4.8.0",
-    "typescript": "^5.9.3",
-    "uninstall": "0.0.0"
+    "oxlint": "^1.93.0"
   }
 }

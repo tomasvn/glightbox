@@ -4,7 +4,7 @@
     "correctness": "off"
   },
   "plugins": [],
-  "ignorePatterns": ["node_modules", "dist/js/*.js", "dist/css/*.css"],
+  "ignorePatterns": ["node_modules", "**/dist/**", "**/.astro/**", "packages/docs/public/**"],
   "rules": {
     "curly": "error",
     "new-cap": "error",

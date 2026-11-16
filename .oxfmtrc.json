@@ -29,5 +29,5 @@
       }
     }
   ],
-  "ignorePatterns": ["node_modules", "dist/js/*.js", "dist/css/*.css"]
+  "ignorePatterns": ["node_modules", "**/dist/**", "**/.astro/**", "packages/docs/public/**"]
 }

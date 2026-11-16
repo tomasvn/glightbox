@@ -4,13 +4,13 @@ const jetpack = require('fs-jetpack');
 const path = require('path');
 const archiver = require('archiver');
 const args = process.argv.slice(2);
-const folder = path.join(__dirname, '/..');
+const folder = path.resolve(__dirname, '../glightbox');
 
 /**
  * Realease new version
  * calling
- * node development/package.js versionhere
- * then npm publish
+ * node packages/build/package.js version here
+ * then npm publish --workspace @tomasvn/glightbox
  */
 
 async function createFolder() {
@@ -20,7 +20,7 @@ async function createFolder() {
     const newVersion = args[0];
 
     await updateFileVersion({
-        file: path.join(folder, 'index.html'),
+        file: path.resolve(__dirname, '../docs/public/demo.html'),
         search: /download\/(.*)\/glightbox/g,
         replace: newVersion
     });

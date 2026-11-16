@@ -1,0 +1,93 @@
+---
+title: Getting Started
+description: Install GLightbox and create your first lightbox.
+---
+
+import { Tabs, TabItem } from '@astrojs/starlight/components';
+
+## Install
+
+Install the package with your preferred package manager:
+
+<Tabs>
+<TabItem label="npm">
+
+```sh
+npm install @tomasvn/glightbox
+```
+
+</TabItem>
+<TabItem label="Yarn">
+
+```sh
+yarn add @tomasvn/glightbox
+```
+
+</TabItem>
+<TabItem label="pnpm">
+
+```sh
+pnpm add @tomasvn/glightbox
+```
+
+</TabItem>
+</Tabs>
+
+Import GLightbox and its stylesheet in your application:
+
+```js
+import GLightbox from '@tomasvn/glightbox';
+import '@tomasvn/glightbox/dist/css/glightbox.css';
+
+const lightbox = GLightbox({ selector: '.glightbox' });
+```
+
+Or load the browser bundle from jsDelivr:
+
+```html
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tomasvn/glightbox@3.7.0/dist/css/glightbox.css" />
+<script src="https://cdn.jsdelivr.net/npm/@tomasvn/glightbox@3.7.0/dist/js/glightbox.min.js"></script>
+```
+
+When using the browser bundle, initialize it after your gallery markup:
+
+```html
+<script>
+    const lightbox = GLightbox({ selector: '.glightbox' });
+</script>
+```
+
+TypeScript declarations are included in the npm package; no separate `@types` package is needed.
+
+## Add a gallery
+
+Add the `glightbox` class to each link. Links with the same `data-gallery` value are grouped together.
+
+```html
+<a href="large-image.jpg" class="glightbox" data-gallery="photos">
+    <img src="thumbnail.jpg" alt="A mountain at sunset" />
+</a>
+<a href="another-image.jpg" class="glightbox" data-gallery="photos">
+    <img src="another-thumbnail.jpg" alt="A forest trail" />
+</a>
+```
+
+GLightbox infers the slide type from the URL. You can override it with `data-type` or `data-glightbox`:
+
+```html
+<a href="https://example.com/media" class="glightbox" data-type="image">
+    <img src="thumbnail.jpg" alt="Example image" />
+</a>
+```
+
+## Configure the instance
+
+Pass options when creating the lightbox. See the [complete options reference](/glightbox/options/).
+
+```js
+const lightbox = GLightbox({
+    selector: '.glightbox',
+    touchNavigation: true,
+    loop: false
+});
+```

@@ -10,10 +10,10 @@ const fs = require('fs');
 function postcssCompiler(config) {
     const { file, dest, minify = true } = config;
     const fileName = path.basename(file);
-    const from = path.join(__dirname, '../', file);
-    const to = path.join(__dirname, '../', dest, fileName);
+    const from = path.resolve(file);
+    const to = path.resolve(dest, fileName);
     const fileNameMin = path.extname(fileName);
-    const min = path.join(__dirname, '../', dest, fileName.replace(fileNameMin, `.min${fileNameMin}`));
+    const min = path.resolve(dest, fileName.replace(fileNameMin, `.min${fileNameMin}`));
     const css = fs.readFileSync(from, 'utf8');
 
     return new Promise((resolve, reject) => {

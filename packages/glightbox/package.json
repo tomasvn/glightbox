@@ -1,0 +1,44 @@
+{
+  "name": "@tomasvn/glightbox",
+  "version": "3.7.0",
+  "description": "Pure Javascript lightbox",
+  "main": "dist/js/glightbox.min.js",
+  "files": [
+    "dist",
+    "src",
+    "index.d.ts",
+    "CHANGELOG.md",
+    "EXAMPLES.md"
+  ],
+  "scripts": {
+    "build": "npm run build --workspace @tomasvn/glightbox-build",
+    "test": "node --test && npm run test:types",
+    "test:types": "tsc --noEmit --strict --target es2020 --module commonjs --moduleResolution node tests/types/contract.ts",
+    "watch": "npm run watch --workspace @tomasvn/glightbox-build",
+    "lint": "oxlint src/js",
+    "format": "oxfmt \"src/js/**/*.js\""
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "author": "Biati Digital & Ngoc Tu Nguyen",
+  "types": "./index.d.ts",
+  "keywords": [
+    "lightbox",
+    "javascript",
+    "gallery",
+    "popup"
+  ],
+  "license": "MIT",
+  "homepage": "https://tomasvn.github.io/glightbox/",
+  "repository": {
+    "url": "https://github.com/tomasvn/glightbox",
+    "type": "git",
+    "directory": "packages/glightbox"
+  },
+  "bugs": "https://github.com/biati-digital/glightbox/issues",
+  "devDependencies": {
+    "@tomasvn/glightbox-build": "*",
+    "typescript": "^5.9.3"
+  }
+}

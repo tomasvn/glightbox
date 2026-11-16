@@ -5,14 +5,15 @@ const jscompiler = require('./jscompiler');
 const postcssCompiler = require('./postcss');
 const terser = require('terser');
 
+const root = path.resolve(__dirname, '../glightbox');
 let config = {
     js: {
-        src: 'src/js',
-        dest: 'dist/js',
+        src: path.join(root, 'src/js'),
+        dest: path.join(root, 'dist/js')
     },
     css: {
-        src: 'src/postcss',
-        dest: 'dist/css',
+        src: path.join(root, 'src/postcss'),
+        dest: path.join(root, 'dist/css')
     }
 };
 
@@ -34,11 +35,11 @@ async function handleJavascript(file) {
         format: 'umd',
         sourcemap: false,
         moduleID: 'GLightbox'
-    }).catch(error => console.log(error));
+    }).catch((error) => console.log(error));
 
     if (!res) {
         console.log('Build Error', `View logs for more info`);
-        console.log(res)
+        console.log(res);
         return false;
     }
 
@@ -51,7 +52,6 @@ async function handleJavascript(file) {
 
     console.log('Javascript Build', `Compiled and Minified ${name}`);
 }
-
 
 /**
  * Handle Postcss files
@@ -67,14 +67,12 @@ async function handlePostCSS(file) {
         file,
         dest,
         minify: true
-    }).catch(error => console.log(error));
+    }).catch((error) => console.log(error));
     if (!res) {
         return false;
     }
     console.log('PostCSS Build', `Compiled and Minified ${name}`);
 }
-
-
 
 /**
  * Watcher
@@ -82,24 +80,24 @@ async function handlePostCSS(file) {
  * this includes js and css files
  */
 function filesWatcher() {
-    const watcher = chokidar.watch(['src'], {
-        ignored: ['.DS_Store', 'src/js/.jshintrc', 'src/js/.babelrc'],
+    const watcher = chokidar.watch(path.join(root, 'src'), {
+        ignored: ['**/.DS_Store', '**/.jshintrc', '**/.babelrc'],
         persistent: true,
         depth: 3,
         awaitWriteFinish: {
             stabilityThreshold: 500,
             pollInterval: 500
-        },
+        }
     });
 
-    watcher.on('change', path => {
+    watcher.on('change', (path) => {
         if (path.endsWith('.js')) {
-           return handleJavascript(path);
+            return handleJavascript(path);
         }
         if (path.endsWith('.css')) {
             return handlePostCSS(path);
         }
-    })
-    watcher.on('ready', () => console.log('Watching files', 'Initial scan complete. Ready for changes'))
+    });
+    watcher.on('ready', () => console.log('Watching files', 'Initial scan complete. Ready for changes'));
 }
 filesWatcher();

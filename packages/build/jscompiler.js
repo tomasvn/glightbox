@@ -28,7 +28,7 @@ function jscompiler(config) {
     const moduleID = config.hasOwnProperty('moduleID') ? config.moduleID : false;
 
     let name = config.hasOwnProperty('name') ? config.name : camelCase(singleFileName);
-    let outPutFile = path.join(__dirname, '../', dest, fileName);
+    let outPutFile = path.resolve(dest, fileName);
     let customFileName = config.hasOwnProperty('fileName') ? config.fileName : false;
 
     if (customFileName) {

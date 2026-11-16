@@ -1,0 +1,55 @@
+---
+import SocialIcons from '@astrojs/starlight/components/SocialIcons.astro';
+
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const links = [
+    { label: 'Install', slug: 'getting-started' },
+    { label: 'Features', slug: 'features' },
+    { label: 'Examples', slug: 'examples' },
+    { label: 'Guides', slug: 'guides' },
+    { label: 'Changelog', slug: 'changelog' },
+    { label: 'License', slug: 'license' }
+];
+---
+
+<nav aria-label="Main" class="section-links">
+    {
+        links.map(({ label, slug }) => {
+            const href = `${base}/${slug}/`;
+            return (
+                <a href={href} aria-current={Astro.url.pathname.replace(/\/$/, '') === href.replace(/\/$/, '') ? 'page' : undefined}>
+                    {label}
+                </a>
+            );
+        })
+    }
+</nav>
+<SocialIcons />
+
+<style>
+    .section-links {
+        display: none;
+        align-items: center;
+        gap: 1rem;
+        white-space: nowrap;
+        font-size: var(--sl-text-sm);
+    }
+
+    .section-links a {
+        color: var(--sl-color-text);
+        text-decoration: none;
+    }
+
+    .section-links a:hover,
+    .section-links a[aria-current='page'] {
+        color: var(--sl-color-text-accent);
+        text-decoration: underline;
+        text-underline-offset: 0.25em;
+    }
+
+    @media (min-width: 64rem) {
+        .section-links {
+            display: flex;
+        }
+    }
+</style>
