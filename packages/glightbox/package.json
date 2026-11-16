@@ -8,7 +8,9 @@
     "src",
     "index.d.ts",
     "CHANGELOG.md",
-    "EXAMPLES.md"
+    "EXAMPLES.md",
+    "README.md",
+    "LICENSE.md"
   ],
   "scripts": {
     "build": "npm run build --workspace @tomasvn/glightbox-build",
@@ -32,7 +34,7 @@
   "license": "MIT",
   "homepage": "https://tomasvn.github.io/glightbox/",
   "repository": {
-    "url": "https://github.com/tomasvn/glightbox",
+    "url": "git+https://github.com/tomasvn/glightbox.git",
     "type": "git",
     "directory": "packages/glightbox"
   },

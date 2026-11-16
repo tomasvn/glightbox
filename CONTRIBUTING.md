@@ -38,4 +38,13 @@ For changes that should appear in a release, run `npm run changeset`, select `@t
 
 Run release commands from the repository root. Changesets updates the library version and changelog in `packages/glightbox`; the root, documentation, and build packages are private. To inspect the published package, run `npm pack --workspace @tomasvn/glightbox --dry-run`.
 
+To build the library and validate publishing without uploading a release, run:
+
+```sh
+npm run build:lib
+npm publish --workspace @tomasvn/glightbox --dry-run
+```
+
+Always target the library workspace when publishing. Running `npm publish --dry-run` without `--workspace` targets the private root package, which has no version and can cause npm to fail with `Cannot read properties of null (reading 'prerelease')`.
+
 Thank you to everyone who has contributed to GLightbox.js!
