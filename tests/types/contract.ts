@@ -5,6 +5,7 @@ const emptyResult: false | void = lightbox.open();
 
 GLightbox({
     selector: null,
+    touchVideoClosable: true,
     elements: [
         { href: 'image.jpg', alt: 'An image', width: '90vw' },
         { href: 'video.mp4', type: 'video', videoProvider: 'local', width: 900 },

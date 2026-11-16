@@ -52,6 +52,7 @@ export default function touchNavigation(instance) {
     let currentSlide = null;
     let media = null;
     let mediaImage = null;
+    let verticalSwipeClosable = false;
     let doingMove = false;
     let initScale = 1;
     let maxScale = 4.5;
@@ -105,6 +106,7 @@ export default function touchNavigation(instance) {
                 if (hasClass(media, 'gslide-image')) {
                     mediaImage = media.querySelector('img');
                 }
+                verticalSwipeClosable = !!mediaImage || (instance.settings.touchVideoClosable && hasClass(media, 'gslide-video'));
 
                 const windowWidth = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
 
@@ -158,7 +160,7 @@ export default function touchNavigation(instance) {
             vDistancePercent = (vDistance * 100) / winHeight;
 
             let opacity;
-            if (vSwipe && mediaImage) {
+            if (vSwipe && verticalSwipeClosable) {
                 opacity = 1 - Math.abs(vDistance) / winHeight;
                 overlay.style.opacity = opacity;
 
@@ -175,7 +177,7 @@ export default function touchNavigation(instance) {
                 }
             }
 
-            if (!mediaImage) {
+            if (!verticalSwipeClosable) {
                 return cssTransform(media, `translate3d(${hDistancePercent}%, 0, 0)`);
             }
 
@@ -194,7 +196,7 @@ export default function touchNavigation(instance) {
             const v = Math.abs(parseInt(vDistancePercent));
             const h = Math.abs(parseInt(hDistancePercent));
 
-            if (v > 29 && mediaImage) {
+            if (v > 29 && verticalSwipeClosable) {
                 instance.close();
                 return;
             }

@@ -50,8 +50,8 @@ Or manually download and link `glightbox.min.js` in your HTML:
 
 <!-- USING A CDN -->
 
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tomasvn/glightbox@3.6.1/dist/css/glightbox.min.css" />
-<script src="https://cdn.jsdelivr.net/npm/@tomasvn/glightbox@3.6.1/dist/js/glightbox.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tomasvn/glightbox@3.7.0/dist/css/glightbox.min.css" />
+<script src="https://cdn.jsdelivr.net/npm/@tomasvn/glightbox@3.7.0/dist/js/glightbox.min.js"></script>
 
 <script type="text/javascript">
   const lightbox = GLightbox({ ...options });
@@ -60,7 +60,7 @@ Or manually download and link `glightbox.min.js` in your HTML:
 <!-- USING ES MODULES -->
 
 <script type="module">
-  import 'https://cdn.jsdelivr.net/npm/@tomasvn/glightbox@3.6.1/dist/js/glightbox.min.js';
+  import 'https://cdn.jsdelivr.net/npm/@tomasvn/glightbox@3.7.0/dist/js/glightbox.min.js';
 
   const lightbox = GLightbox({ ...options });
 </script>
@@ -166,6 +166,7 @@ To define gallery items in JavaScript, see [Examples](./EXAMPLES.md#javascript-g
 | prevButtonText | string | `Previous` | Text for the previous slide button. |
 | touchNavigation | boolean | `true` | Enable or disable the touch navigation (swipe). |
 | touchFollowAxis | boolean | `true` | Image follow axis when dragging on mobile. |
+| touchVideoClosable | boolean | `false` | Allow closing videos by swiping up or down on touch devices. |
 | keyboardNavigation | boolean | `true` | Enable or disable the keyboard navigation. |
 | closeOnOutsideClick | boolean | `true` | Close the lightbox when clicking outside the active slide. |
 | startAt | number | `0` | Start lightbox at defined index. |

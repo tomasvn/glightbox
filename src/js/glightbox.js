@@ -10,7 +10,7 @@ import Slide from './core/slide.js';
 import touchNavigation from './core/touch-navigation.js';
 import * as _ from './utils/helpers.js';
 
-const version = '3.6.1';
+const version = '3.7.0';
 const isMobile = _.isMobile();
 const isTouch = _.isTouch();
 const html = document.getElementsByTagName('html')[0];
@@ -50,6 +50,7 @@ const defaults = {
     oneSlidePerOpen: false,
     touchNavigation: true,
     touchFollowAxis: true,
+    touchVideoClosable: false,
     keyboardNavigation: true,
     closeOnOutsideClick: true,
     plugins: false,

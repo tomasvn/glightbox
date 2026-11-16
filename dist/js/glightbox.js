@@ -1082,18 +1082,18 @@
       var slideParamas = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
       _classCallCheck(this, SlideConfigParser);
       this.defaults = {
-        href: "",
-        sizes: "",
-        srcset: "",
-        title: "",
-        type: "",
-        videoProvider: "",
-        description: "",
-        alt: "",
-        descPosition: "bottom",
-        effect: "",
-        width: "",
-        height: "",
+        href: '',
+        sizes: '',
+        srcset: '',
+        title: '',
+        type: '',
+        videoProvider: '',
+        description: '',
+        alt: '',
+        descPosition: 'bottom',
+        effect: '',
+        width: '',
+        height: '',
         content: false,
         zoomable: true,
         draggable: true
@@ -1108,30 +1108,30 @@
         var origin = url;
         url = url.toLowerCase();
         if (url.match(/\.(?:jpeg|jpg|jpe|gif|png|apn|webp|avif|svg)|^data:image\/[^;,]+(?:;[^,]*)?;base64,/) !== null) {
-          return "image";
+          return 'image';
         }
         if (url.match(/(youtube\.com|youtube-nocookie\.com)\/watch\?v=([a-zA-Z0-9\-_]+)/) || url.match(/youtu\.be\/([a-zA-Z0-9\-_]+)/) || url.match(/(youtube\.com|youtube-nocookie\.com)\/embed\/([a-zA-Z0-9\-_]+)/) || url.match(/(youtube\.com|youtube-nocookie\.com)\/shorts\/([a-zA-Z0-9\-_]+)/)) {
-          return "video";
+          return 'video';
         }
         if (url.match(/vimeo\.com\/([0-9]*)/)) {
-          return "video";
+          return 'video';
         }
         if (url.match(/\.(mp4|ogg|webm|mov)/) !== null) {
-          return "video";
+          return 'video';
         }
         if (url.match(/\.(mp3|wav|wma|aac|ogg)/) !== null) {
-          return "audio";
+          return 'audio';
         }
-        if (url.indexOf("#") > -1) {
-          var hash = origin.split("#").pop();
-          if (hash.trim() !== "") {
-            return "inline";
+        if (url.indexOf('#') > -1) {
+          var hash = origin.split('#').pop();
+          if (hash.trim() !== '') {
+            return 'inline';
           }
         }
-        if (url.indexOf("goajax=true") > -1) {
-          return "ajax";
+        if (url.indexOf('goajax=true') > -1) {
+          return 'ajax';
         }
-        return "external";
+        return 'external';
       }
     }, {
       key: "parseConfig",
@@ -1141,10 +1141,10 @@
           descPosition: settings.descPosition
         }, this.defaults);
         if (isObject(element) && !isNode(element)) {
-          if (!has(element, "type")) {
-            if (has(element, "content") && element.content) {
-              element.type = "inline";
-            } else if (has(element, "href")) {
+          if (!has(element, 'type')) {
+            if (has(element, 'content') && element.content) {
+              element.type = 'inline';
+            } else if (has(element, 'href')) {
               element.type = this.sourceType(element.href);
             }
           }
@@ -1152,19 +1152,19 @@
           this.setSize(objectData, settings);
           return objectData;
         }
-        var url = "";
-        var config = element.getAttribute("data-glightbox");
+        var url = '';
+        var config = element.getAttribute('data-glightbox');
         var nodeType = element.nodeName.toLowerCase();
-        if (nodeType === "a") {
+        if (nodeType === 'a') {
           url = element.href;
         }
-        if (nodeType === "img") {
+        if (nodeType === 'img') {
           url = element.src;
           data.alt = element.alt;
         }
         data.href = url;
         each(data, function (val, key) {
-          if (has(settings, key) && key !== "width") {
+          if (has(settings, key) && key !== 'width') {
             data[key] = settings[key];
           }
           var nodeData = element.dataset[key];
@@ -1173,7 +1173,7 @@
           }
         });
         if (data.content) {
-          data.type = "inline";
+          data.type = 'inline';
         }
         if (!data.type && url) {
           data.type = this.sourceType(url);
@@ -1181,36 +1181,36 @@
         if (!isNil(config)) {
           var cleanKeys = [];
           each(data, function (v, k) {
-            cleanKeys.push(";\\s?" + k);
+            cleanKeys.push(';\\s?' + k);
           });
-          cleanKeys = cleanKeys.join("\\s?:|");
-          if (config.trim() !== "") {
+          cleanKeys = cleanKeys.join('\\s?:|');
+          if (config.trim() !== '') {
             each(data, function (val, key) {
               var str = config;
-              var match = "s?" + key + "s?:s?(.*?)(" + cleanKeys + "s?:|$)";
+              var match = 's?' + key + 's?:s?(.*?)(' + cleanKeys + 's?:|$)';
               var regex = new RegExp(match);
               var matches = str.match(regex);
               if (matches && matches.length && matches[1]) {
-                var value = matches[1].trim().replace(/;\s*$/, "");
+                var value = matches[1].trim().replace(/;\s*$/, '');
                 data[key] = _this.sanitizeValue(value);
               }
             });
           }
         } else {
-          if (!data.title && nodeType == "a") {
+          if (!data.title && nodeType == 'a') {
             var title = element.title;
-            if (!isNil(title) && title !== "") {
+            if (!isNil(title) && title !== '') {
               data.title = title;
             }
           }
-          if (!data.title && nodeType == "img") {
+          if (!data.title && nodeType == 'img') {
             var alt = element.alt;
-            if (!isNil(alt) && alt !== "") {
+            if (!isNil(alt) && alt !== '') {
               data.title = alt;
             }
           }
         }
-        if (data.description && data.description.substring(0, 1) === ".") {
+        if (data.description && data.description.substring(0, 1) === '.') {
           var description;
           try {
             description = document.querySelector(data.description).innerHTML;
@@ -1224,7 +1224,7 @@
           }
         }
         if (!data.description) {
-          var nodeDesc = element.querySelector(".glightbox-desc");
+          var nodeDesc = element.querySelector('.glightbox-desc');
           if (nodeDesc) {
             data.description = nodeDesc.innerHTML;
           }
@@ -1237,11 +1237,11 @@
       key: "setSize",
       value: function setSize(data, settings) {
         var element = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : null;
-        var defaultWith = data.type == "video" ? this.checkSize(settings.videosWidth) : this.checkSize(settings.width);
+        var defaultWith = data.type == 'video' ? this.checkSize(settings.videosWidth) : this.checkSize(settings.width);
         var defaultHeight = this.checkSize(settings.height);
-        data.width = has(data, "width") && data.width !== "" ? this.checkSize(data.width) : defaultWith;
-        data.height = has(data, "height") && data.height !== "" ? this.checkSize(data.height) : defaultHeight;
-        if (element && data.type == "image") {
+        data.width = has(data, 'width') && data.width !== '' ? this.checkSize(data.width) : defaultWith;
+        data.height = has(data, 'height') && data.height !== '' ? this.checkSize(data.height) : defaultHeight;
+        if (element && data.type == 'image') {
           data._hasCustomWidth = element.dataset.width ? true : false;
           data._hasCustomHeight = element.dataset.height ? true : false;
         }
@@ -1255,10 +1255,10 @@
     }, {
       key: "sanitizeValue",
       value: function sanitizeValue(val) {
-        if (val !== "true" && val !== "false") {
+        if (val !== 'true' && val !== 'false') {
           return val;
         }
-        return val === "true";
+        return val === 'true';
       }
     }]);
   }();
@@ -1854,6 +1854,7 @@
     var currentSlide = null;
     var media = null;
     var mediaImage = null;
+    var verticalSwipeClosable = false;
     var doingMove = false;
     var initScale = 1;
     var maxScale = 4.5;
@@ -1899,6 +1900,7 @@
           if (hasClass(media, 'gslide-image')) {
             mediaImage = media.querySelector('img');
           }
+          verticalSwipeClosable = !!mediaImage || instance.settings.touchVideoClosable && hasClass(media, 'gslide-video');
           var windowWidth = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
           if (windowWidth > 769) {
             media = currentSlide.querySelector('.ginner-container');
@@ -1941,7 +1943,7 @@
         vDistance = endCoords.pageY - startCoords.pageY;
         vDistancePercent = vDistance * 100 / winHeight;
         var opacity;
-        if (vSwipe && mediaImage) {
+        if (vSwipe && verticalSwipeClosable) {
           opacity = 1 - Math.abs(vDistance) / winHeight;
           overlay.style.opacity = opacity;
           if (instance.settings.touchFollowAxis) {
@@ -1955,7 +1957,7 @@
             vDistancePercent = 0;
           }
         }
-        if (!mediaImage) {
+        if (!verticalSwipeClosable) {
           return cssTransform(media, "translate3d(".concat(hDistancePercent, "%, 0, 0)"));
         }
         cssTransform(media, "translate3d(".concat(hDistancePercent, "%, ").concat(vDistancePercent, "%, 0)"));
@@ -1972,7 +1974,7 @@
         }
         var v = Math.abs(parseInt(vDistancePercent));
         var h = Math.abs(parseInt(hDistancePercent));
-        if (v > 29 && mediaImage) {
+        if (v > 29 && verticalSwipeClosable) {
           instance.close();
           return;
         }
@@ -2059,7 +2061,7 @@
     instance.events['touch'] = touchInstance;
   }
 
-  var _version = '3.6.1';
+  var _version = '3.7.0';
   var isMobile$1 = isMobile();
   var isTouch$1 = isTouch();
   var html = document.getElementsByTagName('html')[0];
@@ -2098,6 +2100,7 @@
     oneSlidePerOpen: false,
     touchNavigation: true,
     touchFollowAxis: true,
+    touchVideoClosable: false,
     keyboardNavigation: true,
     closeOnOutsideClick: true,
     plugins: false,

@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## 3.7.0
+
+### Minor Changes
+
+- Add an option to close video slides with a vertical touch swipe. Closes [#286](https://github.com/biati-digital/glightbox/issues/286)
+
 ## 3.6.1
 
 ### Patch Changes

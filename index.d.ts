@@ -1,4 +1,4 @@
-// Type definitions for Glightbox 3.6.1
+// Type definitions for Glightbox 3.7.0
 // Project: https://github.com/biati-digital/glightbox/blob/master/README.md
 // Definitions by: Ngoc Tu Nguyen <https://github.com/tomasvn>
 // Definitions: https://github.com/DefinitelyTyped/DefinitelyTyped
@@ -186,6 +186,12 @@ declare namespace Glightbox {
          * @default true
          */
         touchFollowAxis?: boolean;
+        /**
+         * Allow closing videos by swiping up or down on touch devices.
+         *
+         * @default false
+         */
+        touchVideoClosable?: boolean;
         /**
          * Enable or disable the keyboard navigation.
          *
