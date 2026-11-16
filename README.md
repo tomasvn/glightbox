@@ -9,6 +9,8 @@ A lightweight JavaScript lightbox for images, videos, iframes, and inline conten
 - [Library usage and options](./packages/glightbox/README.md)
 - [Examples](./packages/glightbox/EXAMPLES.md)
 - [Changelog](./packages/glightbox/CHANGELOG.md)
+- [License](./packages/glightbox/LICENSE.md)
+- [Ko-fi](https://ko-fi.com/tomasvn1994)
 
 ## Install the library
 
