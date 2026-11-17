@@ -1,13 +1,13 @@
+import { has, closest, injectAssets, addClass, removeClass, createHTML, isFunction, waitUntil } from '../utils/helpers.js';
+
 /**
  * Set slide video
  *
- * @param {node} slide
+ * @param {Node} slide
  * @param {object} data
- * @param {int} index
+ * @param {number} index
  * @param {function} callback
  */
-import { has, closest, injectAssets, addClass, removeClass, createHTML, isFunction, waitUntil } from '../utils/helpers.js';
-
 export default function slideVideo(slide, data, index, callback) {
     const slideContainer = slide.querySelector('.ginner-container');
     const videoID = 'gvideo' + index;
@@ -76,6 +76,18 @@ export default function slideVideo(slide, data, index, callback) {
             customPlaceholder.id = videoID;
             customPlaceholder.dataset.plyrProvider = provider;
             customPlaceholder.dataset.plyrEmbedId = url;
+            if (provider === 'vimeo') {
+                // Match Vimeo video URLs, capturing an optional path hash and query string.
+                const match = url.match(/^(?:https?:)?\/\/(?:www\.|player\.)?vimeo\.com\/(?:video\/)?\d+(?:\/([a-z0-9]+))?\/?(?:\?([^#]*))?(?:#.*)?$/i);
+                if (match) {
+                    // Capture only a complete, nonempty h parameter.
+                    const queryHash = (match[2] || '').match(/(?:^|&)h=([a-zA-Z0-9]+)(?:&|$)/);
+                    const hash = match[1] || (queryHash && queryHash[1]);
+                    if (hash) {
+                        customPlaceholder.dataset.plyrEmbedHash = hash;
+                    }
+                }
+            }
         }
 
         addClass(videoWrapper, `${provider}-video gvideo`);
@@ -114,7 +126,7 @@ export default function slideVideo(slide, data, index, callback) {
 /**
  * Handle fullscreen
  *
- * @param {object} event
+ * @param {Event} event
  */
 function handleMediaFullScreen(event) {
     const media = closest(event.target, '.gslide-media');

@@ -244,4 +244,47 @@ describe('slideVideo', () => {
         assert.equal(placeholder.dataset.plyrEmbedId, url);
         assert.deepEqual(fixture.htmlAssignments, ['<div class="gvideo-wrapper"></div>']);
     });
+
+    // Reference: https://github.com/regseb/castkodi/blob/main/test/integration/scraper/vimeo.test.js
+    it('passes unlisted Vimeo hashes to Plyr without changing the embed URL', async () => {
+        const cases = [
+            ['https://vimeo.com/304887422/34c51f7a09', '34c51f7a09'],
+            ['https://vimeo.com/304887422/ABC123/?autoplay=1', 'ABC123'],
+            ['https://player.vimeo.com/video/304887422?h=34c51f7a09', '34c51f7a09'],
+            ['https://player.vimeo.com/video/304887422?h=ABC123', 'ABC123'],
+            ['https://player.vimeo.com/video/304887422?autoplay=1&h=34c51f7a09#t=1', '34c51f7a09']
+        ];
+
+        for (const [url, hash] of cases) {
+            const fixture = createFixture();
+            await loadVideo(fixture, { href: url, width: '80vw' });
+            const placeholder = fixture.slide.querySelector('.gvideo-wrapper').children[0];
+            assert.equal(placeholder.dataset.plyrProvider, 'vimeo', url);
+            assert.equal(placeholder.dataset.plyrEmbedId, url, url);
+            assert.equal(placeholder.dataset.plyrEmbedHash, hash, url);
+        }
+    });
+
+    it('handles explicit Vimeo providers and ignores missing or invalid hashes', async () => {
+        const cases = [
+            ['https://vimeo.com/304887422/34c51f7a09', '34c51f7a09'],
+            ['https://vimeo.com/304887422', undefined],
+            ['https://player.vimeo.com/video/304887422?otherh=deadbeef', undefined],
+            ['https://player.vimeo.com/video/304887422?h=', undefined],
+            ['https://player.vimeo.com/video/304887422?h=abc,def', undefined],
+            ['https://player.vimeo.com/video/304887422#?h=deadbeef', undefined]
+        ];
+
+        for (const [url, hash] of cases) {
+            const fixture = createFixture();
+            await loadVideo(fixture, {
+                href: url,
+                videoProvider: 'vimeo',
+                width: '80vw'
+            });
+            const placeholder = fixture.slide.querySelector('.gvideo-wrapper').children[0];
+            assert.equal(placeholder.dataset.plyrEmbedId, url, url);
+            assert.equal(placeholder.dataset.plyrEmbedHash, hash, url);
+        }
+    });
 });

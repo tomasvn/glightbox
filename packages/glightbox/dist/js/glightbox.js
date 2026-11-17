@@ -929,17 +929,17 @@
 
   function slideVideo(slide, data, index, callback) {
     var _this = this;
-    var slideContainer = slide.querySelector('.ginner-container');
-    var videoID = 'gvideo' + index;
-    var slideMedia = slide.querySelector('.gslide-media');
+    var slideContainer = slide.querySelector(".ginner-container");
+    var videoID = "gvideo" + index;
+    var slideMedia = slide.querySelector(".gslide-media");
     var videoPlayers = this.getAllPlayers();
-    addClass(slideContainer, 'gvideo-container');
+    addClass(slideContainer, "gvideo-container");
     slideMedia.insertBefore(createHTML('<div class="gvideo-wrapper"></div>'), slideMedia.firstChild);
-    var videoWrapper = slide.querySelector('.gvideo-wrapper');
-    if (typeof this.settings.plyr.css === 'function') {
+    var videoWrapper = slide.querySelector(".gvideo-wrapper");
+    if (typeof this.settings.plyr.css === "function") {
       this.settings.plyr.css();
     } else {
-      injectAssets(this.settings.plyr.css, 'Plyr');
+      injectAssets(this.settings.plyr.css, "Plyr");
     }
     var url = data.href;
     var provider = data === null || data === void 0 ? void 0 : data.videoProvider;
@@ -947,70 +947,80 @@
     slideMedia.style.maxWidth = data.width;
     var initPlyr = function initPlyr(Plyr, config) {
       if (!provider && url.match(/vimeo\.com\/([0-9]*)/)) {
-        provider = 'vimeo';
+        provider = "vimeo";
       }
       if (!provider && (url.match(/(youtube\.com|youtube-nocookie\.com)\/watch\?v=([a-zA-Z0-9\-_]+)/) || url.match(/youtu\.be\/([a-zA-Z0-9\-_]+)/) || url.match(/(youtube\.com|youtube-nocookie\.com)\/embed\/([a-zA-Z0-9\-_]+)/) || url.match(/(youtube\.com|youtube-nocookie\.com)\/shorts\/([a-zA-Z0-9\-_]+)/))) {
-        provider = 'youtube';
+        provider = "youtube";
       }
-      if (provider === 'local' || !provider) {
-        provider = 'local';
-        var video = document.createElement('video');
+      if (provider === "local" || !provider) {
+        provider = "local";
+        var video = document.createElement("video");
         video.id = videoID;
-        video.className = 'gvideo-local';
-        video.preload = 'metadata';
+        video.className = "gvideo-local";
+        video.preload = "metadata";
         video.playsInline = true;
         video.controls = true;
-        video.style.background = '#000';
+        video.style.background = "#000";
         video.style.maxWidth = data.width;
-        video.setAttribute('x-webkit-airplay', 'allow');
-        var source = document.createElement('source');
+        video.setAttribute("x-webkit-airplay", "allow");
+        var source = document.createElement("source");
         source.src = url;
         video.appendChild(source);
         customPlaceholder = video;
       }
       if (!customPlaceholder) {
-        customPlaceholder = document.createElement('div');
+        customPlaceholder = document.createElement("div");
         customPlaceholder.id = videoID;
         customPlaceholder.dataset.plyrProvider = provider;
         customPlaceholder.dataset.plyrEmbedId = url;
+        if (provider === "vimeo") {
+          var match = url.match(/^(?:https?:)?\/\/(?:www\.|player\.)?vimeo\.com\/(?:video\/)?\d+(?:\/([a-z0-9]+))?\/?(?:\?([^#]*))?(?:#.*)?$/i);
+          if (match) {
+            var queryHash = (match[2] || "").match(/(?:^|&)h=([a-zA-Z0-9]+)(?:&|$)/);
+            var hash = match[1] || queryHash && queryHash[1];
+            if (hash) {
+              customPlaceholder.dataset.plyrEmbedHash = hash;
+            }
+          }
+        }
       }
       addClass(videoWrapper, "".concat(provider, "-video gvideo"));
       videoWrapper.appendChild(customPlaceholder);
-      videoWrapper.setAttribute('data-id', videoID);
-      videoWrapper.setAttribute('data-index', index);
-      var playerConfig = config || (has(_this.settings.plyr, 'config') ? _this.settings.plyr.config : {});
-      var player = new Plyr('#' + videoID, playerConfig);
-      player.on('ready', function (event) {
+      videoWrapper.setAttribute("data-id", videoID);
+      videoWrapper.setAttribute("data-index", index);
+      var playerConfig = config || (has(_this.settings.plyr, "config") ? _this.settings.plyr.config : {});
+      var player = new Plyr("#" + videoID, playerConfig);
+      player.on("ready", function (event) {
         videoPlayers[videoID] = event.detail.plyr;
         if (isFunction(callback)) {
           callback();
         }
       });
       waitUntil(function () {
-        return slide.querySelector('iframe') && slide.querySelector('iframe').dataset.ready == 'true';
+        return slide.querySelector("iframe") && slide.querySelector("iframe").dataset.ready == "true";
       }, function () {
         _this.resize(slide);
       });
-      player.on('enterfullscreen', handleMediaFullScreen);
-      player.on('exitfullscreen', handleMediaFullScreen);
+      player.on("enterfullscreen", handleMediaFullScreen);
+      player.on("exitfullscreen", handleMediaFullScreen);
     };
-    if (typeof this.settings.plyr.js === 'function') {
+    if (typeof this.settings.plyr.js === "function") {
       this.settings.plyr.js().then(function (v) {
         return initPlyr(v.Plyr, v.config);
       });
     } else {
-      injectAssets(this.settings.plyr.js, 'Plyr', function () {
+      injectAssets(this.settings.plyr.js, "Plyr", function () {
         return initPlyr(window.Plyr);
       });
     }
   }
   function handleMediaFullScreen(event) {
-    var media = closest(event.target, '.gslide-media');
-    if (event.type === 'enterfullscreen') {
-      addClass(media, 'fullscreen');
+    var media = closest(event.target, ".gslide-media");
+    if (event.type === "enterfullscreen") {
+      addClass(media, "fullscreen");
     }
-    if (event.type === 'exitfullscreen') {
-      removeClass(media, 'fullscreen');
+    if (event.type === "exitfullscreen") {
+      removeClass(media, "fullscreen");
     }
   }
 

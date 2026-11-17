@@ -1,5 +1,6 @@
 {
   "name": "@tomasvn/glightbox-build",
+  "version": "0.0.0",
   "private": true,
   "type": "commonjs",
   "scripts": {
