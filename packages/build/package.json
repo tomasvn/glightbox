@@ -1,6 +1,6 @@
 {
   "name": "@tomasvn/glightbox-build",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "private": true,
   "type": "commonjs",
   "scripts": {
@@ -8,26 +8,26 @@
     "watch": "node watcher.js"
   },
   "devDependencies": {
-    "@babel/cli": "^7.10.3",
-    "@babel/core": "^7.10.3",
-    "@babel/node": "^7.10.3",
-    "@babel/preset-env": "^7.10.3",
-    "@babel/register": "^7.10.3",
+    "@babel/cli": "^7.29.7",
+    "@babel/core": "^7.29.13",
+    "@babel/node": "^7.29.7",
+    "@babel/preset-env": "^7.29.14",
+    "@babel/register": "^7.29.13",
     "archiver": "^3.1.1",
     "babel-plugin-transform-runtime": "^6.23.0",
     "chokidar": "^3.4.0",
     "clean-css": "^4.2.3",
     "css-mqpacker": "^7.0.0",
     "fs-jetpack": "^2.4.0",
-    "node-notifier": "^5.4.0",
-    "postcss": "^7.0.32",
+    "node-notifier": "^8.0.1",
+    "postcss": "^8.5.32",
     "postcss-nested": "^4.1.1",
     "postcss-preset-env": "^6.5.0",
     "postcss-prettify": "^0.3.4",
-    "rollup": "^1.32.1",
+    "rollup": "^2.80.0",
     "rollup-plugin-babel": "^4.4.0",
     "rollup-plugin-commonjs": "^9.2.0",
     "rollup-plugin-node-resolve": "^4.0.0",
-    "terser": "^4.8.0"
+    "terser": "^4.8.1"
   }
 }
