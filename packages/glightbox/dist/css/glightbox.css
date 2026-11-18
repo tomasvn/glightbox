@@ -554,7 +554,8 @@ iframe.wait-autoplay {
   fill: var(--glightbox-icon-color, #fff);
 }
 
-.glightbox-clean .gprev {
+.glightbox-clean .gprev:not(.gprev-rtl),
+    .glightbox-clean .gnext.gnext-rtl {
   position: absolute;
   top: -100%;
   left: 30px;
@@ -562,12 +563,19 @@ iframe.wait-autoplay {
   height: 50px;
 }
 
-.glightbox-clean .gnext {
+.glightbox-clean .gnext:not(.gnext-rtl),
+    .glightbox-clean .gprev.gprev-rtl {
   position: absolute;
   top: -100%;
   right: 30px;
   width: 40px;
   height: 50px;
+}
+
+.glightbox-clean .gprev-rtl,
+    .glightbox-clean .gnext-rtl {
+  -webkit-transform: scale(-1, 1);
+  transform: scale(-1, 1);
 }
 
 .glightbox-clean .gclose {
@@ -933,10 +941,12 @@ iframe.wait-autoplay {
     background-color: rgba(0, 0, 0, 0.7);
     background-color: var(--glightbox-icon-bg-hover, rgba(0, 0, 0, 0.7));
   }
-  .glightbox-clean .gprev {
+  .glightbox-clean .gprev:not(.gprev-rtl),
+    .glightbox-clean .gnext.gnext-rtl {
     top: 45%;
   }
-  .glightbox-clean .gnext {
+  .glightbox-clean .gnext:not(.gnext-rtl),
+    .glightbox-clean .gprev.gprev-rtl {
     top: 45%;
   }
 }

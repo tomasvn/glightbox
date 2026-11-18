@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 import { describe, it } from 'node:test';
 import touchNavigation, { resetSlideMove } from '../src/js/core/touch-navigation.js';
 
-function createTouchNavigation({ mediaClass, touchVideoClosable = false }) {
+function createTouchNavigation({ mediaClass, touchVideoClosable = false, direction = 'ltr' }) {
     const oldDocument = globalThis.document;
     const oldWindow = globalThis.window;
     const overlay = {
@@ -55,19 +55,22 @@ function createTouchNavigation({ mediaClass, touchVideoClosable = false }) {
 
     let closeCount = 0;
     let nextSlideCount = 0;
+    let prevSlideCount = 0;
     const instance = {
         activeSlide: slide,
         elements: [{}, {}],
         events: {},
         index: 0,
-        settings: { touchFollowAxis: true, touchVideoClosable },
+        settings: { touchFollowAxis: true, touchVideoClosable, direction },
         close() {
             closeCount++;
         },
         nextSlide() {
             nextSlideCount++;
         },
-        prevSlide() {}
+        prevSlide() {
+            prevSlideCount++;
+        }
     };
     touchNavigation(instance);
 
@@ -81,6 +84,9 @@ function createTouchNavigation({ mediaClass, touchVideoClosable = false }) {
         },
         get nextSlideCount() {
             return nextSlideCount;
+        },
+        get prevSlideCount() {
+            return prevSlideCount;
         },
         restore() {
             if (oldDocument === undefined) {
@@ -166,7 +172,11 @@ describe('resetSlideMove', () => {
         };
 
         try {
-            const instance = { activeSlide: slide, events: {} };
+            const instance = {
+                activeSlide: slide,
+                events: {},
+                settings: { direction: 'ltr' }
+            };
             touchNavigation(instance);
             instance.events.touch.touchStart.dispatch({
                 pageX: 100,
@@ -250,6 +260,20 @@ describe('touch video dismissal', () => {
 
             fixture.instance.events.touch.swipe.dispatch({ direction: 'Left' });
             assert.equal(fixture.nextSlideCount, 1);
+        } finally {
+            fixture.restore();
+        }
+    });
+
+    it('reverses horizontal swipe navigation for rtl', () => {
+        const fixture = createTouchNavigation({ mediaClass: 'gslide-image', direction: 'rtl' });
+        try {
+            fixture.instance.events.touch.swipe.dispatch({ direction: 'Right' });
+            fixture.instance.index = 1;
+            fixture.instance.events.touch.swipe.dispatch({ direction: 'Left' });
+
+            assert.equal(fixture.nextSlideCount, 1);
+            assert.equal(fixture.prevSlideCount, 1);
         } finally {
             fixture.restore();
         }

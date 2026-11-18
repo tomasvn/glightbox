@@ -1,8 +1,8 @@
 (function (global, factory) {
   typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
   typeof define === 'function' && define.amd ? define(factory) :
-  (global = global || self, global.GLightbox = factory());
-}(this, (function () { 'use strict';
+  (global = typeof globalThis !== 'undefined' ? globalThis : global || self, global.GLightbox = factory());
+})(this, (function () { 'use strict';
 
   function _classCallCheck(a, n) {
     if (!(a instanceof n)) throw new TypeError("Cannot call a class as a function");
@@ -410,11 +410,11 @@
     };
     document.body.appendChild(script);
   }
-  function isMobile() {
+  function isMobile$1() {
     return 'navigator' in window && window.navigator.userAgent.match(/(iPad)|(iPhone)|(iPod)|(Android)|(PlayBook)|(BB10)|(BlackBerry)|(Opera Mini)|(IEMobile)|(webOS)|(MeeGo)/i);
   }
-  function isTouch() {
-    return isMobile() !== null || document.createTouch !== undefined || 'ontouchstart' in window || 'onmsgesturechange' in window || navigator.msMaxTouchPoints;
+  function isTouch$1() {
+    return isMobile$1() !== null || document.createTouch !== undefined || 'ontouchstart' in window || 'onmsgesturechange' in window || navigator.msMaxTouchPoints;
   }
   function isFunction(f) {
     return typeof f === 'function';
@@ -461,6 +461,12 @@
     return !isNaN(parseFloat(n)) && isFinite(n);
   }
 
+  var KEY_CODES = {
+    TAB: 9,
+    ESCAPE: 27,
+    ARROW_LEFT: 37,
+    ARROW_RIGHT: 39
+  };
   function getNextFocusElement() {
     var current = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : -1;
     var btns = document.querySelectorAll('.gbtn[data-taborder]:not(.disabled)');
@@ -498,9 +504,9 @@
       onElement: window,
       withCallback: function withCallback(event, target) {
         event = event || window.event;
-        var key = event.keyCode;
-        if (key == 9) {
-          var focusedButton = document.querySelector('.gbtn.focused');
+        var key = event.keyCode || event.key;
+        if (key == KEY_CODES.TAB || key === 'Tab') {
+          var focusedButton = document.querySelector(".gbtn.focused");
           if (!focusedButton) {
             var activeElement = document.activeElement && document.activeElement.nodeName ? document.activeElement.nodeName.toLocaleLowerCase() : false;
             if (activeElement == 'input' || activeElement == 'textarea' || activeElement == 'button') {
@@ -528,13 +534,13 @@
             addClass(nextFocus, 'focused');
           }
         }
-        if (key == 39) {
-          instance.nextSlide();
+        if (key == KEY_CODES.ARROW_RIGHT || key === 'ArrowRight') {
+          instance.settings.direction === 'rtl' ? instance.prevSlide() : instance.nextSlide();
         }
-        if (key == 37) {
-          instance.prevSlide();
+        if (key == KEY_CODES.ARROW_LEFT || key === 'ArrowLeft') {
+          instance.settings.direction === 'rtl' ? instance.nextSlide() : instance.prevSlide();
         }
-        if (key == 27) {
+        if (key == KEY_CODES.ESCAPE || key === 'Escape') {
           instance.close();
         }
       }
@@ -726,6 +732,8 @@
       this.dragContainer = this.el;
       this.slide = slide;
       this.instance = instance;
+      this.prevSlideDirection = instance.settings.direction === 'rtl' ? 'left' : 'right';
+      this.nextSlideDirection = instance.settings.direction === 'rtl' ? 'right' : 'left';
       this.el.addEventListener('mousedown', function (e) {
         return _this.dragStart(e);
       }, false);
@@ -779,8 +787,8 @@
         this.active = false;
         if (this.doSlideChange) {
           this.instance.preventOutsideClick = true;
-          this.doSlideChange == 'right' && this.instance.prevSlide();
-          this.doSlideChange == 'left' && this.instance.nextSlide();
+          this.doSlideChange == this.prevSlideDirection && this.instance.prevSlide();
+          this.doSlideChange == this.nextSlideDirection && this.instance.nextSlide();
         }
         if (this.doSlideClose) {
           this.instance.close();
@@ -835,8 +843,8 @@
               this.active = false;
               this.instance.preventOutsideClick = true;
               this.dragEnd(null);
-              doChange == 'right' && this.instance.prevSlide();
-              doChange == 'left' && this.instance.nextSlide();
+              doChange == this.prevSlideDirection && this.instance.prevSlide();
+              doChange == this.nextSlideDirection && this.instance.nextSlide();
               return;
             }
           }
@@ -862,7 +870,7 @@
         var currentXInt = Math.abs(this.currentX);
         if (currentXInt >= this.toleranceX) {
           var dragDir = this.currentX > 0 ? 'right' : 'left';
-          if (dragDir == 'left' && this.slide !== this.slide.parentNode.lastChild || dragDir == 'right' && this.slide !== this.slide.parentNode.firstChild) {
+          if (dragDir == this.nextSlideDirection && this.slide !== this.slide.parentNode.lastChild || dragDir == this.prevSlideDirection && this.slide !== this.slide.parentNode.firstChild) {
             doChange = dragDir;
           }
         }
@@ -1291,7 +1299,7 @@
         }
         var settings = this.instance.settings;
         var slideConfig = this.slideConfig;
-        var isMobileDevice = isMobile();
+        var isMobileDevice = isMobile$1();
         if (isFunction(settings.beforeSlideLoad)) {
           settings.beforeSlideLoad({
             index: this.index,
@@ -1888,6 +1896,8 @@
     var isInlined;
     var sliderWrapper = document.getElementById('glightbox-slider');
     var overlay = document.querySelector('.goverlay');
+    var prevSlideDirection = instance.settings.direction === 'rtl' ? 'Left' : 'Right';
+    var nextSlideDirection = instance.settings.direction === 'rtl' ? 'Right' : 'Left';
     var touchInstance = new TouchEvents(sliderWrapper, {
       touchStart: function touchStart(e) {
         process = true;
@@ -2054,13 +2064,13 @@
           doingZoom = false;
           return;
         }
-        if (evt.direction == 'Left') {
+        if (evt.direction == nextSlideDirection) {
           if (instance.index == instance.elements.length - 1) {
             return resetSlideMove(media);
           }
           instance.nextSlide();
         }
-        if (evt.direction == 'Right') {
+        if (evt.direction == prevSlideDirection) {
           if (instance.index == 0) {
             return resetSlideMove(media);
           }
@@ -2071,26 +2081,26 @@
     instance.events['touch'] = touchInstance;
   }
 
-  var _version = "3.7.1";
-  var isMobile$1 = isMobile();
-  var isTouch$1 = isTouch();
-  var html = document.getElementsByTagName("html")[0];
+  var _version = '3.8.0';
+  var isMobile = isMobile$1();
+  var isTouch = isTouch$1();
+  var html = document.getElementsByTagName('html')[0];
   var defaults = {
-    selector: ".glightbox",
+    selector: '.glightbox',
     elements: null,
-    skin: "clean",
-    theme: "clean",
+    skin: 'clean',
+    theme: 'clean',
     closeButton: true,
-    closeButtonText: "Close",
-    prevButtonText: "Previous",
-    nextButtonText: "Next",
+    closeButtonText: 'Close',
+    prevButtonText: 'Previous',
+    nextButtonText: 'Next',
     startAt: null,
     autoplayVideos: true,
     autofocusVideos: true,
-    descPosition: "bottom",
-    width: "900px",
-    height: "506px",
-    videosWidth: "960px",
+    descPosition: 'bottom',
+    width: '900px',
+    height: '506px',
+    videosWidth: '960px',
     beforeSlideChange: null,
     afterSlideChange: null,
     beforeSlideLoad: null,
@@ -2114,11 +2124,12 @@
     keyboardNavigation: true,
     closeOnOutsideClick: true,
     plugins: false,
+    direction: 'ltr',
     plyr: {
-      css: "https://cdn.plyr.io/3.6.12/plyr.css",
-      js: "https://cdn.plyr.io/3.6.12/plyr.js",
+      css: 'https://cdn.plyr.io/3.6.12/plyr.css',
+      js: 'https://cdn.plyr.io/3.6.12/plyr.js',
       config: {
-        ratio: "16:9",
+        ratio: '16:9',
         fullscreen: {
           enabled: true,
           iosNative: true
@@ -2137,32 +2148,32 @@
         }
       }
     },
-    openEffect: "zoom",
-    closeEffect: "zoom",
-    slideEffect: "slide",
-    moreText: "See more",
-    lessText: "See less",
+    openEffect: 'zoom',
+    closeEffect: 'zoom',
+    slideEffect: 'slide',
+    moreText: 'See more',
+    lessText: 'See less',
     moreLength: 60,
     cssEfects: {
       fade: {
-        "in": "fadeIn",
-        out: "fadeOut"
+        "in": 'fadeIn',
+        out: 'fadeOut'
       },
       zoom: {
-        "in": "zoomIn",
-        out: "zoomOut"
+        "in": 'zoomIn',
+        out: 'zoomOut'
       },
       slide: {
-        "in": "slideInRight",
-        out: "slideOutLeft"
+        "in": 'slideInRight',
+        out: 'slideOutLeft'
       },
       slideBack: {
-        "in": "slideInLeft",
-        out: "slideOutRight"
+        "in": 'slideInLeft',
+        out: 'slideOutRight'
       },
       none: {
-        "in": "none",
-        out: "none"
+        "in": 'none',
+        out: 'none'
       }
     },
     svg: {
@@ -2192,7 +2203,7 @@
         var _this = this;
         var selector = this.getSelector();
         if (selector) {
-          this.baseEvents = addEvent("click", {
+          this.baseEvents = addEvent('click', {
             onElement: selector,
             withCallback: function withCallback(e, target) {
               e.preventDefault();
@@ -2215,7 +2226,7 @@
         this.prevActiveSlide = null;
         var index = isNumber(startAt) ? startAt : this.settings.startAt;
         if (isNode(element)) {
-          var gallery = element.getAttribute("data-gallery");
+          var gallery = element.getAttribute('data-gallery');
           if (gallery) {
             this.fullElementsList = this.elements;
             this.elements = this.getGalleryElements(this.elements, gallery);
@@ -2231,33 +2242,33 @@
           index = 0;
         }
         this.build();
-        animateElement(this.overlay, this.settings.openEffect === "none" ? "none" : this.settings.cssEfects.fade["in"]);
+        animateElement(this.overlay, this.settings.openEffect === 'none' ? 'none' : this.settings.cssEfects.fade["in"]);
         var body = document.body;
         var scrollBar = window.innerWidth - document.documentElement.clientWidth;
         if (scrollBar > 0) {
           document.body.style.marginRight = "".concat(scrollBar, "px");
-          addClass(body, "gscrollbar-fixer");
+          addClass(body, 'gscrollbar-fixer');
         }
-        addClass(body, "glightbox-open");
-        addClass(html, "glightbox-open");
-        if (isMobile$1) {
-          addClass(document.body, "glightbox-mobile");
-          this.settings.slideEffect = "slide";
+        addClass(body, 'glightbox-open');
+        addClass(html, 'glightbox-open');
+        if (isMobile) {
+          addClass(document.body, 'glightbox-mobile');
+          this.settings.slideEffect = 'slide';
         }
         this.showSlide(index, true);
         if (this.elements.length === 1) {
-          addClass(this.prevButton, "glightbox-button-hidden");
-          addClass(this.nextButton, "glightbox-button-hidden");
+          addClass(this.prevButton, 'glightbox-button-hidden');
+          addClass(this.nextButton, 'glightbox-button-hidden');
         } else {
-          removeClass(this.prevButton, "glightbox-button-hidden");
-          removeClass(this.nextButton, "glightbox-button-hidden");
+          removeClass(this.prevButton, 'glightbox-button-hidden');
+          removeClass(this.nextButton, 'glightbox-button-hidden');
         }
         this.lightboxOpen = true;
-        this.trigger("open");
+        this.trigger('open');
         if (isFunction(this.settings.onOpen)) {
           this.settings.onOpen();
         }
-        if (isTouch$1 && this.settings.touchNavigation) {
+        if (isTouch && this.settings.touchNavigation) {
           touchNavigation(this);
         }
         if (this.settings.keyboardNavigation) {
@@ -2278,13 +2289,13 @@
         var first = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
         show(this.loader);
         this.index = parseInt(index);
-        var current = this.slidesContainer.querySelector(".current");
+        var current = this.slidesContainer.querySelector('.current');
         if (current) {
-          removeClass(current, "current");
+          removeClass(current, 'current');
         }
         this.slideAnimateOut();
-        var slideNode = this.slidesContainer.querySelectorAll(".gslide")[index];
-        if (hasClass(slideNode, "loaded")) {
+        var slideNode = this.slidesContainer.querySelectorAll('.gslide')[index];
+        if (hasClass(slideNode, 'loaded')) {
           this.slideAnimateIn(slideNode, first);
           hide(this.loader);
         } else {
@@ -2299,16 +2310,16 @@
             trigger: slide.node,
             player: null
           };
-          this.trigger("slide_before_load", slideData);
+          this.trigger('slide_before_load', slideData);
           slide.instance.setContent(slideNode, function () {
             hide(_this2.loader);
             _this2.resize();
             _this2.slideAnimateIn(slideNode, first);
-            _this2.trigger("slide_after_load", slideData);
+            _this2.trigger('slide_after_load', slideData);
           });
         }
-        this.slideDescription = slideNode.querySelector(".gslide-description");
-        this.slideDescriptionContained = this.slideDescription && hasClass(this.slideDescription.parentNode, "gslide-media");
+        this.slideDescription = slideNode.querySelector('.gslide-description');
+        this.slideDescriptionContained = this.slideDescription && hasClass(this.slideDescription.parentNode, 'gslide-media');
         if (this.settings.preload) {
           this.preloadSlide(index + 1);
           this.preloadSlide(index - 1);
@@ -2326,8 +2337,8 @@
         if (isNil(this.elements[index])) {
           return false;
         }
-        var slideNode = this.slidesContainer.querySelectorAll(".gslide")[index];
-        if (hasClass(slideNode, "loaded")) {
+        var slideNode = this.slidesContainer.querySelectorAll('.gslide')[index];
+        if (hasClass(slideNode, 'loaded')) {
           return false;
         }
         var slide = this.elements[index];
@@ -2341,16 +2352,16 @@
           trigger: slide.node,
           player: null
         };
-        this.trigger("slide_before_load", slideData);
-        if (type === "video" || type === "external") {
+        this.trigger('slide_before_load', slideData);
+        if (type === 'video' || type === 'external') {
           setTimeout(function () {
             slide.instance.setContent(slideNode, function () {
-              _this3.trigger("slide_after_load", slideData);
+              _this3.trigger('slide_after_load', slideData);
             });
           }, 200);
         } else {
           slide.instance.setContent(slideNode, function () {
-            _this3.trigger("slide_after_load", slideData);
+            _this3.trigger('slide_after_load', slideData);
           });
         }
       }
@@ -2404,7 +2415,7 @@
           if (index > totalSlides) {
             this.slidesContainer.appendChild(newSlide);
           } else {
-            var existingSlide = this.slidesContainer.querySelectorAll(".gslide")[index];
+            var existingSlide = this.slidesContainer.querySelectorAll('.gslide')[index];
             this.slidesContainer.insertBefore(newSlide, existingSlide);
           }
           if (this.settings.preload && this.index == 0 && index == 0 || this.index - 1 == index || this.index + 1 == index) {
@@ -2414,11 +2425,11 @@
             this.index = 1;
           }
           this.updateNavigationClasses();
-          addedSlideNode = this.slidesContainer.querySelectorAll(".gslide")[index];
+          addedSlideNode = this.slidesContainer.querySelectorAll('.gslide')[index];
           addedSlidePlayer = this.getSlidePlayerInstance(index);
           slideInfo.slideNode = addedSlideNode;
         }
-        this.trigger("slide_inserted", {
+        this.trigger('slide_inserted', {
           index: index,
           slide: addedSlideNode,
           slideNode: addedSlideNode,
@@ -2442,7 +2453,7 @@
         if (index < 0 || index > this.elements.length - 1) {
           return false;
         }
-        var slide = this.slidesContainer && this.slidesContainer.querySelectorAll(".gslide")[index];
+        var slide = this.slidesContainer && this.slidesContainer.querySelectorAll('.gslide')[index];
         if (slide) {
           if (this.getActiveSlideIndex() == index) {
             if (index == this.elements.length - 1) {
@@ -2454,7 +2465,7 @@
           slide.parentNode.removeChild(slide);
         }
         this.elements.splice(index, 1);
-        this.trigger("slide_removed", index);
+        this.trigger('slide_removed', index);
         if (isFunction(this.settings.slideRemoved)) {
           this.settings.slideRemoved(index);
         }
@@ -2463,8 +2474,8 @@
       key: "slideAnimateIn",
       value: function slideAnimateIn(slide, first) {
         var _this4 = this;
-        var slideMedia = slide.querySelector(".gslide-media");
-        var slideDesc = slide.querySelector(".gslide-description");
+        var slideMedia = slide.querySelector('.gslide-media');
+        var slideDesc = slide.querySelector('.gslide-description');
         var prevData = {
           index: this.prevActiveSlideIndex,
           slide: this.prevActiveSlide,
@@ -2485,7 +2496,7 @@
         };
         if (slideMedia.offsetWidth > 0 && slideDesc) {
           hide(slideDesc);
-          slideDesc.style.display = "";
+          slideDesc.style.display = '';
         }
         removeClass(slide, this.effectsClasses);
         if (first) {
@@ -2493,7 +2504,7 @@
             if (_this4.settings.autoplayVideos) {
               _this4.slidePlayerPlay(slide);
             }
-            _this4.trigger("slide_changed", {
+            _this4.trigger('slide_changed', {
               prev: prevData,
               current: nextData
             });
@@ -2503,9 +2514,9 @@
           });
         } else {
           var effectName = this.settings.slideEffect;
-          var animIn = effectName !== "none" ? this.settings.cssEfects[effectName]["in"] : effectName;
+          var animIn = effectName !== 'none' ? this.settings.cssEfects[effectName]["in"] : effectName;
           if (this.prevActiveSlideIndex > this.index) {
-            if (this.settings.slideEffect == "slide") {
+            if (this.settings.slideEffect == 'slide') {
               animIn = this.settings.cssEfects.slideBack["in"];
             }
           }
@@ -2513,7 +2524,7 @@
             if (_this4.settings.autoplayVideos) {
               _this4.slidePlayerPlay(slide);
             }
-            _this4.trigger("slide_changed", {
+            _this4.trigger('slide_changed', {
               prev: prevData,
               current: nextData
             });
@@ -2525,7 +2536,7 @@
         setTimeout(function () {
           _this4.resize(slide);
         }, 100);
-        addClass(slide, "current");
+        addClass(slide, 'current');
       }
     }, {
       key: "slideAnimateOut",
@@ -2535,11 +2546,11 @@
         }
         var prevSlide = this.prevActiveSlide;
         removeClass(prevSlide, this.effectsClasses);
-        addClass(prevSlide, "prev");
+        addClass(prevSlide, 'prev');
         var animation = this.settings.slideEffect;
-        var animOut = animation !== "none" ? this.settings.cssEfects[animation].out : animation;
+        var animOut = animation !== 'none' ? this.settings.cssEfects[animation].out : animation;
         this.slidePlayerPause(prevSlide);
-        this.trigger("slide_before_change", {
+        this.trigger('slide_before_change', {
           prev: {
             index: this.prevActiveSlideIndex,
             slide: this.prevActiveSlide,
@@ -2570,21 +2581,21 @@
             player: this.getSlidePlayerInstance(this.index)
           }]);
         }
-        if (this.prevActiveSlideIndex > this.index && this.settings.slideEffect == "slide") {
+        if (this.prevActiveSlideIndex > this.index && this.settings.slideEffect == 'slide') {
           animOut = this.settings.cssEfects.slideBack.out;
         }
         animateElement(prevSlide, animOut, function () {
-          var container = prevSlide.querySelector(".ginner-container");
-          var media = prevSlide.querySelector(".gslide-media");
-          var desc = prevSlide.querySelector(".gslide-description");
-          container.style.transform = "";
-          media.style.transform = "";
-          removeClass(media, "greset");
-          media.style.opacity = "";
+          var container = prevSlide.querySelector('.ginner-container');
+          var media = prevSlide.querySelector('.gslide-media');
+          var desc = prevSlide.querySelector('.gslide-description');
+          container.style.transform = '';
+          media.style.transform = '';
+          removeClass(media, 'greset');
+          media.style.opacity = '';
           if (desc) {
-            desc.style.opacity = "";
+            desc.style.opacity = '';
           }
-          removeClass(prevSlide, "prev");
+          removeClass(prevSlide, 'prev');
         });
       }
     }, {
@@ -2595,7 +2606,7 @@
     }, {
       key: "getSlidePlayerInstance",
       value: function getSlidePlayerInstance(index) {
-        var id = "gvideo" + index;
+        var id = 'gvideo' + index;
         var videoPlayers = this.getAllPlayers();
         if (has(videoPlayers, id) && videoPlayers[id]) {
           return videoPlayers[id];
@@ -2606,12 +2617,12 @@
       key: "stopSlideVideo",
       value: function stopSlideVideo(slide) {
         if (isNode(slide)) {
-          var node = slide.querySelector(".gvideo-wrapper");
+          var node = slide.querySelector('.gvideo-wrapper');
           if (node) {
-            slide = node.getAttribute("data-index");
+            slide = node.getAttribute('data-index');
           }
         }
-        console.warn("stopSlideVideo is deprecated, use slidePlayerPause");
+        console.warn('stopSlideVideo is deprecated, use slidePlayerPause');
         var player = this.getSlidePlayerInstance(slide);
         if (player && player.playing) {
           player.pause();
@@ -2621,9 +2632,9 @@
       key: "slidePlayerPause",
       value: function slidePlayerPause(slide) {
         if (isNode(slide)) {
-          var node = slide.querySelector(".gvideo-wrapper");
+          var node = slide.querySelector('.gvideo-wrapper');
           if (node) {
-            slide = node.getAttribute("data-index");
+            slide = node.getAttribute('data-index');
           }
         }
         var player = this.getSlidePlayerInstance(slide);
@@ -2635,12 +2646,12 @@
       key: "playSlideVideo",
       value: function playSlideVideo(slide) {
         if (isNode(slide)) {
-          var node = slide.querySelector(".gvideo-wrapper");
+          var node = slide.querySelector('.gvideo-wrapper');
           if (node) {
-            slide = node.getAttribute("data-index");
+            slide = node.getAttribute('data-index');
           }
         }
-        console.warn("playSlideVideo is deprecated, use slidePlayerPlay");
+        console.warn('playSlideVideo is deprecated, use slidePlayerPlay');
         var player = this.getSlidePlayerInstance(slide);
         if (player && !player.playing) {
           player.play();
@@ -2650,13 +2661,13 @@
       key: "slidePlayerPlay",
       value: function slidePlayerPlay(slide) {
         var _this$settings$plyr$c;
-        if (isMobile$1 && !((_this$settings$plyr$c = this.settings.plyr.config) !== null && _this$settings$plyr$c !== void 0 && _this$settings$plyr$c.muted)) {
+        if (isMobile && !((_this$settings$plyr$c = this.settings.plyr.config) !== null && _this$settings$plyr$c !== void 0 && _this$settings$plyr$c.muted)) {
           return;
         }
         if (isNode(slide)) {
-          var node = slide.querySelector(".gvideo-wrapper");
+          var node = slide.querySelector('.gvideo-wrapper');
           if (node) {
-            slide = node.getAttribute("data-index");
+            slide = node.getAttribute('data-index');
           }
         }
         var player = this.getSlidePlayerInstance(slide);
@@ -2686,7 +2697,7 @@
         }
         this.elements = newElements;
         if (this.lightboxOpen) {
-          this.slidesContainer.innerHTML = "";
+          this.slidesContainer.innerHTML = '';
           if (this.elements.length) {
             each(this.elements, function () {
               var slide = createHTML(_this5.settings.slideHTML);
@@ -2701,7 +2712,7 @@
       value: function getElementIndex(node) {
         var index = false;
         each(this.elements, function (el, i) {
-          if (has(el, "node") && el.node == node) {
+          if (has(el, 'node') && el.node == node) {
             index = i;
             return true;
           }
@@ -2742,7 +2753,7 @@
           slideInfo.index = i;
           slideInfo.instance = slide;
           slideInfo.slideConfig = elData;
-          slideInfo.gallery = el.getAttribute("data-gallery");
+          slideInfo.gallery = el.getAttribute('data-gallery');
           list.push(slideInfo);
         });
         return list;
@@ -2760,7 +2771,7 @@
         if (this.settings.elements) {
           return false;
         }
-        if (this.settings.selector && this.settings.selector.substring(0, 5) == "data-") {
+        if (this.settings.selector && this.settings.selector.substring(0, 5) == 'data-') {
           return "*[".concat(this.settings.selector, "]");
         }
         return this.settings.selector;
@@ -2768,7 +2779,7 @@
     }, {
       key: "getActiveSlide",
       value: function getActiveSlide() {
-        return this.slidesContainer.querySelectorAll(".gslide")[this.index];
+        return this.slidesContainer.querySelectorAll('.gslide')[this.index];
       }
     }, {
       key: "getActiveSlideIndex",
@@ -2779,6 +2790,11 @@
       key: "getAnimationClasses",
       value: function getAnimationClasses() {
         var effects = [];
+        if (this.settings.direction === 'rtl') {
+          var slideEffect = this.settings.cssEfects.slide;
+          this.settings.cssEfects.slide = this.settings.cssEfects.slideBack;
+          this.settings.cssEfects.slideBack = slideEffect;
+        }
         for (var key in this.settings.cssEffects) {
           if (this.settings.cssEffects.hasOwnProperty(key)) {
             var effect = this.settings.cssEffects[key];
@@ -2786,7 +2802,7 @@
             effects.push("g".concat(effect.out));
           }
         }
-        return effects.join(" ");
+        return effects.join(' ');
       }
     }, {
       key: "build",
@@ -2801,17 +2817,17 @@
         var children = document.body.childNodes;
         var bodyChildElms = [];
         each(children, function (el) {
-          if (el.parentNode == document.body && el.nodeName.charAt(0) !== "#" && el.hasAttribute && !el.hasAttribute("aria-hidden")) {
+          if (el.parentNode == document.body && el.nodeName.charAt(0) !== '#' && el.hasAttribute && !el.hasAttribute('aria-hidden')) {
             bodyChildElms.push(el);
-            el.setAttribute("aria-hidden", "true");
+            el.setAttribute('aria-hidden', 'true');
           }
         });
-        var nextSVG = has(this.settings.svg, "next") ? this.settings.svg.next : "";
-        var prevSVG = has(this.settings.svg, "prev") ? this.settings.svg.prev : "";
-        var closeSVG = has(this.settings.svg, "close") ? this.settings.svg.close : "";
-        var closeButtonText = (_this$settings$closeB = this.settings.closeButtonText) !== null && _this$settings$closeB !== void 0 ? _this$settings$closeB : "Close";
-        var prevButtonText = (_this$settings$prevBu = this.settings.prevButtonText) !== null && _this$settings$prevBu !== void 0 ? _this$settings$prevBu : "Previous";
-        var nextButtonText = (_this$settings$nextBu = this.settings.nextButtonText) !== null && _this$settings$nextBu !== void 0 ? _this$settings$nextBu : "Next";
+        var nextSVG = has(this.settings.svg, 'next') ? this.settings.svg.next : '';
+        var prevSVG = has(this.settings.svg, 'prev') ? this.settings.svg.prev : '';
+        var closeSVG = has(this.settings.svg, 'close') ? this.settings.svg.close : '';
+        var closeButtonText = (_this$settings$closeB = this.settings.closeButtonText) !== null && _this$settings$closeB !== void 0 ? _this$settings$closeB : 'Close';
+        var prevButtonText = (_this$settings$prevBu = this.settings.prevButtonText) !== null && _this$settings$prevBu !== void 0 ? _this$settings$prevBu : 'Previous';
+        var nextButtonText = (_this$settings$nextBu = this.settings.nextButtonText) !== null && _this$settings$nextBu !== void 0 ? _this$settings$nextBu : 'Next';
         var lightboxHTML = this.settings.lightboxHTML;
         lightboxHTML = lightboxHTML.replace(/{nextSVG}/g, nextSVG);
         lightboxHTML = lightboxHTML.replace(/{prevSVG}/g, prevSVG);
@@ -2821,19 +2837,27 @@
         lightboxHTML = lightboxHTML.replace(/{nextButtonText}/g, nextButtonText);
         lightboxHTML = createHTML(lightboxHTML);
         document.body.appendChild(lightboxHTML);
-        var modal = document.getElementById("glightbox-body");
+        var modal = document.getElementById('glightbox-body');
         this.modal = modal;
-        var closeButton = modal.querySelector(".gclose");
-        this.prevButton = modal.querySelector(".gprev");
-        this.nextButton = modal.querySelector(".gnext");
-        this.overlay = modal.querySelector(".goverlay");
-        this.loader = modal.querySelector(".gloader");
-        this.slidesContainer = document.getElementById("glightbox-slider");
+        var closeButton = modal.querySelector('.gclose');
+        this.prevButton = modal.querySelector('.gprev');
+        this.nextButton = modal.querySelector('.gnext');
+        if (this.settings.direction === 'rtl') {
+          if (this.prevButton) {
+            this.prevButton.classList.add('gprev-rtl');
+          }
+          if (this.nextButton) {
+            this.nextButton.classList.add('gnext-rtl');
+          }
+        }
+        this.overlay = modal.querySelector('.goverlay');
+        this.loader = modal.querySelector('.gloader');
+        this.slidesContainer = document.getElementById('glightbox-slider');
         this.bodyHiddenChildElms = bodyChildElms;
         this.events = {};
-        addClass(this.modal, "glightbox-" + this.settings.skin);
+        addClass(this.modal, 'glightbox-' + this.settings.skin);
         if (this.settings.closeButton && closeButton) {
-          this.events["close"] = addEvent("click", {
+          this.events['close'] = addEvent('click', {
             onElement: closeButton,
             withCallback: function withCallback(e, target) {
               e.preventDefault();
@@ -2845,7 +2869,7 @@
           closeButton.parentNode.removeChild(closeButton);
         }
         if (this.nextButton) {
-          this.events["next"] = addEvent("click", {
+          this.events['next'] = addEvent('click', {
             onElement: this.nextButton,
             withCallback: function withCallback(e, target) {
               e.preventDefault();
@@ -2854,7 +2878,7 @@
           });
         }
         if (this.prevButton) {
-          this.events["prev"] = addEvent("click", {
+          this.events['prev'] = addEvent('click', {
             onElement: this.prevButton,
             withCallback: function withCallback(e, target) {
               e.preventDefault();
@@ -2863,11 +2887,11 @@
           });
         }
         if (this.settings.closeOnOutsideClick) {
-          this.events["outClose"] = addEvent("click", {
+          this.events['outClose'] = addEvent('click', {
             onElement: modal,
             withCallback: function withCallback(e, target) {
-              if (!_this7.preventOutsideClick && !hasClass(document.body, "glightbox-mobile") && !closest(e.target, ".ginner-container")) {
-                if (!closest(e.target, ".gbtn") && !hasClass(e.target, "gnext") && !hasClass(e.target, "gprev")) {
+              if (!_this7.preventOutsideClick && !hasClass(document.body, 'glightbox-mobile') && !closest(e.target, '.ginner-container')) {
+                if (!closest(e.target, '.gbtn') && !hasClass(e.target, 'gnext') && !hasClass(e.target, 'gprev')) {
                   _this7.close();
                 }
               }
@@ -2876,12 +2900,12 @@
         }
         each(this.elements, function (slide, i) {
           _this7.slidesContainer.appendChild(slide.instance.create());
-          slide.slideNode = _this7.slidesContainer.querySelectorAll(".gslide")[i];
+          slide.slideNode = _this7.slidesContainer.querySelectorAll('.gslide')[i];
         });
-        if (isTouch$1) {
-          addClass(document.body, "glightbox-touch");
+        if (isTouch) {
+          addClass(document.body, 'glightbox-touch');
         }
-        this.events["resize"] = addEvent("resize", {
+        this.events['resize'] = addEvent('resize', {
           onElement: window,
           withCallback: function withCallback() {
             _this7.resize();
@@ -2894,34 +2918,34 @@
       value: function resize() {
         var slide = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
         slide = !slide ? this.activeSlide : slide;
-        if (!slide || hasClass(slide, "zoomed")) {
+        if (!slide || hasClass(slide, 'zoomed')) {
           return;
         }
         var winSize = windowSize();
-        var video = slide.querySelector(".gvideo-wrapper");
-        var image = slide.querySelector(".gslide-image");
+        var video = slide.querySelector('.gvideo-wrapper');
+        var image = slide.querySelector('.gslide-image');
         var description = this.slideDescription;
         var winWidth = winSize.width;
         var winHeight = winSize.height;
         if (winWidth <= 768) {
-          addClass(document.body, "glightbox-mobile");
+          addClass(document.body, 'glightbox-mobile');
         } else {
-          removeClass(document.body, "glightbox-mobile");
+          removeClass(document.body, 'glightbox-mobile');
         }
         if (!video && !image) {
           return;
         }
         var descriptionResize = false;
-        if (description && (hasClass(description, "description-bottom") || hasClass(description, "description-top")) && !hasClass(description, "gabsolute")) {
+        if (description && (hasClass(description, 'description-bottom') || hasClass(description, 'description-top')) && !hasClass(description, 'gabsolute')) {
           descriptionResize = true;
         }
         if (image) {
           if (descriptionResize) {
             var _this$elements$this$i;
             var descHeight = description.offsetHeight;
-            var imgNode = image.querySelector("img");
+            var imgNode = image.querySelector('img');
             var slideTriggerNode = (_this$elements$this$i = this.elements[this.index]) === null || _this$elements$this$i === void 0 ? void 0 : _this$elements$this$i.node;
-            var maxHeightValue = "100vh";
+            var maxHeightValue = '100vh';
             if (slideTriggerNode) {
               var _slideTriggerNode$dat;
               maxHeightValue = (_slideTriggerNode$dat = slideTriggerNode.dataset.height) !== null && _slideTriggerNode$dat !== void 0 ? _slideTriggerNode$dat : maxHeightValue;
@@ -2931,24 +2955,24 @@
           }
         }
         if (video) {
-          var ratio = has(this.settings.plyr.config, "ratio") ? this.settings.plyr.config.ratio : "";
+          var ratio = has(this.settings.plyr.config, 'ratio') ? this.settings.plyr.config.ratio : '';
           if (!ratio) {
             var containerWidth = video.clientWidth;
             var containerHeight = video.clientHeight;
             var divisor = containerWidth / containerHeight;
             ratio = "".concat(containerWidth / divisor, ":").concat(containerHeight / divisor);
           }
-          var videoRatio = ratio.split(":");
+          var videoRatio = ratio.split(':');
           var videoWidth = this.settings.videosWidth;
           var maxWidth = this.settings.videosWidth;
-          if (isNumber(videoWidth) || videoWidth.indexOf("px") !== -1) {
+          if (isNumber(videoWidth) || videoWidth.indexOf('px') !== -1) {
             maxWidth = parseInt(videoWidth);
           } else {
-            if (videoWidth.indexOf("vw") !== -1) {
+            if (videoWidth.indexOf('vw') !== -1) {
               maxWidth = winWidth * parseInt(videoWidth) / 100;
-            } else if (videoWidth.indexOf("vh") !== -1) {
+            } else if (videoWidth.indexOf('vh') !== -1) {
               maxWidth = winHeight * parseInt(videoWidth) / 100;
-            } else if (videoWidth.indexOf("%") !== -1) {
+            } else if (videoWidth.indexOf('%') !== -1) {
               maxWidth = winWidth * parseInt(videoWidth) / 100;
             } else {
               maxWidth = parseInt(video.clientWidth);
@@ -2988,22 +3012,22 @@
       key: "updateNavigationClasses",
       value: function updateNavigationClasses() {
         var loop = this.loop();
-        removeClass(this.nextButton, "disabled");
-        removeClass(this.prevButton, "disabled");
+        removeClass(this.nextButton, 'disabled');
+        removeClass(this.prevButton, 'disabled');
         if (this.index == 0 && this.elements.length - 1 == 0) {
-          addClass(this.prevButton, "disabled");
-          addClass(this.nextButton, "disabled");
+          addClass(this.prevButton, 'disabled');
+          addClass(this.nextButton, 'disabled');
         } else if (this.index === 0 && !loop) {
-          addClass(this.prevButton, "disabled");
+          addClass(this.prevButton, 'disabled');
         } else if (this.index === this.elements.length - 1 && !loop) {
-          addClass(this.nextButton, "disabled");
+          addClass(this.nextButton, 'disabled');
         }
       }
     }, {
       key: "loop",
       value: function loop() {
-        var loop = has(this.settings, "loopAtEnd") ? this.settings.loopAtEnd : null;
-        loop = has(this.settings, "loop") ? this.settings.loop : loop;
+        var loop = has(this.settings, 'loopAtEnd') ? this.settings.loopAtEnd : null;
+        loop = has(this.settings, 'loop') ? this.settings.loop : loop;
         return loop;
       }
     }, {
@@ -3031,11 +3055,11 @@
         }
         if (this.bodyHiddenChildElms.length) {
           each(this.bodyHiddenChildElms, function (el) {
-            el.removeAttribute("aria-hidden");
+            el.removeAttribute('aria-hidden');
           });
         }
-        addClass(this.modal, "glightbox-closing");
-        animateElement(this.overlay, this.settings.openEffect == "none" ? "none" : this.settings.cssEfects.fade.out);
+        addClass(this.modal, 'glightbox-closing');
+        animateElement(this.overlay, this.settings.openEffect == 'none' ? 'none' : this.settings.cssEfects.fade.out);
         animateElement(this.activeSlide, this.settings.cssEfects[this.settings.closeEffect].out, function () {
           _this8.activeSlide = null;
           _this8.prevActiveSlideIndex = null;
@@ -3050,11 +3074,11 @@
             _this8.events = null;
           }
           var body = document.body;
-          removeClass(html, "glightbox-open");
-          removeClass(body, "glightbox-open touching gdesc-open glightbox-touch glightbox-mobile gscrollbar-fixer");
-          document.body.style.marginRight = "";
+          removeClass(html, 'glightbox-open');
+          removeClass(body, 'glightbox-open touching gdesc-open glightbox-touch glightbox-mobile gscrollbar-fixer');
+          document.body.style.marginRight = '';
           _this8.modal.parentNode.removeChild(_this8.modal);
-          _this8.trigger("close");
+          _this8.trigger('close');
           if (isFunction(_this8.settings.onClose)) {
             _this8.settings.onClose();
           }
@@ -3076,7 +3100,7 @@
       value: function on(evt, callback) {
         var once = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
         if (!evt || !isFunction(callback)) {
-          throw new TypeError("Event name and callback must be defined");
+          throw new TypeError('Event name and callback must be defined');
         }
         this.apiEvents.push({
           evt: evt,
@@ -3133,4 +3157,4 @@
 
   return glightbox;
 
-})));
+}));

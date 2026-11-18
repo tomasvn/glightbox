@@ -1,9 +1,3 @@
-/**
- * Slide
- * class to hablde slide creation
- * and config parser
- */
-
 import ZoomImages from './zoom.js';
 import DragSlides from './drag.js';
 import slideImage from '../slides/image.js';
@@ -13,7 +7,48 @@ import slideIframe from '../slides/iframe.js';
 import SlideConfigParser from './slide-parser.js';
 import { addEvent, addClass, removeClass, hasClass, closest, isMobile, isFunction, isNode, createHTML } from '../utils/helpers.js';
 
+/**
+ * @typedef {NonNullable<Parameters<ReturnType<typeof import('../../../index')>['insertSlide']>[0]>} SlideSource
+ * @typedef {Exclude<SlideSource, Element>} SlideOptions
+ * @typedef {Omit<SlideOptions, 'type'> & {
+ *     type: string,
+ *     title: string,
+ *     description: string,
+ *     descPosition: string,
+ *     draggable: boolean,
+ *     zoomable: boolean,
+ *     smallDescription?: string
+ * }} ParsedSlideConfig
+ */
+
+/**
+ * @typedef {{index: number, slide: Element, player: false | object}} SlideLoadData
+ *
+ * @typedef {object} SlideSettings
+ * @property {string} slideHTML
+ * @property {boolean} draggable
+ * @property {number} dragToleranceX
+ * @property {number} dragToleranceY
+ * @property {number} moreLength
+ * @property {string} moreText
+ * @property {string} lessText
+ * @property {Record<string, unknown> | null} [slideExtraAttributes]
+ * @property {((data: SlideLoadData) => void) | null} [beforeSlideLoad]
+ * @property {((data: SlideLoadData) => void) | null} [afterSlideLoad]
+ *
+ * @typedef {object} SlideInstance
+ * @property {SlideSettings} settings
+ * @property {() => void} resize
+ * @property {(index: number) => false | object} getSlidePlayerInstance
+ */
+
+/** Builds slide markup, parses its configuration, and loads its content. */
 export default class Slide {
+    /**
+     * @param {SlideSource} el Trigger element or programmatic slide options.
+     * @param {SlideInstance} instance Owning lightbox.
+     * @param {number} index Zero-based slide index.
+     */
     constructor(el, instance, index) {
         this.element = el;
         this.instance = instance;
@@ -21,11 +56,17 @@ export default class Slide {
     }
 
     /**
-     * Set slide content
+     * Load content into the slide after its configuration has been parsed.
      *
-     * @param {node} slide
-     * @param {object} data
-     * @param {function} callback
+     * @overload
+     * @param {Element} slide Rendered slide element.
+     * @param {(() => void) | false} [callback=false] Called when the content finishes loading.
+     * @returns {false | void} `false` if the slide was already loaded.
+     */
+    /**
+     * @param {Element | null} [slide=null]
+     * @param {(() => void) | false} [callback=false]
+     * @returns {false | void}
      */
     setContent(slide = null, callback = false) {
         if (hasClass(slide, 'loaded')) {
@@ -155,6 +196,14 @@ export default class Slide {
         }
     }
 
+    /**
+     * Strip HTML and shorten the description for the mobile preview.
+     *
+     * @param {string} string Description HTML.
+     * @param {number} [n=50] Text length threshold.
+     * @param {string | false} [wordBoundary=false] Read-more label, or `false` to omit the link.
+     * @returns {string} Preview text or markup with a read-more link.
+     */
     slideShortDesc(string, n = 50, wordBoundary = false) {
         let div = document.createElement('div');
         div.innerHTML = string;
@@ -174,6 +223,13 @@ export default class Slide {
         return subString + '... <a href="#" class="desc-more">' + wordBoundary + '</a>';
     }
 
+    /**
+     * Wire up the controls that expand and collapse the mobile description.
+     *
+     * @param {Element} desc Description element.
+     * @param {ParsedSlideConfig} data Slide configuration with its preview, if populated.
+     * @returns {false | void} `false` if there is no read-more link.
+     */
     descriptionEvents(desc, data) {
         let moreLink = desc.querySelector('.desc-more');
         if (!moreLink) {
@@ -221,22 +277,18 @@ export default class Slide {
     }
 
     /**
-     * Create Slide Node
+     * Create a slide from the configured HTML template.
      *
-     * @return { node }
+     * @returns {DocumentFragment}
      */
     create() {
         return createHTML(this.instance.settings.slideHTML);
     }
 
     /**
-     * Get slide config
-     * returns each individual slide config
-     * it uses SlideConfigParser
-     * each slide can overwrite a global setting
-     * read more in the SlideConfigParser class
+     * Parse and cache the slide's options using the lightbox defaults.
      *
-     * @return { object }
+     * @returns {ParsedSlideConfig}
      */
     getConfig() {
         if (!isNode(this.element) && !this.element.hasOwnProperty('draggable')) {
@@ -244,7 +296,7 @@ export default class Slide {
         }
 
         const parser = new SlideConfigParser(this.instance.settings.slideExtraAttributes);
-        this.slideConfig = parser.parseConfig(this.element, this.instance.settings);
+        this.slideConfig = /** @type {ParsedSlideConfig} */ (parser.parseConfig(this.element, this.instance.settings));
 
         return this.slideConfig;
     }

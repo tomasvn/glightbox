@@ -10,6 +10,7 @@ const galleryImages = ['gm1.jpg', 'gm2.jpg', 'gm3.jpg', 'gm4.jpg', 'gm5.jpg', 'g
 <div class="live-demo">
     <section>
         <h3>Simple image gallery</h3>
+        <label><input id="simple-gallery-rtl" type="checkbox" /> Enable right-to-left (RTL) navigation</label>
         <div class="gallery">
             {galleryImages.map((name, index) => (
                 <a class="glightbox-simple" href={image(name)}>
@@ -85,7 +86,16 @@ const galleryImages = ['gm1.jpg', 'gm2.jpg', 'gm3.jpg', 'gm4.jpg', 'gm5.jpg', 'g
 
 <script is:inline src="/glightbox/dist/js/glightbox.js"></script>
 <script is:inline>
-    GLightbox({ selector: '.glightbox-simple' });
+    const simpleGalleryRtl = document.getElementById('simple-gallery-rtl');
+    const createSimpleGallery = () => GLightbox({
+        selector: '.glightbox-simple',
+        direction: simpleGalleryRtl.checked ? 'rtl' : 'ltr'
+    });
+    let simpleGallery = createSimpleGallery();
+    simpleGalleryRtl.addEventListener('change', () => {
+        simpleGallery.destroy();
+        simpleGallery = createSimpleGallery();
+    });
     GLightbox({ selector: '.glightbox-description' });
     GLightbox({ selector: '.glightbox-video' });
     GLightbox({ selector: '.glightbox-embed' });

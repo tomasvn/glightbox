@@ -1,7 +1,10 @@
 const uid = Date.now();
 
 /**
- * Merge two or more objects
+ * Merge own enumerable properties into a new object. Later values take precedence.
+ *
+ * @param {...(object | boolean | null | undefined)} args Source objects, optionally preceded by a boolean to enable or disable deep merging (enabled by default).
+ * @returns {Record<string, unknown>} The merged properties.
  */
 export function extend() {
     let extended = {};
@@ -31,10 +34,12 @@ export function extend() {
 }
 
 /**
- * Each
+ * Iterate over an array-like collection, an object's own enumerable properties, or a single value.
  *
- * @param {mixed} node list, array, object
- * @param {function} callback
+ * @template T
+ * @param {ArrayLike<T> | Record<string, T> | T} collection Values to iterate over.
+ * @param {(this: T, value: T, key: number | string, collection: ArrayLike<T> | Record<string, T>) => unknown} callback Called with each value as `this`; return `false` to stop.
+ * @returns {void}
  */
 export function each(collection, callback) {
     if (isNode(collection) || collection === window || collection === document) {
@@ -67,15 +72,18 @@ export function each(collection, callback) {
 }
 
 /**
- * Get nde events
- * return node events and optionally
- * check if the node has already a specific event
- * to avoid duplicated callbacks
+ * @typedef {object} CachedEvent
+ * @property {string | undefined} eventName Registered event name.
+ * @property {EventListener} fn Registered handler.
+ */
+
+/**
+ * Get a target's event cache and optionally look up a handler by name and function source.
  *
- * @param {node} node
- * @param {string} name event name
- * @param {object} fn callback
- * @returns {object}
+ * @param {EventTarget} node Target that owns the cache.
+ * @param {string | null} [name=null] Event name to look up.
+ * @param {EventListener | null} [fn=null] Handler to look up.
+ * @returns {{all: CachedEvent[], evt: number | null, found: true | null}} The cache, matching index, and match indicator.
  */
 export function getNodeEvents(node, name = null, fn = null) {
     const cache = (node[uid] = node[uid] || []);
@@ -93,11 +101,20 @@ export function getNodeEvents(node, name = null, fn = null) {
 }
 
 /**
- * Add Event
- * Add an event listener
+ * Register an event listener on a target, a collection of targets, or elements matching a selector.
  *
- * @param {string} eventName
- * @param {object} detials
+ * @template {string | undefined} K
+ * @template {EventTarget} [T=Element]
+ * @template [C=undefined]
+ * @param {K} eventName DOM event name.
+ * @param {object} [options] Listener options.
+ * @param {T | ArrayLike<T> | string} [options.onElement] Targets or a CSS selector.
+ * @param {(this: C, event: K extends keyof GlobalEventHandlersEventMap ? GlobalEventHandlersEventMap[K] : Event, target: T) => void} [options.withCallback] Receives the event and the target the listener was attached to.
+ * @param {boolean} [options.avoidDuplicate=true] Skip registering an equivalent cached listener.
+ * @param {boolean} [options.once=false] Remove the listener after its first invocation.
+ * @param {boolean} [options.useCapture=false] Listen during the capture phase.
+ * @param {C} [thisArg] Callback receiver.
+ * @returns {EventListener & {destroy: () => void}} The listener and its cleanup method.
  */
 export function addEvent(eventName, { onElement, withCallback, avoidDuplicate = true, once = false, useCapture = false } = {}, thisArg) {
     let element = onElement || [];
@@ -135,40 +152,44 @@ export function addEvent(eventName, { onElement, withCallback, avoidDuplicate = 
 }
 
 /**
- * Add element class
+ * Add space-separated classes to an element.
  *
- * @param {node} element
- * @param {string} class name
+ * @param {Element} node Element to update.
+ * @param {string} name Class names to add.
+ * @returns {void}
  */
 export function addClass(node, name) {
     each(name.split(' '), (cl) => node.classList.add(cl));
 }
 
 /**
- * Remove element class
+ * Remove space-separated classes from an element.
  *
- * @param {node} element
- * @param {string} class name
+ * @param {Element} node Element to update.
+ * @param {string} name Class names to remove.
+ * @returns {void}
  */
 export function removeClass(node, name) {
     each(name.split(' '), (cl) => node.classList.remove(cl));
 }
 
 /**
- * Has class
+ * Check whether an element has a class.
  *
- * @param {node} element
- * @param {string} class name
+ * @param {Element} node Element to inspect.
+ * @param {string} name Class name to look for.
+ * @returns {boolean}
  */
 export function hasClass(node, name) {
     return node.classList.contains(name);
 }
 
 /**
- * Get the closestElement
+ * Find the nearest matching ancestor, starting at the parent and stopping at the document body.
  *
- * @param {node} element
- * @param {string} class name
+ * @param {Node} elem Starting node; it is not tested against the selector.
+ * @param {string} selector CSS selector to match.
+ * @returns {Element | false | undefined} The matching ancestor, `false` if the parent chain ends, or `undefined` if the body is reached without a match.
  */
 export function closest(elem, selector) {
     while (elem !== document.body) {
@@ -185,11 +206,12 @@ export function closest(elem, selector) {
 }
 
 /**
- * CSS Animations
+ * Run space-separated GLightbox animations and remove their classes when the animation ends.
  *
- * @param {node} element
- * @param {string} animation name
- * @param {function} callback
+ * @param {Element | null | undefined} element Element to animate.
+ * @param {string} [animation=''] Animation names without the `g` prefix; `none` completes immediately.
+ * @param {(() => void) | false} [callback=false] Called on completion or immediately for `none`.
+ * @returns {false | void} `false` if no animation was started.
  */
 export function animateElement(element, animation = '', callback = false) {
     if (!element || animation === '') {
@@ -221,6 +243,13 @@ export function animateElement(element, animation = '', callback = false) {
     });
 }
 
+/**
+ * Set or clear an element's CSS transform, including vendor-prefixed properties.
+ *
+ * @param {HTMLElement | SVGElement} node Element to update.
+ * @param {string} [translate=''] CSS transform value; an empty string clears it.
+ * @returns {false | void} `false` when clearing the transform.
+ */
 export function cssTransform(node, translate = '') {
     if (translate === '') {
         node.style.webkitTransform = '';
@@ -238,25 +267,30 @@ export function cssTransform(node, translate = '') {
 }
 
 /**
- * Show element
+ * Set an element's display to `block`.
  *
- * @param {node} element
+ * @param {HTMLElement | SVGElement} element Element to show.
+ * @returns {void}
  */
 export function show(element) {
     element.style.display = 'block';
 }
 
 /**
- * Hide element
+ * Set an element's display to `none`.
+ *
+ * @param {HTMLElement | SVGElement} element Element to hide.
+ * @returns {void}
  */
 export function hide(element) {
     element.style.display = 'none';
 }
 
 /**
- * Create a document fragment
+ * Parse HTML into a document fragment.
  *
- * @param {string} html code
+ * @param {string} htmlStr HTML markup to parse.
+ * @returns {DocumentFragment}
  */
 export function createHTML(htmlStr) {
     let frag = document.createDocumentFragment(),
@@ -269,10 +303,9 @@ export function createHTML(htmlStr) {
 }
 
 /**
- * Return screen size
- * return the current screen dimensions
+ * Get the viewport dimensions in CSS pixels.
  *
- * @returns {object}
+ * @returns {{width: number, height: number}}
  */
 export function windowSize() {
     return {
@@ -282,7 +315,9 @@ export function windowSize() {
 }
 
 /**
- * Determine animation events
+ * Detect the supported CSS animation-end event name.
+ *
+ * @returns {'animationend' | 'oAnimationEnd' | 'webkitAnimationEnd' | undefined}
  */
 export function whichAnimationEvent() {
     let t,
@@ -301,7 +336,9 @@ export function whichAnimationEvent() {
 }
 
 /**
- * Determine transition events
+ * Detect the supported CSS transition-end event name.
+ *
+ * @returns {'transitionend' | 'oTransitionEnd' | 'webkitTransitionEnd' | undefined}
  */
 export function whichTransitionEvent() {
     let t,
@@ -322,12 +359,14 @@ export function whichTransitionEvent() {
 }
 
 /**
- * Create an iframe element
+ * Create an iframe and optionally append it to a parent.
  *
- * @param {string} url
- * @param {numeric} width
- * @param {numeric} height
- * @param {function} callback
+ * @param {object} config Iframe options.
+ * @param {string} config.url URL to load.
+ * @param {string} [config.allow] Permissions policy for the iframe.
+ * @param {() => void} [config.callback] Called after the iframe loads and is marked ready.
+ * @param {Node} [config.appendTo] Parent to append the iframe to.
+ * @returns {HTMLIFrameElement}
  */
 export function createIframe(config) {
     let { url, allow, callback, appendTo } = config;
@@ -355,14 +394,13 @@ export function createIframe(config) {
 }
 
 /**
- * Wait until
- * wait until all the validations
- * are passed
+ * Poll until a check returns a truthy value or the optional timeout expires.
  *
- * @param {function} check
- * @param {function} onComplete
- * @param {numeric} delay
- * @param {numeric} timeout
+ * @param {() => unknown} check Condition tested immediately and on each poll.
+ * @param {() => void} onComplete Called when the condition is met, not on timeout.
+ * @param {number} [delay=100] Polling interval in milliseconds.
+ * @param {number} [timeout] Maximum wait in milliseconds; omit it or pass zero to keep polling.
+ * @returns {void}
  */
 export function waitUntil(check, onComplete, delay, timeout) {
     if (check()) {
@@ -392,11 +430,12 @@ export function waitUntil(check, onComplete, delay, timeout) {
 }
 
 /**
- * Inject videos api
- * used for video player
+ * Add a stylesheet or script unless an asset with that URL is already present.
  *
- * @param {string} url
- * @param {function} callback
+ * @param {string | null | undefined} url Asset URL; a missing URL is logged as an error.
+ * @param {string | (() => void) | false} [waitFor] A global to check or wait for, or the completion callback.
+ * @param {() => void} [callback] Called after stylesheet insertion, once the script loads, or when the requested global is ready.
+ * @returns {false | void} `false` when polling for a global from an already-present script.
  */
 export function injectAssets(url, waitFor, callback) {
     if (isNil(url)) {
@@ -487,39 +526,97 @@ export function injectAssets(url, waitFor, callback) {
     document.body.appendChild(script);
 }
 
+/**
+ * Match a recognized mobile platform in the browser's user agent.
+ *
+ * @returns {RegExpMatchArray | null | false} The match, `null` for no match, or `false` if `window.navigator` is absent.
+ */
 export function isMobile() {
     return 'navigator' in window && window.navigator.userAgent.match(/(iPad)|(iPhone)|(iPod)|(Android)|(PlayBook)|(BB10)|(BlackBerry)|(Opera Mini)|(IEMobile)|(webOS)|(MeeGo)/i);
 }
 
+/**
+ * Detect touch support using mobile, touch-event, and legacy Microsoft checks.
+ *
+ * @returns {true | number | undefined} `true` if detected by an earlier check, otherwise the legacy touch-point count if available.
+ */
 export function isTouch() {
     return isMobile() !== null || document.createTouch !== undefined || 'ontouchstart' in window || 'onmsgesturechange' in window || navigator.msMaxTouchPoints;
 }
 
+/**
+ * @param {unknown} f Value to test.
+ * @returns {f is Function}
+ */
 export function isFunction(f) {
     return typeof f === 'function';
 }
+/**
+ * @param {unknown} s Value to test.
+ * @returns {s is string}
+ */
 export function isString(s) {
     return typeof s === 'string';
 }
+/**
+ * Check for an element node (`nodeType` 1), not just any DOM node.
+ *
+ * @param {unknown} el Value to test.
+ * @returns {boolean}
+ */
 export function isNode(el) {
     return !!(el && el.nodeType && el.nodeType == 1);
 }
+/**
+ * @param {unknown} ar Value to test.
+ * @returns {ar is unknown[]}
+ */
 export function isArray(ar) {
     return Array.isArray(ar);
 }
+/**
+ * Check for a truthy, finite `length`; empty collections do not pass.
+ *
+ * @param {unknown} ar Value to test.
+ * @returns {boolean | number | 0n | '' | null | undefined} A boolean for a truthy length, or the falsy input or length from short-circuit evaluation.
+ */
 export function isArrayLike(ar) {
     return ar && ar.length && isFinite(ar.length);
 }
+/**
+ * Check for a non-null object other than an array.
+ *
+ * @param {unknown} o Value to test.
+ * @returns {boolean}
+ */
 export function isObject(o) {
     let type = typeof o;
     return type === 'object' && o != null && !isFunction(o) && !isArray(o);
 }
+/**
+ * @param {unknown} o Value to test.
+ * @returns {o is null | undefined}
+ */
 export function isNil(o) {
     return o == null;
 }
+/**
+ * Check whether a value has an own property.
+ *
+ * @param {object | null} obj Object to inspect.
+ * @param {PropertyKey} key Property key to look up.
+ * @returns {boolean}
+ */
 export function has(obj, key) {
     return obj !== null && hasOwnProperty.call(obj, key);
 }
+/**
+ * Read the length of an array or string, or count an object's own enumerable keys.
+ * If an object has a `keys()` method, return the length of its result instead.
+ *
+ * @param {object | string} o Value to measure.
+ * @returns {number | undefined} The length or count, if available.
+ */
 export function size(o) {
     if (isObject(o)) {
         if (o.keys) {
@@ -536,6 +633,12 @@ export function size(o) {
         return o.length;
     }
 }
+/**
+ * Check whether a number or numeric string parses and is finite.
+ *
+ * @param {unknown} n Value to test.
+ * @returns {boolean}
+ */
 export function isNumber(n) {
     return !isNaN(parseFloat(n)) && isFinite(n);
 }

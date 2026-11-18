@@ -10,7 +10,7 @@ import Slide from './core/slide.js';
 import touchNavigation from './core/touch-navigation.js';
 import * as _ from './utils/helpers.js';
 
-const version = '3.7.1';
+const version = '3.8.0';
 const isMobile = _.isMobile();
 const isTouch = _.isTouch();
 const html = document.getElementsByTagName('html')[0];
@@ -54,6 +54,7 @@ const defaults = {
     keyboardNavigation: true,
     closeOnOutsideClick: true,
     plugins: false,
+    direction: 'ltr',
     plyr: {
         css: 'https://cdn.plyr.io/3.6.12/plyr.css',
         js: 'https://cdn.plyr.io/3.6.12/plyr.js',
@@ -930,6 +931,12 @@ class GlightboxInit {
      */
     getAnimationClasses() {
         let effects = [];
+        if (this.settings.direction === 'rtl') {
+            // swap the slide and slideBack effects
+            const slideEffect = this.settings.cssEfects.slide;
+            this.settings.cssEfects.slide = this.settings.cssEfects.slideBack;
+            this.settings.cssEfects.slideBack = slideEffect;
+        }
         for (let key in this.settings.cssEffects) {
             if (this.settings.cssEffects.hasOwnProperty(key)) {
                 let effect = this.settings.cssEffects[key];
@@ -984,6 +991,14 @@ class GlightboxInit {
         let closeButton = modal.querySelector('.gclose');
         this.prevButton = modal.querySelector('.gprev');
         this.nextButton = modal.querySelector('.gnext');
+        if (this.settings.direction === 'rtl') {
+            if (this.prevButton) {
+                this.prevButton.classList.add('gprev-rtl');
+            }
+            if (this.nextButton) {
+                this.nextButton.classList.add('gnext-rtl');
+            }
+        }
         this.overlay = modal.querySelector('.goverlay');
         this.loader = modal.querySelector('.gloader');
         this.slidesContainer = document.getElementById('glightbox-slider');

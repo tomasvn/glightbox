@@ -50,8 +50,8 @@ Or manually download and link `glightbox.min.js` in your HTML:
 
 <!-- USING A CDN -->
 
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tomasvn/glightbox@3.7.0/dist/css/glightbox.min.css" />
-<script src="https://cdn.jsdelivr.net/npm/@tomasvn/glightbox@3.7.0/dist/js/glightbox.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tomasvn/glightbox@3.8.0/dist/css/glightbox.min.css" />
+<script src="https://cdn.jsdelivr.net/npm/@tomasvn/glightbox@3.8.0/dist/js/glightbox.min.js"></script>
 
 <script type="text/javascript">
   const lightbox = GLightbox({ ...options });
@@ -60,7 +60,7 @@ Or manually download and link `glightbox.min.js` in your HTML:
 <!-- USING ES MODULES -->
 
 <script type="module">
-  import 'https://cdn.jsdelivr.net/npm/@tomasvn/glightbox@3.7.0/dist/js/glightbox.min.js';
+  import 'https://cdn.jsdelivr.net/npm/@tomasvn/glightbox@3.8.0/dist/js/glightbox.min.js';
 
   const lightbox = GLightbox({ ...options });
 </script>
@@ -188,6 +188,7 @@ To define gallery items in JavaScript, see [Examples](./EXAMPLES.md#javascript-g
 | autoplayVideos | boolean | `true` | Autoplay videos on open. |
 | autofocusVideos | boolean | `true` | If true video will be focused on play to allow keyboard sortcuts for the player, this will deactivate prev and next arrows to change slide so use it only if you know what you are doing. |
 | plyr | object | `{}` | [View video player options.](#video-player) |
+| direction | `ltr` \| `rtl` | `ltr` | Direction of the lightbox slide order (`ltr` for left to right or `rtl` for right to left). |
 
 ## Events
 

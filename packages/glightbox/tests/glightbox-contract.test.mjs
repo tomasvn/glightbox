@@ -52,6 +52,17 @@ describe('public API contract', () => {
         assert.ok(lightbox.effectsClasses.includes('gfadeIn'));
     });
 
+    it('reverses slide animations for rtl without affecting other instances', () => {
+        const rtl = GLightbox({ selector: null, direction: 'rtl' });
+        const ltr = GLightbox({ selector: null });
+
+        assert.equal(rtl.settings.direction, 'rtl');
+        assert.equal(rtl.settings.cssEfects.slide.in, 'slideInLeft');
+        assert.equal(rtl.settings.cssEfects.slideBack.in, 'slideInRight');
+        assert.equal(ltr.settings.direction, 'ltr');
+        assert.equal(ltr.settings.cssEfects.slide.in, 'slideInRight');
+    });
+
     it('sends null for open events and an index for removed slides', () => {
         const lightbox = GLightbox({ selector: null });
         const payloads = [];

@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file.
 
+## 3.8.0
+
+### Minor Changes
+
+- Implement RTL support - closes [#459](https://github.com/biati-digital/glightbox/issues/459)
+- Improve overall JSDoc typings
+- Add `rtl` directions example in simple image gallery
+
 ## 3.7.1
 
 ### Patch Changes

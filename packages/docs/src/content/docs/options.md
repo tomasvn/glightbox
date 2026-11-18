@@ -10,6 +10,7 @@ Pass options to `GLightbox({...})`. Values in the table are the defaults.
 | `selector`            | string           | `.glightbox` | Selector used to find gallery elements.                            |
 | `elements`            | array            | `null`       | Provide slide elements directly instead of using a selector.       |
 | `skin`                | string           | `clean`      | Skin class added to the lightbox.                                  |
+| `direction`           | `ltr` \| `rtl`   | `ltr`        | Slide order and navigation direction: `ltr` or `rtl`.              |
 | `openEffect`          | string           | `zoom`       | Open animation: `zoom`, `fade`, or `none`.                         |
 | `closeEffect`         | string           | `zoom`       | Close animation: `zoom`, `fade`, or `none`.                        |
 | `slideEffect`         | string           | `slide`      | Slide animation: `slide`, `fade`, `zoom`, or `none`.               |

@@ -1,4 +1,4 @@
-// Type definitions for Glightbox 3.7.1
+// Type definitions for Glightbox 3.8.0
 // Project: https://github.com/biati-digital/glightbox/blob/master/README.md
 // Definitions by: Ngoc Tu Nguyen <https://github.com/tomasvn>
 // Definitions: https://github.com/DefinitelyTyped/DefinitelyTyped
@@ -112,6 +112,12 @@ declare namespace Glightbox {
          * @default 'clean'
          */
         skin?: string;
+        /**
+         * Direction of the lightbox slide order.
+         *
+         * @default 'ltr'
+         */
+        direction?: 'ltr' | 'rtl';
         /**
          * Name of the effect on lightbox open. (zoom, fade, none)
          *

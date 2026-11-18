@@ -5,6 +5,7 @@ const emptyResult: false | void = lightbox.open();
 
 GLightbox({
     selector: null,
+    direction: 'rtl',
     touchVideoClosable: true,
     elements: [
         { href: 'image.jpg', alt: 'An image', width: '90vw' },
@@ -26,6 +27,9 @@ GLightbox({
         })
     }
 });
+
+// @ts-expect-error Direction is restricted to 'ltr' or 'rtl'.
+GLightbox({ direction: 'vertical' });
 
 lightbox.on('slide_changed', ({ prev, current }) => {
     const previousIndex: number | null | undefined = prev.slideIndex;

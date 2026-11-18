@@ -1,12 +1,18 @@
+import { addEvent, addClass, removeClass, each } from '../utils/helpers.js';
+
+const KEY_CODES = {
+    TAB: 9,
+    ESCAPE: 27,
+    ARROW_LEFT: 37,
+    ARROW_RIGHT: 39
+};
+
 /**
  * Keyboard Navigation
  * Allow navigation using the keyboard
  *
  * @param {object} instance
  */
-
-import { addEvent, addClass, removeClass, each } from '../utils/helpers.js';
-
 function getNextFocusElement(current = -1) {
     const btns = document.querySelectorAll('.gbtn[data-taborder]:not(.disabled)');
     if (!btns.length) {
@@ -50,10 +56,10 @@ export default function keyboardNavigation(instance) {
         onElement: window,
         withCallback: (event, target) => {
             event = event || window.event;
-            const key = event.keyCode;
-            if (key == 9) {
+            const key = event.keyCode || event.key;
+            if (key == KEY_CODES.TAB || key === 'Tab') {
                 // oxfmt-ignore
-                const focusedButton = document.querySelector('.gbtn.focused');
+                const focusedButton = document.querySelector(".gbtn.focused");
 
                 if (!focusedButton) {
                     const activeElement = document.activeElement && document.activeElement.nodeName ? document.activeElement.nodeName.toLocaleLowerCase() : false;
@@ -87,13 +93,13 @@ export default function keyboardNavigation(instance) {
                     addClass(nextFocus, 'focused');
                 }
             }
-            if (key == 39) {
-                instance.nextSlide();
+            if (key == KEY_CODES.ARROW_RIGHT || key === 'ArrowRight') {
+                instance.settings.direction === 'rtl' ? instance.prevSlide() : instance.nextSlide();
             }
-            if (key == 37) {
-                instance.prevSlide();
+            if (key == KEY_CODES.ARROW_LEFT || key === 'ArrowLeft') {
+                instance.settings.direction === 'rtl' ? instance.nextSlide() : instance.prevSlide();
             }
-            if (key == 27) {
+            if (key == KEY_CODES.ESCAPE || key === 'Escape') {
                 instance.close();
             }
         }

@@ -1,14 +1,23 @@
-/**
- * DragSlides
- * Allow imaes to be dragged for prev and next
- * in desktops
- *
- * @param { object } config
- */
-
 import { closest } from '../utils/helpers.js';
 
+/**
+ * @typedef {Object} DragSlidesConfig
+ * @property {HTMLElement} dragEl Element that receives drag events.
+ * @property {number} [toleranceX=40] Horizontal distance required to change slides.
+ * @property {number} [toleranceY=65] Vertical distance required to close the lightbox.
+ * @property {HTMLElement} slide Slide associated with the drag element.
+ * @property {Object} instance Glightbox instance used for slide navigation and closing.
+ */
+
+/**
+ * Handles drag gestures to navigate between slides or close the lightbox.
+ *
+ * @class
+ */
 export default class DragSlides {
+    /**
+     * @param {DragSlidesConfig} config Configuration for drag handling.
+     */
     constructor(config = {}) {
         let { dragEl, toleranceX = 40, toleranceY = 65, slide = null, instance = null } = config;
 
@@ -29,11 +38,18 @@ export default class DragSlides {
         this.dragContainer = this.el;
         this.slide = slide;
         this.instance = instance;
+        this.prevSlideDirection = instance.settings.direction === 'rtl' ? 'left' : 'right';
+        this.nextSlideDirection = instance.settings.direction === 'rtl' ? 'right' : 'left';
 
         this.el.addEventListener('mousedown', (e) => this.dragStart(e), false);
         this.el.addEventListener('mouseup', (e) => this.dragEnd(e), false);
         this.el.addEventListener('mousemove', (e) => this.drag(e), false);
     }
+    /**
+     * Drag start handler
+     * @param {Event} e
+     * @returns
+     */
     dragStart(e) {
         if (this.slide.classList.contains('zoomed')) {
             this.active = false;
@@ -63,6 +79,11 @@ export default class DragSlides {
             this.dragContainer = closest(e.target, '.ginner-container');
         }
     }
+
+    /**
+     * Drag end handler
+     * @param {Event} e
+     */
     dragEnd(e) {
         e && e.preventDefault();
         this.initialX = 0;
@@ -77,8 +98,8 @@ export default class DragSlides {
 
         if (this.doSlideChange) {
             this.instance.preventOutsideClick = true;
-            this.doSlideChange == 'right' && this.instance.prevSlide();
-            this.doSlideChange == 'left' && this.instance.nextSlide();
+            this.doSlideChange == this.prevSlideDirection && this.instance.prevSlide();
+            this.doSlideChange == this.nextSlideDirection && this.instance.nextSlide();
         }
 
         if (this.doSlideClose) {
@@ -101,6 +122,10 @@ export default class DragSlides {
             this.dragContainer.style.transition = '';
         }, 100);
     }
+    /**
+     * Drag move handler
+     * @param {Event} e
+     */
     drag(e) {
         if (this.active) {
             e.preventDefault();
@@ -143,8 +168,8 @@ export default class DragSlides {
                     this.active = false;
                     this.instance.preventOutsideClick = true;
                     this.dragEnd(null);
-                    doChange == 'right' && this.instance.prevSlide();
-                    doChange == 'left' && this.instance.nextSlide();
+                    doChange == this.prevSlideDirection && this.instance.prevSlide();
+                    doChange == this.nextSlideDirection && this.instance.nextSlide();
                     return;
                 }
             }
@@ -175,7 +200,7 @@ export default class DragSlides {
         if (currentXInt >= this.toleranceX) {
             let dragDir = this.currentX > 0 ? 'right' : 'left';
 
-            if ((dragDir == 'left' && this.slide !== this.slide.parentNode.lastChild) || (dragDir == 'right' && this.slide !== this.slide.parentNode.firstChild)) {
+            if ((dragDir == this.nextSlideDirection && this.slide !== this.slide.parentNode.lastChild) || (dragDir == this.prevSlideDirection && this.slide !== this.slide.parentNode.firstChild)) {
                 doChange = dragDir;
             }
         }
@@ -192,6 +217,13 @@ export default class DragSlides {
         return doClose;
     }
 
+    /**
+     * Sets the translate3d transform on the given node.
+     * @param {HTMLElement} node
+     * @param {number} xPos
+     * @param {number} yPos
+     * @param {boolean} animated
+     */
     setTranslate(node, xPos, yPos, animated = false) {
         if (animated) {
             node.style.transition = 'all .2s ease';
