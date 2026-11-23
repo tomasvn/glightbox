@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## 3.8.1
+
+### Patch Changes
+
+- Fix stale drag when zoom is enabled
+
 ## 3.8.0
 
 ### Minor Changes

@@ -87,7 +87,7 @@ const galleryImages = ['gm1.jpg', 'gm2.jpg', 'gm3.jpg', 'gm4.jpg', 'gm5.jpg', 'g
 <script is:inline src="/glightbox/dist/js/glightbox.js"></script>
 <script is:inline>
     const simpleGalleryRtl = document.getElementById('simple-gallery-rtl');
-    const createSimpleGallery = () => GLightbox({
+    const createSimpleGallery = () => glightbox({
         selector: '.glightbox-simple',
         direction: simpleGalleryRtl.checked ? 'rtl' : 'ltr'
     });
@@ -96,7 +96,7 @@ const galleryImages = ['gm1.jpg', 'gm2.jpg', 'gm3.jpg', 'gm4.jpg', 'gm5.jpg', 'g
         simpleGallery.destroy();
         simpleGallery = createSimpleGallery();
     });
-    GLightbox({ selector: '.glightbox-description' });
-    GLightbox({ selector: '.glightbox-video' });
-    GLightbox({ selector: '.glightbox-embed' });
+    glightbox({ selector: '.glightbox-description' });
+    glightbox({ selector: '.glightbox-video' });
+    glightbox({ selector: '.glightbox-embed' });
 </script>

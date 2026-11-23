@@ -5,7 +5,7 @@ A lightweight JavaScript lightbox for images, videos, iframes, and inline conten
 ## Documentation
 
 - [Documentation](https://tomasvn.github.io/glightbox/)
-- [Interactive demo](https://tomasvn.github.io/glightbox/demo.html)
+- [Interactive demo](http://localhost:4321/glightbox/examples/)
 - [Library usage and options](./packages/glightbox/README.md)
 - [Examples](./packages/glightbox/EXAMPLES.md)
 - [Changelog](./packages/glightbox/CHANGELOG.md)
@@ -39,7 +39,7 @@ Use Node.js 24 (or at least 22.23.4) and npm 10.9 or newer.
 
 ```sh
 npm install
-npm run build       # Build the library, then the documentation
+npm run build      # Build the library, then the documentation
 npm test           # Library and TypeScript contract tests
 npm run lint       # Library JavaScript linting
 npm run watch      # Watch library sources

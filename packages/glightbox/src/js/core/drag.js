@@ -96,13 +96,18 @@ export default class DragSlides {
         this.yOffset = 0;
         this.active = false;
 
-        if (this.doSlideChange) {
+        const doSlideChange = this.doSlideChange;
+        const doSlideClose = this.doSlideClose;
+        this.doSlideChange = false;
+        this.doSlideClose = false;
+
+        if (doSlideChange) {
             this.instance.preventOutsideClick = true;
-            this.doSlideChange == this.prevSlideDirection && this.instance.prevSlide();
-            this.doSlideChange == this.nextSlideDirection && this.instance.nextSlide();
+            doSlideChange == this.prevSlideDirection && this.instance.prevSlide();
+            doSlideChange == this.nextSlideDirection && this.instance.nextSlide();
         }
 
-        if (this.doSlideClose) {
+        if (doSlideClose) {
             this.instance.close();
         }
 

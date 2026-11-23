@@ -785,12 +785,16 @@
         this.xOffset = 0;
         this.yOffset = 0;
         this.active = false;
-        if (this.doSlideChange) {
+        var doSlideChange = this.doSlideChange;
+        var doSlideClose = this.doSlideClose;
+        this.doSlideChange = false;
+        this.doSlideClose = false;
+        if (doSlideChange) {
           this.instance.preventOutsideClick = true;
-          this.doSlideChange == this.prevSlideDirection && this.instance.prevSlide();
-          this.doSlideChange == this.nextSlideDirection && this.instance.nextSlide();
+          doSlideChange == this.prevSlideDirection && this.instance.prevSlide();
+          doSlideChange == this.nextSlideDirection && this.instance.nextSlide();
         }
-        if (this.doSlideClose) {
+        if (doSlideClose) {
           this.instance.close();
         }
         if (!this.toleranceReached) {
@@ -2081,7 +2085,7 @@
     instance.events['touch'] = touchInstance;
   }
 
-  var _version = '3.8.0';
+  var _version = '3.8.1';
   var isMobile = isMobile$1();
   var isTouch = isTouch$1();
   var html = document.getElementsByTagName('html')[0];
