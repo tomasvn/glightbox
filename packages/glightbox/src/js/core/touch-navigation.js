@@ -1,13 +1,12 @@
-/**
- * Touch Navigation
- * Allow navigation using touch events
- *
- * @param {object} instance
- */
-
 import TouchEvents from './touch-events.js';
 import { addEvent, addClass, removeClass, hasClass, closest, whichTransitionEvent, cssTransform, windowSize } from '../utils/helpers.js';
 
+/**
+ * Reset the media position and opacity after a touch gesture.
+ *
+ * @param {HTMLElement | null | undefined} slide Slide or media element to reset.
+ * @returns {void}
+ */
 export function resetSlideMove(slide) {
     if (!slide) {
         return;
@@ -40,6 +39,12 @@ export function resetSlideMove(slide) {
     }
 }
 
+/**
+ * Register touch navigation, zoom, and swipe handling for a lightbox.
+ *
+ * @param {ReturnType<typeof import('../glightbox.js').default>} instance Owning lightbox.
+ * @returns {false | void} False if touch navigation is already registered.
+ */
 export default function touchNavigation(instance) {
     if (instance.events.hasOwnProperty('touch')) {
         return false;
@@ -95,6 +100,16 @@ export default function touchNavigation(instance) {
             }
 
             if (process) {
+                if (currentSlide !== instance.activeSlide) {
+                    if (mediaImage && imageZoomed) {
+                        mediaImage.style.transform = '';
+                        mediaImage.classList.remove('gzoomed-in', 'gzoomed-out');
+                    }
+                    currentScale = 1;
+                    imageZoomed = false;
+                    doingZoom = false;
+                    zoomedPosX = zoomedPosY = lastZoomedPosX = lastZoomedPosY = null;
+                }
                 endCoords = e.targetTouches[0];
                 startCoords.pageX = e.targetTouches[0].pageX;
                 startCoords.pageY = e.targetTouches[0].pageY;
@@ -232,6 +247,7 @@ export default function touchNavigation(instance) {
             if (scale <= 1) {
                 imageZoomed = false;
                 scale = 1;
+                currentScale = 1;
                 lastZoomedPosY = null;
                 lastZoomedPosX = null;
                 zoomedPosX = null;
@@ -246,6 +262,25 @@ export default function touchNavigation(instance) {
 
             mediaImage.style.transform = `scale3d(${scale}, ${scale}, 1)`;
             currentScale = scale;
+        },
+        doubleTap: () => {
+            if (!process || currentSlide !== instance.activeSlide || !mediaImage || !instance.elements[instance.index]?.slideConfig?.doubleTapToZoom) {
+                return false;
+            }
+            if (currentScale && currentScale > 1) {
+                currentScale = 1;
+                mediaImage.style.transform = '';
+                imageZoomed = false;
+                zoomedPosX = zoomedPosY = lastZoomedPosX = lastZoomedPosY = null;
+                mediaImage.classList.remove('gzoomed-in');
+                mediaImage.classList.add('gzoomed-out');
+            } else {
+                currentScale = 2;
+                mediaImage.style.transform = `scale3d(${currentScale}, ${currentScale}, 1)`;
+                imageZoomed = true;
+                mediaImage.classList.add('gzoomed-in');
+                mediaImage.classList.remove('gzoomed-out');
+            }
         },
         pressMove: (e) => {
             if (imageZoomed && !doingZoom) {

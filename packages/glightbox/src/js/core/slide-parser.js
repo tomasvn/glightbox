@@ -17,6 +17,7 @@ export default class SlideConfigParser {
             height: '',
             content: false,
             zoomable: true,
+            doubleTapToZoom: false,
             draggable: true
         };
 
@@ -77,6 +78,9 @@ export default class SlideConfigParser {
 
     parseConfig(element, settings) {
         let data = extend({ descPosition: settings.descPosition }, this.defaults);
+        if (has(settings, 'doubleTapToZoom')) {
+            data.doubleTapToZoom = settings.doubleTapToZoom;
+        }
 
         if (isObject(element) && !isNode(element)) {
             if (!has(element, 'type')) {

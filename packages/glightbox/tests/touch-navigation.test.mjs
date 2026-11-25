@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 import { describe, it } from 'node:test';
 import touchNavigation, { resetSlideMove } from '../src/js/core/touch-navigation.js';
 
-function createTouchNavigation({ mediaClass, touchVideoClosable = false, direction = 'ltr' }) {
+function createTouchNavigation({ mediaClass, touchVideoClosable = false, direction = 'ltr', doubleTapToZoom = false }) {
     const oldDocument = globalThis.document;
     const oldWindow = globalThis.window;
     const overlay = {
@@ -10,7 +10,15 @@ function createTouchNavigation({ mediaClass, touchVideoClosable = false, directi
         style: {}
     };
     const mediaStyles = {};
-    const image = { style: {} };
+    const imageClasses = new Set();
+    const image = {
+        style: {},
+        classList: {
+            contains: (name) => imageClasses.has(name),
+            add: (...names) => names.forEach((name) => imageClasses.add(name)),
+            remove: (...names) => names.forEach((name) => imageClasses.delete(name))
+        }
+    };
     const video = { style: {} };
     const classes = new Set(['gslide-media', mediaClass]);
     const media = {
@@ -58,7 +66,7 @@ function createTouchNavigation({ mediaClass, touchVideoClosable = false, directi
     let prevSlideCount = 0;
     const instance = {
         activeSlide: slide,
-        elements: [{}, {}],
+        elements: [{ slideConfig: { doubleTapToZoom } }, { slideConfig: { doubleTapToZoom: false } }],
         events: {},
         index: 0,
         settings: { touchFollowAxis: true, touchVideoClosable, direction },
@@ -78,6 +86,7 @@ function createTouchNavigation({ mediaClass, touchVideoClosable = false, directi
         instance,
         media,
         mediaStyles,
+        image,
         video,
         get closeCount() {
             return closeCount;
@@ -123,6 +132,86 @@ function moveTouch(instance, y) {
         targetTouches: [{ clientX: 100, clientY: y, pageX: 100, pageY: y }]
     });
 }
+
+describe('double-tap image zoom', () => {
+    it('recognizes two consecutive single-finger taps', async () => {
+        const fixture = createTouchNavigation({ mediaClass: 'gslide-image', doubleTapToZoom: true });
+        const touch = {
+            clientX: 100,
+            clientY: 100,
+            pageX: 100,
+            pageY: 100,
+            target: { nodeName: 'DIV', parentElement: null, classList: { contains: () => false } }
+        };
+        try {
+            const tap = async () => {
+                fixture.instance.events.touch.start({ touches: [touch], targetTouches: [touch], target: touch.target, preventDefault() {} });
+                fixture.instance.events.touch.end({ touches: [], changedTouches: [touch] });
+                await new Promise((resolve) => setTimeout(resolve, 10));
+            };
+            await tap();
+            await tap();
+
+            assert.equal(fixture.image.style.transform, 'scale3d(2, 2, 1)');
+            assert.equal(fixture.image.classList.contains('gzoomed-in'), true);
+        } finally {
+            fixture.restore();
+        }
+    });
+
+    it('toggles zoom and transition classes for an enabled slide', () => {
+        const fixture = createTouchNavigation({ mediaClass: 'gslide-image', doubleTapToZoom: true });
+        try {
+            startTouch(fixture.instance);
+            fixture.image.style.width = '80%';
+            fixture.instance.events.touch.doubleTap.dispatch();
+            assert.equal(fixture.image.style.transform, 'scale3d(2, 2, 1)');
+            assert.equal(fixture.image.classList.contains('gzoomed-in'), true);
+            assert.equal(fixture.image.classList.contains('gzoomed-out'), false);
+
+            fixture.instance.events.touch.doubleTap.dispatch();
+            assert.equal(fixture.image.style.transform, '');
+            assert.equal(fixture.image.style.width, '80%');
+            assert.equal(fixture.image.classList.contains('gzoomed-in'), false);
+            assert.equal(fixture.image.classList.contains('gzoomed-out'), true);
+        } finally {
+            fixture.restore();
+        }
+    });
+
+    it('honors the active slide setting and resets zoom when changing slides', () => {
+        const fixture = createTouchNavigation({ mediaClass: 'gslide-image', doubleTapToZoom: true });
+        try {
+            startTouch(fixture.instance);
+            fixture.instance.events.touch.doubleTap.dispatch();
+            const secondImage = { style: {}, classList: { add() {}, remove() {} } };
+            const secondSlide = {
+                querySelector: (selector) => (selector === '.gslide-media' ? { classList: { contains: (name) => name === 'gslide-image' }, querySelector: () => secondImage } : null)
+            };
+            fixture.instance.activeSlide = secondSlide;
+            fixture.instance.index = 1;
+            startTouch(fixture.instance);
+            fixture.instance.events.touch.doubleTap.dispatch();
+
+            assert.equal(fixture.image.style.transform, '');
+            assert.equal(fixture.image.classList.contains('gzoomed-in'), false);
+            assert.equal(secondImage.style.transform, undefined);
+        } finally {
+            fixture.restore();
+        }
+    });
+
+    it('does not zoom a video slide', () => {
+        const fixture = createTouchNavigation({ mediaClass: 'gslide-video', doubleTapToZoom: true });
+        try {
+            startTouch(fixture.instance);
+            fixture.instance.events.touch.doubleTap.dispatch();
+            assert.equal(fixture.video.style.transform, undefined);
+        } finally {
+            fixture.restore();
+        }
+    });
+});
 
 describe('resetSlideMove', () => {
     it('returns when the slide is null', () => {

@@ -14,8 +14,19 @@ let config = {
     css: {
         src: path.join(root, 'src/postcss'),
         dest: path.join(root, 'dist/css')
+    },
+    docs: {
+        js: path.join(root, '../docs/public/dist/js'),
+        css: path.join(root, '../docs/public/dist/css')
     }
 };
+
+function syncDocs(dest, files) {
+    fs.mkdirSync(dest, { recursive: true });
+    for (const file of files) {
+        fs.copyFileSync(file, path.join(dest, path.basename(file)));
+    }
+}
 
 /**
  * Handle Javascript files
@@ -29,26 +40,24 @@ async function handleJavascript(file) {
 
     const name = path.basename(file);
 
-    const res = await jscompiler({
+    await jscompiler({
         file,
         dest: config.js.dest,
         format: 'umd',
         sourcemap: false,
         moduleID: 'GLightbox'
-    }).catch((error) => console.log(error));
-
-    if (!res) {
-        console.log('Build Error', `View logs for more info`);
-        console.log(res);
-        return false;
-    }
+    });
 
     const minName = name.replace('.js', '.min.js');
     const processed = path.join(config.js.dest, name);
     const code = fs.readFileSync(processed, 'utf8');
-    const minified = terser.minify(code);
+    const minified = await terser.minify(code);
+    if (minified.error) {
+        throw minified.error;
+    }
     const minifyPath = path.join(config.js.dest, minName);
     fs.writeFileSync(minifyPath, minified.code);
+    syncDocs(config.docs.js, [processed, minifyPath]);
 
     console.log('Javascript Build', `Compiled and Minified ${name}`);
 }
@@ -63,14 +72,12 @@ async function handlePostCSS(file) {
     const name = path.basename(file);
     const dest = config.css.dest;
 
-    let res = await postcssCompiler({
+    await postcssCompiler({
         file,
         dest,
         minify: true
-    }).catch((error) => console.log(error));
-    if (!res) {
-        return false;
-    }
+    });
+    syncDocs(config.docs.css, [path.join(dest, name), path.join(dest, name.replace(/\.css$/, '.min.css'))]);
     console.log('PostCSS Build', `Compiled and Minified ${name}`);
 }
 
@@ -80,6 +87,13 @@ async function handlePostCSS(file) {
  * this includes js and css files
  */
 function filesWatcher() {
+    try {
+        syncDocs(config.docs.js, [path.join(config.js.dest, 'glightbox.js'), path.join(config.js.dest, 'glightbox.min.js')]);
+        syncDocs(config.docs.css, [path.join(config.css.dest, 'glightbox.css'), path.join(config.css.dest, 'glightbox.min.css')]);
+    } catch (error) {
+        console.error('Initial docs sync failed:', error);
+    }
+
     const watcher = chokidar.watch(path.join(root, 'src'), {
         ignored: ['**/.DS_Store', '**/.jshintrc', '**/.babelrc'],
         persistent: true,
@@ -90,13 +104,18 @@ function filesWatcher() {
         }
     });
 
-    watcher.on('change', (path) => {
-        if (path.endsWith('.js')) {
-            return handleJavascript(path);
-        }
-        if (path.endsWith('.css')) {
-            return handlePostCSS(path);
-        }
+    let pending = Promise.resolve();
+    watcher.on('change', (file) => {
+        pending = pending
+            .then(() => {
+                if (file.endsWith('.js')) {
+                    return handleJavascript(file);
+                }
+                if (file.endsWith('.css')) {
+                    return handlePostCSS(file);
+                }
+            })
+            .catch((error) => console.error('Watch build failed:', error));
     });
     watcher.on('ready', () => console.log('Watching files', 'Initial scan complete. Ready for changes'));
 }

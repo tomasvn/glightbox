@@ -29,7 +29,8 @@ Pass options to `GLightbox({...})`. Values in the table are the defaults.
 | `videosWidth`         | string or number | `960px`      | Default width for video slides.                                    |
 | `descPosition`        | string           | `bottom`     | Default description position: `bottom`, `top`, `left`, or `right`. |
 | `loop`                | boolean          | `false`      | Loop from the last slide to the first and vice versa.              |
-| `zoomable`            | boolean          | `true`       | Enable image zoom.                                                 |
+| `zoomable`            | boolean          | `true`       | Enable click-to-zoom for sufficiently large images.                |
+| `doubleTapToZoom`     | boolean          | `false`      | Enable double-tap image zoom when touch navigation is enabled.     |
 | `draggable`           | boolean          | `true`       | Enable mouse dragging for images and inline content.               |
 | `dragToleranceX`      | number           | `40`         | Horizontal drag distance required to change slides.                |
 | `dragToleranceY`      | number           | `65`         | Vertical drag distance required to close the lightbox.             |
@@ -46,4 +47,6 @@ Pass options to `GLightbox({...})`. Values in the table are the defaults.
 | `slideHTML`           | string           | —            | Override the slide markup.                                         |
 | `plyr`                | object           | —            | Configure the Plyr video player.                                   |
 
-Options such as `width`, `height`, `zoomable`, and `draggable` can also be set for individual slides. See [Examples](/glightbox/examples/).
+Options such as `width`, `height`, `zoomable`, `doubleTapToZoom`, and `draggable` can also be set for individual slides. See [Examples](/glightbox/examples/).
+
+Double-tap zoom requires `touchNavigation: true`. It is independent of the global and per-slide `zoomable` settings; disabling it does not disable pinch zoom.

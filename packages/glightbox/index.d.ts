@@ -253,6 +253,12 @@ declare namespace Glightbox {
          */
         zoomable?: boolean;
         /**
+         * Enable or disable double tap to zoom on images.
+         *
+         * @default false
+         */
+        doubleTapToZoom?: boolean;
+        /**
          * Enable or disable mouse drag to go prev and next slide
          *
          * @default true
@@ -343,6 +349,8 @@ declare namespace Glightbox {
         height?: string | number;
         content?: string | HTMLElement | false;
         zoomable?: boolean;
+        /** Override the global double-tap zoom setting for this slide. */
+        doubleTapToZoom?: boolean;
         draggable?: boolean;
     }
 

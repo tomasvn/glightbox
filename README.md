@@ -42,7 +42,7 @@ npm install
 npm run build      # Build the library, then the documentation
 npm test           # Library and TypeScript contract tests
 npm run lint       # Library JavaScript linting
-npm run watch      # Watch library sources
+npm run watch      # Watch library sources and sync builds to the docs
 npm run dev:docs   # Start the documentation server
 ```
 
@@ -54,7 +54,7 @@ npm run build --workspace @tomasvn/glightbox-docs
 npm pack --workspace @tomasvn/glightbox --dry-run
 ```
 
-The demo source and media live in `packages/docs/public`. The documentation build copies only library distribution assets into `packages/docs/public/dist`, which is generated and ignored by Git. GitHub Pages deployment builds the library and documentation and publishes `packages/docs/dist`. Select **GitHub Actions** as the Pages source in repository settings.
+The demo source and media live in `packages/docs/public`. The documentation build copies library distribution assets into `packages/docs/public/dist`, which is generated and ignored by Git. The library watcher also syncs its builds there for the docs preview. GitHub Pages deployment builds the library and documentation and publishes `packages/docs/dist`. Select **GitHub Actions** as the Pages source in repository settings.
 
 See [CONTRIBUTING.md](./CONTRIBUTING.md) for development and release instructions.
 

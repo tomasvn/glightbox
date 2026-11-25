@@ -1118,6 +1118,7 @@
         height: '',
         content: false,
         zoomable: true,
+        doubleTapToZoom: false,
         draggable: true
       };
       if (isObject(slideParamas)) {
@@ -1162,6 +1163,9 @@
         var data = extend({
           descPosition: settings.descPosition
         }, this.defaults);
+        if (has(settings, 'doubleTapToZoom')) {
+          data.doubleTapToZoom = settings.doubleTapToZoom;
+        }
         if (isObject(element) && !isNode(element)) {
           if (!has(element, 'type')) {
             if (has(element, 'content') && element.content) {
@@ -1912,6 +1916,16 @@
           process = false;
         }
         if (process) {
+          if (currentSlide !== instance.activeSlide) {
+            if (mediaImage && imageZoomed) {
+              mediaImage.style.transform = '';
+              mediaImage.classList.remove('gzoomed-in', 'gzoomed-out');
+            }
+            currentScale = 1;
+            imageZoomed = false;
+            doingZoom = false;
+            zoomedPosX = zoomedPosY = lastZoomedPosX = lastZoomedPosY = null;
+          }
           endCoords = e.targetTouches[0];
           startCoords.pageX = e.targetTouches[0].pageX;
           startCoords.pageY = e.targetTouches[0].pageY;
@@ -2028,6 +2042,7 @@
         if (scale <= 1) {
           imageZoomed = false;
           scale = 1;
+          currentScale = 1;
           lastZoomedPosY = null;
           lastZoomedPosX = null;
           zoomedPosX = null;
@@ -2040,6 +2055,26 @@
         }
         mediaImage.style.transform = "scale3d(".concat(scale, ", ").concat(scale, ", 1)");
         currentScale = scale;
+      },
+      doubleTap: function doubleTap() {
+        var _instance$elements$in;
+        if (!process || currentSlide !== instance.activeSlide || !mediaImage || !((_instance$elements$in = instance.elements[instance.index]) !== null && _instance$elements$in !== void 0 && (_instance$elements$in = _instance$elements$in.slideConfig) !== null && _instance$elements$in !== void 0 && _instance$elements$in.doubleTapToZoom)) {
+          return false;
+        }
+        if (currentScale && currentScale > 1) {
+          currentScale = 1;
+          mediaImage.style.transform = '';
+          imageZoomed = false;
+          zoomedPosX = zoomedPosY = lastZoomedPosX = lastZoomedPosY = null;
+          mediaImage.classList.remove('gzoomed-in');
+          mediaImage.classList.add('gzoomed-out');
+        } else {
+          currentScale = 2;
+          mediaImage.style.transform = "scale3d(".concat(currentScale, ", ").concat(currentScale, ", 1)");
+          imageZoomed = true;
+          mediaImage.classList.add('gzoomed-in');
+          mediaImage.classList.remove('gzoomed-out');
+        }
       },
       pressMove: function pressMove(e) {
         if (imageZoomed && !doingZoom) {
@@ -2085,7 +2120,7 @@
     instance.events['touch'] = touchInstance;
   }
 
-  var _version = '3.8.1';
+  var _version = '3.9.0';
   var isMobile = isMobile$1();
   var isTouch = isTouch$1();
   var html = document.getElementsByTagName('html')[0];
@@ -2116,6 +2151,7 @@
     onClose: null,
     loop: false,
     zoomable: true,
+    doubleTapToZoom: false,
     draggable: true,
     dragAutoSnap: false,
     dragToleranceX: 40,

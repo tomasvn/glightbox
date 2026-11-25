@@ -19,6 +19,47 @@ describe('SlideConfigParser image type detection', () => {
         }
     });
 
+    describe('double-tap slide configuration', () => {
+        const parser = new SlideConfigParser();
+        const settings = { descPosition: 'bottom', width: '100%', height: 'auto', videosWidth: '100%', doubleTapToZoom: true };
+
+        function link(dataset = {}, config = null) {
+            return {
+                nodeType: 1,
+                nodeName: 'A',
+                href: 'photo.jpg',
+                dataset,
+                getAttribute: () => config,
+                querySelector: () => null
+            };
+        }
+
+        it('inherits the global setting and honors data attribute overrides', () => {
+            const oldWindow = globalThis.window;
+            const oldDocument = globalThis.document;
+            globalThis.window = {};
+            globalThis.document = {};
+            try {
+                assert.equal(parser.parseConfig(link(), settings).doubleTapToZoom, true);
+                assert.equal(parser.parseConfig(link({ doubleTapToZoom: 'false' }), settings).doubleTapToZoom, false);
+                assert.equal(parser.parseConfig(link({ doubleTapToZoom: 'true' }), { ...settings, doubleTapToZoom: false }).doubleTapToZoom, true);
+                assert.equal(parser.parseConfig(link({}, 'doubleTapToZoom: false'), settings).doubleTapToZoom, false);
+                assert.equal(parser.parseConfig(link({}, 'doubleTapToZoom: true'), { ...settings, doubleTapToZoom: false }).doubleTapToZoom, true);
+            } finally {
+                if (oldWindow === undefined) delete globalThis.window;
+                else globalThis.window = oldWindow;
+                if (oldDocument === undefined) delete globalThis.document;
+                else globalThis.document = oldDocument;
+            }
+        });
+
+        it('inherits and overrides the global setting for programmatic slides', () => {
+            assert.equal(parser.parseConfig({ href: 'photo.jpg' }, settings).doubleTapToZoom, true);
+            assert.equal(parser.parseConfig({ href: 'photo.jpg', doubleTapToZoom: false }, settings).doubleTapToZoom, false);
+            assert.equal(parser.parseConfig({ href: 'photo.jpg', doubleTapToZoom: true }, { ...settings, doubleTapToZoom: false }).doubleTapToZoom, true);
+        });
+    });
+
     it('keeps recognizing image URLs with query strings and fragments', () => {
         const urls = ['https://example.test/photo.png?token=abc', 'https://example.test/photo.jpg#preview'];
 

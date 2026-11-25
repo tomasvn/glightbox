@@ -58,6 +58,24 @@
 </a>
 ```
 
+## Double-tap zoom
+
+Enable double-tap zoom (disabled by default) with touch navigation enabled:
+
+```javascript
+const lightbox = GLightbox({
+  doubleTapToZoom: true
+});
+```
+
+Override the global setting on an individual image:
+
+```html
+<a href="large.jpg" class="glightbox" data-double-tap-to-zoom="true">Open image</a>
+```
+
+You can also use `data-glightbox="doubleTapToZoom: true"` or set `doubleTapToZoom` on a JavaScript slide object. Double-tap an image slide to zoom to 2x and double-tap again to reset. Double-tap zoom is independent of pinch zoom and the global and per-slide `zoomable` settings. See the [CSS variables](./README.md#css-variables) for transition customization.
+
 ## JavaScript gallery
 
 Pass slide objects through `elements` instead of selecting links in the document:

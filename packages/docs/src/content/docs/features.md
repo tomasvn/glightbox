@@ -11,6 +11,7 @@ GLightbox is a responsive JavaScript lightbox with no application framework requ
 - Load responsive images using `srcset` and `sizes`.
 - Add titles and HTML descriptions above, below, or beside a slide.
 - Zoom and drag images on desktop and touch devices.
+- Optionally enable double-tap zoom on image slides when touch navigation is enabled.
 
 See [image and gallery examples](/glightbox/examples/).
 

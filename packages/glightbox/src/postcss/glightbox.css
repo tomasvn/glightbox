@@ -410,6 +410,14 @@
     }
 }
 
+.gzoomed-in {
+    transition: transform var(--glightbox-zoom-in-transition-duration, 0.3s) var(--glightbox-zoom-in-transition-timing-function, ease-in);
+}
+
+.gzoomed-out {
+    transition: transform var(--glightbox-zoom-out-transition-duration, 0.3s) var(--glightbox-zoom-out-transition-timing-function, ease-out);
+}
+
 .gloader {
     height: 25px;
     width: 25px;

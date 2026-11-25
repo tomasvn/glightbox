@@ -17,7 +17,8 @@ import { addEvent, addClass, removeClass, hasClass, closest, isMobile, isFunctio
  *     descPosition: string,
  *     draggable: boolean,
  *     zoomable: boolean,
- *     smallDescription?: string
+ *     smallDescription?: string,
+ *     doubleTapToZoom: boolean
  * }} ParsedSlideConfig
  */
 

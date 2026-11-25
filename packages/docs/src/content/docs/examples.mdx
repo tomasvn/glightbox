@@ -13,6 +13,24 @@ In the simple image gallery, check **Enable right-to-left (RTL) navigation** bef
 
 <LiveDemo />
 
+## Double-tap zoom
+
+Enable double-tap zoom (disabled by default) with touch navigation enabled:
+
+```js
+const lightbox = GLightbox({
+    doubleTapToZoom: true
+});
+```
+
+Override the global setting for an individual image:
+
+```html
+<a href="large.jpg" class="glightbox" data-double-tap-to-zoom="true">Open image</a>
+```
+
+You can also use `data-glightbox="doubleTapToZoom: true"` or set `doubleTapToZoom` on a JavaScript slide object. On a touch device, double-tap an image to zoom to 2x and double-tap again to reset it. The gesture is independent of pinch zoom and the global and per-slide `zoomable` settings. Customize its transition with the zoom variables in [Styling](/glightbox/styling/).
+
 ## Image with a description
 
 Use `data-glightbox` to set slide options directly on the link:

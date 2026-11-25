@@ -415,6 +415,28 @@
   overflow: hidden;
 }
 
+.gzoomed-in {
+  -webkit-transition: -webkit-transform 0.3s ease-in;
+  transition: -webkit-transform 0.3s ease-in;
+  transition: transform 0.3s ease-in;
+  transition: transform 0.3s ease-in, -webkit-transform 0.3s ease-in;
+  -webkit-transition: -webkit-transform var(--glightbox-zoom-in-transition-duration, 0.3s) var(--glightbox-zoom-in-transition-timing-function, ease-in);
+  transition: -webkit-transform var(--glightbox-zoom-in-transition-duration, 0.3s) var(--glightbox-zoom-in-transition-timing-function, ease-in);
+  transition: transform var(--glightbox-zoom-in-transition-duration, 0.3s) var(--glightbox-zoom-in-transition-timing-function, ease-in);
+  transition: transform var(--glightbox-zoom-in-transition-duration, 0.3s) var(--glightbox-zoom-in-transition-timing-function, ease-in), -webkit-transform var(--glightbox-zoom-in-transition-duration, 0.3s) var(--glightbox-zoom-in-transition-timing-function, ease-in);
+}
+
+.gzoomed-out {
+  -webkit-transition: -webkit-transform 0.3s ease-out;
+  transition: -webkit-transform 0.3s ease-out;
+  transition: transform 0.3s ease-out;
+  transition: transform 0.3s ease-out, -webkit-transform 0.3s ease-out;
+  -webkit-transition: -webkit-transform var(--glightbox-zoom-out-transition-duration, 0.3s) var(--glightbox-zoom-out-transition-timing-function, ease-out);
+  transition: -webkit-transform var(--glightbox-zoom-out-transition-duration, 0.3s) var(--glightbox-zoom-out-transition-timing-function, ease-out);
+  transition: transform var(--glightbox-zoom-out-transition-duration, 0.3s) var(--glightbox-zoom-out-transition-timing-function, ease-out);
+  transition: transform var(--glightbox-zoom-out-transition-duration, 0.3s) var(--glightbox-zoom-out-transition-timing-function, ease-out), -webkit-transform var(--glightbox-zoom-out-transition-duration, 0.3s) var(--glightbox-zoom-out-transition-timing-function, ease-out);
+}
+
 .gloader {
   height: 25px;
   width: 25px;

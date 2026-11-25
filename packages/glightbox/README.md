@@ -18,7 +18,7 @@ GLightbox is a pure javascript lightbox. It can display images, iframes, inline 
 - **Iframe support** - need to embed an iframe? no problem
 - **Keyboard Navigation** - esc, arrows keys, tab and enter is all you need
 - **Touch Navigation** - mobile touch events
-- **Zoomable images** - zoom and drag images on mobile and desktop
+- **Zoomable images** - zoom and drag images on mobile and desktop; optionally enable double-tap zoom on touch devices
 - **API** - control the lightbox with the provided methods
 - **Themeable** - create your skin or modify the animations with some minor css changes
 
@@ -50,8 +50,8 @@ Or manually download and link `glightbox.min.js` in your HTML:
 
 <!-- USING A CDN -->
 
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tomasvn/glightbox@3.8.1/dist/css/glightbox.min.css" />
-<script src="https://cdn.jsdelivr.net/npm/@tomasvn/glightbox@3.8.1/dist/js/glightbox.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tomasvn/glightbox@3.9.0/dist/css/glightbox.min.css" />
+<script src="https://cdn.jsdelivr.net/npm/@tomasvn/glightbox@3.9.0/dist/js/glightbox.min.js"></script>
 
 <script type="text/javascript">
   const lightbox = GLightbox({ ...options });
@@ -60,7 +60,7 @@ Or manually download and link `glightbox.min.js` in your HTML:
 <!-- USING ES MODULES -->
 
 <script type="module">
-  import 'https://cdn.jsdelivr.net/npm/@tomasvn/glightbox@3.8.1/dist/js/glightbox.min.js';
+  import 'https://cdn.jsdelivr.net/npm/@tomasvn/glightbox@3.9.0/dist/js/glightbox.min.js';
 
   const lightbox = GLightbox({ ...options });
 </script>
@@ -72,23 +72,27 @@ For more usage examples, including galleries and custom slides, see [Examples](.
 
 Use these variables to customize GLightbox:
 
-| Variable                                 | Default               | Description                                                                        |
-| ---------------------------------------- | --------------------- | ---------------------------------------------------------------------------------- |
-| `--glightbox-transition-duration`        | `0.4s`                | Slide transition duration                                                          |
-| `--glightbox-transition-timing-function` | `ease`                | Slide transition timing function                                                   |
-| `--glightbox-description-title-color`    | `#fff`                | Mobile description title color                                                     |
-| `--glightbox-description-color`          | `#a1a1a1`             | Mobile description text color                                                      |
-| `--glightbox-description-link-color`     | `#fff`                | Mobile description link color                                                      |
-| `--glightbox-description-more-color`     | `#fff`                | Mobile description "see more" link color                                           |
-| `--glightbox-overlay-bg`                 | `#000`                | Overlay background                                                                 |
-| `--glightbox-overlay-bg-mobile`          | `#000`                | Overlay background on mobile devices                                               |
-| `--glightbox-overlay-bg-sm`              | `rgba(0, 0, 0, 0.92)` | Overlay background when the viewport is wider than 768px                           |
-| `--glightbox-overlay-bg-xs`              | `#000`                | Overlay background when the viewport height is at most 420px                       |
-| `--glightbox-button-focus-outline-color` | `#0f3d81`             | Focused button outline color                                                       |
-| `--glightbox-icon-color`                 | `#fff`                | Control icon fill in the `clean` skin                                              |
-| `--glightbox-icon-bg`                    | `rgba(0, 0, 0, 0.75)` | Control background in the `clean` skin                                             |
-| `--glightbox-icon-bg-sm`                 | `rgba(0, 0, 0, 0.32)` | Control background in the `clean` skin when the viewport is wider than 768px       |
-| `--glightbox-icon-bg-hover`              | `rgba(0, 0, 0, 0.7)`  | Control hover background in the `clean` skin when the viewport is wider than 768px |
+| Variable                                          | Default               | Description                                                                        |
+| ------------------------------------------------- | --------------------- | ---------------------------------------------------------------------------------- |
+| `--glightbox-transition-duration`                 | `0.4s`                | Slide transition duration                                                          |
+| `--glightbox-transition-timing-function`          | `ease`                | Slide transition timing function                                                   |
+| `--glightbox-zoom-in-transition-duration`         | `0.3s`                | Double-tap zoom-in transition duration                                             |
+| `--glightbox-zoom-in-transition-timing-function`  | `ease-in`             | Double-tap zoom-in transition timing function                                      |
+| `--glightbox-zoom-out-transition-duration`        | `0.3s`                | Double-tap zoom-out transition duration                                            |
+| `--glightbox-zoom-out-transition-timing-function` | `ease-out`            | Double-tap zoom-out transition timing function                                     |
+| `--glightbox-description-title-color`             | `#fff`                | Mobile description title color                                                     |
+| `--glightbox-description-color`                   | `#a1a1a1`             | Mobile description text color                                                      |
+| `--glightbox-description-link-color`              | `#fff`                | Mobile description link color                                                      |
+| `--glightbox-description-more-color`              | `#fff`                | Mobile description "see more" link color                                           |
+| `--glightbox-overlay-bg`                          | `#000`                | Overlay background                                                                 |
+| `--glightbox-overlay-bg-mobile`                   | `#000`                | Overlay background on mobile devices                                               |
+| `--glightbox-overlay-bg-sm`                       | `rgba(0, 0, 0, 0.92)` | Overlay background when the viewport is wider than 768px                           |
+| `--glightbox-overlay-bg-xs`                       | `#000`                | Overlay background when the viewport height is at most 420px                       |
+| `--glightbox-button-focus-outline-color`          | `#0f3d81`             | Focused button outline color                                                       |
+| `--glightbox-icon-color`                          | `#fff`                | Control icon fill in the `clean` skin                                              |
+| `--glightbox-icon-bg`                             | `rgba(0, 0, 0, 0.75)` | Control background in the `clean` skin                                             |
+| `--glightbox-icon-bg-sm`                          | `rgba(0, 0, 0, 0.32)` | Control background in the `clean` skin when the viewport is wider than 768px       |
+| `--glightbox-icon-bg-hover`                       | `rgba(0, 0, 0, 0.7)`  | Control hover background in the `clean` skin when the viewport is wider than 768px |
 
 The mobile overlay rule takes precedence over the viewport-specific overlay rules on mobile devices. For example, set variables globally with:
 
@@ -103,18 +107,19 @@ The mobile overlay rule takes precedence over the viewport-specific overlay rule
 
 You can set these options for each slide:
 
-| Option         | Description                                                  |
-| -------------- | ------------------------------------------------------------ |
-| `title`        | Slide title.                                                 |
-| `alt`          | Alternative text for an image.                               |
-| `description`  | Slide description.                                           |
-| `descPosition` | Description position: `bottom`, `top`, `left`, or `right`.   |
-| `type`         | Content type. Inferred from the URL or content when omitted. |
-| `effect`       | Transition effect for the slide.                             |
-| `width`        | Slide width; defaults to the global width setting.           |
-| `height`       | Slide height; defaults to the global height setting.         |
-| `zoomable`     | Enable or disable image zoom.                                |
-| `draggable`    | Enable or disable dragging.                                  |
+| Option            | Description                                                    |
+| ----------------- | -------------------------------------------------------------- |
+| `title`           | Slide title.                                                   |
+| `alt`             | Alternative text for an image.                                 |
+| `description`     | Slide description.                                             |
+| `descPosition`    | Description position: `bottom`, `top`, `left`, or `right`.     |
+| `type`            | Content type. Inferred from the URL or content when omitted.   |
+| `effect`          | Transition effect for the slide.                               |
+| `width`           | Slide width; defaults to the global width setting.             |
+| `height`          | Slide height; defaults to the global height setting.           |
+| `zoomable`        | Enable or disable click-to-zoom for sufficiently large images. |
+| `doubleTapToZoom` | Override the global double-tap zoom setting for this slide.    |
+| `draggable`       | Enable or disable dragging.                                    |
 
 ```html
 <!-- One line config -->
@@ -175,7 +180,8 @@ To define gallery items in JavaScript, see [Examples](./EXAMPLES.md#javascript-g
 | videosWidth | number | `960px` | Default width for videos. Videos are responsive so height is not required. The width can be in px % or even vw for example, 500px, 90% or 100vw for full width videos |
 | descPosition | string | `bottom` | Global position for slides description, you can define a specific position on each slide (bottom, top, left, right). |
 | loop | boolean | `false` | Loop slides on end. |
-| zoomable | boolean | `true` | Enable or disable zoomable images you can also use data-zoomable="false" on individual nodes. |
+| zoomable | boolean | `true` | Enable or disable click-to-zoom for sufficiently large images; use `data-zoomable="false"` on individual nodes. |
+| doubleTapToZoom | boolean | `false` | Enable or disable double-tap image zoom when touch navigation is enabled. |
 | draggable | boolean | `true` | Enable or disable mouse drag to go prev and next slide (only images and inline content), you can also use data-draggable="false" on individual nodes. |
 | dragToleranceX | number | `40` | Used with draggable. Number of pixels the user has to drag to go to prev or next slide. |
 | dragToleranceY | number | `65` | Used with draggable. Number of pixels the user has to drag up or down to close the lightbox (Set 0 to disable vertical drag). |
@@ -189,6 +195,8 @@ To define gallery items in JavaScript, see [Examples](./EXAMPLES.md#javascript-g
 | autofocusVideos | boolean | `true` | If true video will be focused on play to allow keyboard sortcuts for the player, this will deactivate prev and next arrows to change slide so use it only if you know what you are doing. |
 | plyr | object | `{}` | [View video player options.](#video-player) |
 | direction | `ltr` \| `rtl` | `ltr` | Direction of the lightbox slide order (`ltr` for left to right or `rtl` for right to left). |
+
+Set `doubleTapToZoom: true` to enable double-tap zoom. Double-tapping an image slide zooms it to 2x; double-tapping again resets the zoom. Override the setting per slide with `data-double-tap-to-zoom`, `data-glightbox`, or a slide object. It requires `touchNavigation: true` and is independent of the global and per-slide `zoomable` settings; pinch zoom is separate.
 
 ## Events
 

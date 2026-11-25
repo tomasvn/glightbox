@@ -8,7 +8,7 @@ GLightbox({
     direction: 'rtl',
     touchVideoClosable: true,
     elements: [
-        { href: 'image.jpg', alt: 'An image', width: '90vw' },
+        { href: 'image.jpg', alt: 'An image', width: '90vw', doubleTapToZoom: true },
         { href: 'video.mp4', type: 'video', videoProvider: 'local', width: 900 },
         { content: '<p>Inline content</p>', height: 'auto' },
         { href: 'https://example.com', type: 'external' }

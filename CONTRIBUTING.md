@@ -9,7 +9,7 @@ Please read these guidelines before contributing code.
 - `npm install`
 - `npm run watch`
 - This repository uses npm workspaces: `packages/glightbox` contains the publishable library, `packages/docs` contains the private Astro Starlight site and demo, and `packages/build` contains private build tooling.
-- Edit library JavaScript and CSS in `packages/glightbox/src`. The watcher compiles changes into `packages/glightbox/dist`; do not edit generated files directly.
+- Edit library JavaScript and CSS in `packages/glightbox/src`. The watcher compiles changes into `packages/glightbox/dist` and syncs them to `packages/docs/public/dist`; do not edit generated files directly.
 - Run `npm run build:lib` to build the library, `npm test` for library and type tests, or `npm run build` to build both workspaces.
 - Run `npm run dev:docs` to preview Starlight. Documentation pages live in `packages/docs/src/content/docs`; demo source and media live in `packages/docs/public`.
 - The documentation changelog page is generated from `packages/glightbox/CHANGELOG.md` before development and production builds. Edit the library changelog, not the generated page.

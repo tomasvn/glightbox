@@ -35,16 +35,16 @@ function postcssCompiler(config) {
                 from,
                 to
             })
-            .then((result) => {
+            .then(async (result) => {
                 if (result && result.css) {
-                    fs.writeFile(to, result.css, 'utf8', (err) => reject(err));
+                    await fs.promises.writeFile(to, result.css, 'utf8');
 
                     if (minify) {
                         const minified = new CssClean({}).minify(result.css);
-                        fs.writeFile(min, minified.styles, 'utf8', (err) => reject(err));
+                        await fs.promises.writeFile(min, minified.styles, 'utf8');
 
                         if (result.map) {
-                            fs.writeFile(to + '.map', result.map, 'utf8', (err) => reject(err));
+                            await fs.promises.writeFile(to + '.map', result.map, 'utf8');
                         }
                     }
 

@@ -23,7 +23,8 @@
     "changeset:version": "changeset version",
     "lint": "npm run lint --workspace @tomasvn/glightbox",
     "format": "npm run format --workspace @tomasvn/glightbox",
-    "prepare": "husky"
+    "prepare": "husky",
+    "publish": "npm publish --workspace @tomasvn/glightbox"
   },
   "lint-staged": {
     "*.{js,cjs,mjs,jsx,ts,cts,mts,tsx,json,jsonc,md,mdx,html,css,scss,yml,yaml}": "oxfmt --no-error-on-unmatched-pattern"

@@ -10,7 +10,7 @@ import Slide from './core/slide.js';
 import touchNavigation from './core/touch-navigation.js';
 import * as _ from './utils/helpers.js';
 
-const version = '3.8.1';
+const version = '3.9.0';
 const isMobile = _.isMobile();
 const isTouch = _.isTouch();
 const html = document.getElementsByTagName('html')[0];
@@ -42,6 +42,7 @@ const defaults = {
     onClose: null,
     loop: false,
     zoomable: true,
+    doubleTapToZoom: false,
     draggable: true,
     dragAutoSnap: false,
     dragToleranceX: 40,

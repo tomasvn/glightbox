@@ -81,8 +81,7 @@ function jscompiler(config) {
                 return outPutFile;
             })
             .catch((error) => {
-                console.log(error);
-                throw new Error(error);
+                rej(error);
             });
     });
 }
