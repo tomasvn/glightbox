@@ -6,13 +6,13 @@ All notable changes to this project will be documented in this file.
 
 ### Minor Changes
 
-- Add double tap to zoom functionality via global setting or individualy for each slide
-  - Improve watcher.js to copy over dist into docs
-  - Add new css variables to adjust zoom-in / zoom-out transition timing functions, easing functions via
-    - `--glightbox-zoom-in-transition-duration`
-    - `--glightbox-zoom-in-transition-timing-function`
-    - `--glightbox-zoom-out-transition-duration`
-    - `--glightbox-zoom-out-transition-timing-function`
+- Add double tap to zoom functionality via global setting or individualy for each slide - [Closes #259](https://github.com/biati-digital/glightbox/issues/259)
+- Improve watcher.js to copy over dist into docs
+- Add new css variables to adjust zoom-in / zoom-out transition timing functions, easing functions via
+  - `--glightbox-zoom-in-transition-duration`
+  - `--glightbox-zoom-in-transition-timing-function`
+  - `--glightbox-zoom-out-transition-duration`
+  - `--glightbox-zoom-out-transition-timing-function`
 
 ## 3.8.1
 
